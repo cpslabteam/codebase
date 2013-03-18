@@ -215,7 +215,7 @@ public final class Debug {
      * @param iterator the iterator with the elements to be converted
      * @return a string of the form <code><i1, ..., in></code>
      */
-    public static String toString(final Iterator iterator) {
+    public static String toString(final Iterator<?> iterator) {
         String result = "";
 
         int rowNum = 0;
