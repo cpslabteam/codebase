@@ -10,11 +10,11 @@ import java.util.StringTokenizer;
 /**
  * String utilities.
  * <p>
- * The underlying idea is to put here string functions that are commonly used in
- * the code to avoid that each project/person implements its own version. These
- * functions are also throughly tested.
+ * The underlying idea is to put here string functions that are commonly used in the code
+ * to avoid that each project/person implements its own version. These functions are also
+ * throughly tested.
  * 
- * @author Paulo Carreira; André Gonçalves
+ * @author Paulo Carreira, André Gonçalves
  */
 public final class Strings {
 
@@ -56,21 +56,20 @@ public final class Strings {
     /**
      * Short name descriptions of ascii invisible characters.
      */
-    private static final String[] SHORT_CHAR_NAMES = { "NUL", "SOH", "STX", "ETX", "EOT",
-            "ENQ", "ACK", "BEL", "BS", "TAB", "LF", "VT", "FF", "CR", "SO", "SI", "DLE",
-            "XON", "DC2", "XOFF", "DC4", "NAK", "SYN", "ETB", "CAN", "EM ", "SUB" };
+    private static final String[] SHORT_CHAR_NAMES = { "NUL", "SOH", "STX", "ETX", "EOT", "ENQ",
+            "ACK", "BEL", "BS", "TAB", "LF", "VT", "FF", "CR", "SO", "SI", "DLE", "XON", "DC2",
+            "XOFF", "DC4", "NAK", "SYN", "ETB", "CAN", "EM ", "SUB" };
 
     /**
      * Long name descriptions of ascii invisible characters.
      */
-    private static final String[] LONG_CHAR_NAMES = { "Null character",
-            "Start of Header", "Start of Text", "End of Text", "End of Transmission",
-            "Enquiry", "Acknowledgment", "Bell", "Backspace", "Tab", "Line feed",
-            "Vertical Tab", "Form feed", "Carriage Return", "Shift Out", "Shift In",
-            "Data Link Escape", "Device Control 1 (oft. XON)", "Device Control 2",
-            "Device Control 3 (oft. XOFF)", "Device Control 4",
-            "Negative Acknowledgement", "Synchronous Idle", "End of Trans. Block",
-            "Cancel", "End of Medium", "Substitute" };
+    private static final String[] LONG_CHAR_NAMES = { "Null character", "Start of Header",
+            "Start of Text", "End of Text", "End of Transmission", "Enquiry", "Acknowledgment",
+            "Bell", "Backspace", "Tab", "Line feed", "Vertical Tab", "Form feed",
+            "Carriage Return", "Shift Out", "Shift In", "Data Link Escape",
+            "Device Control 1 (oft. XON)", "Device Control 2", "Device Control 3 (oft. XOFF)",
+            "Device Control 4", "Negative Acknowledgement", "Synchronous Idle",
+            "End of Trans. Block", "Cancel", "End of Medium", "Substitute" };
 
     /**
      * Avoid this class form being instantiated.
@@ -79,13 +78,13 @@ public final class Strings {
     }
 
     /**
-     * The returns the index of the first character of the a string that is
-     * different from a specified character.
+     * The returns the index of the first character of the a string that is different from
+     * a specified character.
      * 
      * @param str The string where the characters will be searched
      * @param ch the character that should not appear
-     * @return a valid index of <code>-1</code> if all the characters have
-     *         value of chars are ch
+     * @return a valid index of <code>-1</code> if all the characters have value of chars
+     *         are ch
      */
     public static int firstIndexNotOf(final String str, final char ch) {
         int index = 0;
@@ -103,15 +102,13 @@ public final class Strings {
     /**
      * Converts an array of objects to a delimited representation.
      * <p>
-     * The stirng representation of each element is obtained via
-     * <code>toString()</code>. If a element of the array is
-     * <code>null</code> it is skiped.
+     * The stirng representation of each element is obtained via <code>toString()</code>.
+     * If a element of the array is <code>null</code> it is skiped.
      * 
      * @param items the array of items to join
-     * @param delimiter the text to place between each element in the array,
-     *            cannot be <code>null</code>
-     * @return the resulting string on <code>null</code> if items is
-     *         <code>null</code>
+     * @param delimiter the text to place between each element in the array, cannot be
+     *            <code>null</code>
+     * @return the resulting string on <code>null</code> if items is <code>null</code>
      */
     public static String join(final Object[] items, final String delimiter) {
         if (items == null) {
@@ -145,16 +142,15 @@ public final class Strings {
      * Determines if an ascii character is a control character.
      * 
      * @param c a character
-     * @return <code>true</code> if
-     *         <code>0&leq;c and c<{@link #ASCII_SPACE_BYTE}</code>.
+     * @return <code>true</code> if <code>0&leq;c and c<{@link #ASCII_SPACE_BYTE}</code>.
      */
     public static boolean isControl(final char c) {
         return (0 <= c) && (c < ASCII_SPACE_BYTE);
     }
 
     /**
-     * Finds the index of the first character of a string that is different from
-     * a specified character, searching from left to right.
+     * Finds the index of the first character of a string that is different from a
+     * specified character, searching from left to right.
      * 
      * @param str The string where the characters will be searched
      * @param ch the character that should not appear
@@ -172,8 +168,8 @@ public final class Strings {
     }
 
     /**
-     * Prefixes the string input with enough copies of pad that it has length
-     * equal to length.
+     * Prefixes the string input with enough copies of pad that it has length equal to
+     * length.
      * <p>
      * Usually, pad should be a single character.
      * 
@@ -208,8 +204,7 @@ public final class Strings {
                 strCounter += 1;
             } while (strCounter < n);
             return strBuffer.toString();
-        }
-        else {
+        } else {
             return "";
         }
     }
@@ -229,8 +224,7 @@ public final class Strings {
             }
 
             return new String(buffer);
-        }
-        else {
+        } else {
             return "";
         }
     }
@@ -239,9 +233,8 @@ public final class Strings {
      * Trims white white spaces right from the string.
      * 
      * @param str the string to skip white spaces from
-     * @return the pointer to a buffer with the string trimmed from spaces on
-     *         the right. If there are no spaces to trim it returns the string
-     *         itself.
+     * @return the pointer to a buffer with the string trimmed from spaces on the right.
+     *         If there are no spaces to trim it returns the string itself.
      */
     public static String trimRight(final java.lang.String str) {
         return trimCharRight(str, ' ');
@@ -252,16 +245,14 @@ public final class Strings {
      * 
      * @param str the string to skip white spaces from
      * @param ch is the character to be trimed
-     * @return the pointer to a buffer with the string trimmed from all
-     *         occourences of ch on the right. If ch is not found returns the
-     *         original string.
+     * @return the pointer to a buffer with the string trimmed from all occourences of ch
+     *         on the right. If ch is not found returns the original string.
      */
     public static String trimCharRight(final java.lang.String str, final char ch) {
         int noCharPosIdx = lastIndexNotOf(str, ch);
         if (noCharPosIdx > -1) {
             return str.substring(0, noCharPosIdx + 1);
-        }
-        else {
+        } else {
             return str;
         }
     }
@@ -270,8 +261,8 @@ public final class Strings {
      * Skips white spaces from the left of a string.
      * 
      * @param str the string to skip white spaces from
-     * @return the first non-SPACE character of the string or the original
-     *         string if the SPACE character is not found
+     * @return the first non-SPACE character of the string or the original string if the
+     *         SPACE character is not found
      */
     public static String trimLeft(final String str) {
         return trimCharLeft(str, ' ');
@@ -282,15 +273,14 @@ public final class Strings {
      * 
      * @param str the string to skip white spaces from
      * @param ch is the char to be trimmed
-     * @return the first non-SPACE character or the original string if the
-     *         character ch is not found
+     * @return the first non-SPACE character or the original string if the character ch is
+     *         not found
      */
     public static String trimCharLeft(final java.lang.String str, final char ch) {
         int noCharPosIdx = firstIndexNotOf(str, ch);
         if (noCharPosIdx > -1) {
             return str.substring(noCharPosIdx);
-        }
-        else {
+        } else {
             return str;
         }
     }
@@ -300,14 +290,13 @@ public final class Strings {
      * 
      * @param str the string where the token is to be found.
      * @param token is the token to be skipped
-     * @return a pointer to the character immediately after the token or the
-     *         void. Returns the original string if the token is not found.
+     * @return a pointer to the character immediately after the token or the void. Returns
+     *         the original string if the token is not found.
      */
     public static String stripPrefix(final String str, final java.lang.String token) {
         if (token.length() > 0 && str.startsWith(token)) {
             return str.substring(token.length());
-        }
-        else {
+        } else {
             return str;
         }
     }
@@ -326,9 +315,8 @@ public final class Strings {
      * Trims white spaces right and left from the string.
      * 
      * @param str the string to skip white spaces from
-     * @return the pointer to a buffer with the string trimmed from spaces on
-     *         both sizes. if there are no spaces to trim it returns the string
-     *         itself.
+     * @return the pointer to a buffer with the string trimmed from spaces on both sizes.
+     *         if there are no spaces to trim it returns the string itself.
      */
     public static String trim(final String str) {
         return str.trim();
@@ -348,16 +336,15 @@ public final class Strings {
     /**
      * Converts a string to an array of strings sepeared by a token.
      * <p>
-     * Can be used to convert comma-separated tokens into an array. Used as a
-     * replacement for <code>String.split(String)</code> which has a bug with
-     * DBCS.
+     * Can be used to convert comma-separated tokens into an array. Used as a replacement
+     * for <code>String.split(String)</code> which has a bug with DBCS.
      * 
      * @param string the initial comma-separated string
      * @param separator the separator characters
      * @return the array of string tokens
      */
     public static String[] split(final String string, final String separator) {
-        if (string == null || string.trim().equals("")) {
+        if (string == null || string.trim().isEmpty()) {
             return new String[0];
         }
 
@@ -365,15 +352,14 @@ public final class Strings {
         StringTokenizer tokens = new StringTokenizer(string, separator);
         while (tokens.hasMoreTokens()) {
             String token = tokens.nextToken().trim();
-            if (!token.equals("")) {
+            if (!token.isEmpty()) {
                 list.add(token);
             }
         }
 
         if (list.isEmpty()) {
             return new String[0];
-        }
-        else {
+        } else {
             return list.toArray(new String[list.size()]);
         }
     }
@@ -381,33 +367,31 @@ public final class Strings {
     /**
      * Compacts a string for displaying.
      * <p>
-     * This function is meant to be used to avoid the user to be overwelmed by
-     * very large size dumps. To that end it gets the header of the string and
-     * the trailer that serve as a summary of the string.
+     * This function is meant to be used to avoid the user to be overwelmed by very large
+     * size dumps. To that end it gets the header of the string and the trailer that serve
+     * as a summary of the string.
      * <p>
-     * If the original string is smaller that the specified size, the original
-     * string is returned.
+     * If the original string is smaller that the specified size, the original string is
+     * returned.
      * 
      * @param str the original string
-     * @param size the maximum size for display. The size must be greater than
-     *            5. If the specified size is smaller than 5, it is ignored.
+     * @param size the maximum size for display. The size must be greater than 5. If the
+     *            specified size is smaller than 5, it is ignored.
      * @return a string of the form <code>xxxxxx ... xxxxxx</code> with atmost
      *         <code>size</code> characters.
      */
     public static String compactFormat(final String str, final int size) {
-        final String ellipsis = new String("...");
+        final String ellipsis = "...";
         final int lenEllipsis = ellipsis.length();
         final int len = str.length();
         if ((size < ellipsis.length() + 2) || (len <= size)) {
             return str;
-        }
-        else {
+        } else {
             final int headerSize = (size - lenEllipsis) / 2;
             final int trailerSize;
             if ((2 * (headerSize + 1) + lenEllipsis) <= size + 1) {
                 trailerSize = headerSize + 1;
-            }
-            else {
+            } else {
                 trailerSize = headerSize;
             }
             final String result = str.substring(0, headerSize) + ellipsis
@@ -421,15 +405,14 @@ public final class Strings {
      * Retruns the compact name of a char.
      * 
      * @param c is the character
-     * @return a name like <code>TAB</code>, <code>EOT</code> or
-     *         <code>CR</code> if the character is a special chatarcter.
-     *         Returns the string representation otherwise.
+     * @return a name like <code>TAB</code>, <code>EOT</code> or <code>CR</code> if the
+     *         character is a special chatarcter. Returns the string representation
+     *         otherwise.
      */
     public static String charNameShort(final char c) {
         if (isControl(c)) {
             return SHORT_CHAR_NAMES[c];
-        }
-        else {
+        } else {
             return Character.toString(c);
         }
     }
@@ -438,37 +421,33 @@ public final class Strings {
      * Returns the complete name of a char.
      * 
      * @param c is the character
-     * @return a name like <code>Carriage Return</code> if the character is a
-     *         special charcter. Returns the string representation otherwise.
+     * @return a name like <code>Carriage Return</code> if the character is a special
+     *         charcter. Returns the string representation otherwise.
      */
     public static String charNameLong(final char c) {
         if (isControl(c)) {
             return LONG_CHAR_NAMES[c];
-        }
-        else {
+        } else {
             return Character.toString(c);
         }
     }
 
     /**
-     * Tests two strings for equality when one or both of them can be
-     * <code>null</code>
+     * Tests two strings for equality when one or both of them can be <code>null</code>.
      * 
      * @param left the left hand string
      * @param right the right hand string
-     * @return <code>true</code> if both left and right are <code>null</code>,
-     *         returns <code>false</code> if one of them is <code>null</code>
-     *         and the other is not, returns <code>left.equals(right)</code> is none of them
-     *         is <code>null</code>
+     * @return <code>true</code> if both left and right are <code>null</code>, returns
+     *         <code>false</code> if one of them is <code>null</code> and the other is
+     *         not, returns <code>left.equals(right)</code> is none of them is
+     *         <code>null</code>
      */
     public static boolean safeStrEquals(final String left, final String right) {
         if (left == right) {
             return true;
-        }
-        else if ((left != null && right == null) || (left == null && right != null)) {
+        } else if ((left != null && right == null) || (left == null)) {
             return false;
-        }
-        else {
+        } else {
             return left.equals(right);
         }
     }

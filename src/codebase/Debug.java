@@ -57,7 +57,7 @@ public final class Debug {
         return result;
     }
 
-    public static final String multiLineDump(final byte[] buffer, final int segmentSize) {
+    public static String multiLineDump(final byte[] buffer, final int segmentSize) {
         String result = "";
         int i = 0;
         for (; i + segmentSize <= buffer.length; i += segmentSize) {
@@ -83,7 +83,7 @@ public final class Debug {
      * 
      * @param i is the cursor to be analysed
      */
-    public static void print(final Iterator i) {
+    public static void print(final Iterator<String> i) {
         System.out.println("---ITERATOR STARTING---");
         System.out.flush();
 
