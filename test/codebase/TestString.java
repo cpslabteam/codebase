@@ -1,19 +1,15 @@
 package codebase;
 
-import codebase.Strings;
+import junit.framework.Assert;
 import codebase.iterators.ArrayIterator;
 import codebase.iterators.EmptyIterator;
 import codebase.junit.EnhancedTestCase;
-import junit.framework.Assert;
-import junit.framework.TestCase;
 
 /**
- * @author Paulo Carreira TODO To change the\ template for this generated
- *         typeNumber comment go to Window - Preferences - Java - Code Style -
- *         Code Templates
+ * Tests the {@link Strings} utility class.
  */
-public class TestString
-        extends EnhancedTestCase {
+public class TestString extends
+        EnhancedTestCase {
 
     public void testCharNameShort() {
         assertEquals(Strings.charNameShort('\t'), "TAB");
@@ -21,14 +17,14 @@ public class TestString
         assertEquals(Strings.charNameShort(' '), " ");
         assertEquals(Strings.charNameShort('c'), "c");
     }
-    
+
     public void testCharNameLong() {
         assertEquals(Strings.charNameLong('\t'), "Tab");
         assertEquals(Strings.charNameLong('\r'), "Carriage Return");
         assertEquals(Strings.charNameLong(' '), " ");
         assertEquals(Strings.charNameLong('c'), "c");
     }
-    
+
     public void testFirstIndexNotOf() {
         assertEquals(Strings.firstIndexNotOf("", '\0'), -1);
         assertEquals(Strings.firstIndexNotOf("ABCD", 'X'), 0);
@@ -67,10 +63,8 @@ public class TestString
         assertEquals(Strings.trimRight("something"), "something");
         assertEquals(Strings.trimRight("something<    >"), "something<    >");
         assertEquals(Strings.trimRight("something         "), "something");
-        assertEquals(Strings.trimRight("something         x"),
-            "something         x");
-        assertEquals(Strings.trimRight("     something     "),
-            "     something");
+        assertEquals(Strings.trimRight("something         x"), "something         x");
+        assertEquals(Strings.trimRight("     something     "), "     something");
     }
 
     public void testTrimCharRight() {
@@ -86,7 +80,7 @@ public class TestString
         assertEquals(Strings.repeat("a", 1), "a");
         assertEquals(Strings.repeat("a", 2), "aa");
     }
-    
+
     public void testRepeatChar() {
         assertEquals(Strings.repeat('\u0000', 0), "");
         assertEquals(Strings.repeat('a', 0), "");
@@ -102,12 +96,9 @@ public class TestString
 
     public void testStripPrefix() {
         assertEquals(Strings.stripPrefix("", ""), "");
-        Assert
-            .assertEquals(Strings.stripPrefix("something", ""), "something");
-        Assert
-            .assertEquals(Strings.stripPrefix("something", "something"), "");
-        assertEquals(Strings.stripPrefix("theres'something", "theres'"),
-            "something");
+        Assert.assertEquals(Strings.stripPrefix("something", ""), "something");
+        Assert.assertEquals(Strings.stripPrefix("something", "something"), "");
+        assertEquals(Strings.stripPrefix("theres'something", "theres'"), "something");
         assertEquals(Strings.stripPrefix("", "something"), "");
     }
 
@@ -125,39 +116,32 @@ public class TestString
         assertEquals(Strings.trimChar("sssssomething", 's'), "omething");
         assertEquals(Strings.trimChar("something", 'g'), "somethin");
         assertEquals(Strings.trimChar("somethingggggg", 'g'), "somethin");
-        assertEquals(Strings.trimChar("gggggggsomethingggggg", 'g'),
-            "somethin");
+        assertEquals(Strings.trimChar("gggggggsomethingggggg", 'g'), "somethin");
     }
 
     /**
      * TODO: Finish compact string tests
-     *
      */
     public void xxxCompactString() {
         assertEquals(Strings.compactFormat("", 1), "");
         assertEquals(Strings.compactFormat("xxx", 5), "xxx");
         assertEquals(Strings.compactFormat("yxxz", 5), "yxxz");
         assertEquals(Strings.compactFormat("yxxxxz", 5), "y...z");
-        Assert
-            .assertEquals(Strings.compactFormat("Dear Friends", 5), "D...s");
+        Assert.assertEquals(Strings.compactFormat("Dear Friends", 5), "D...s");
         assertEquals(Strings.compactFormat("Dear Friends", 10), "Dear...nds");
     }
 
     public void testSplit() {
-        assertEquals(new ArrayIterator(Strings.split("", "")),
-            new EmptyIterator());
-        assertEquals(new ArrayIterator(Strings.split("", "\t")),
-            new EmptyIterator());
-        assertEquals(new ArrayIterator(Strings.split("a", "a")),
-            new EmptyIterator());
-        assertEquals(new ArrayIterator(Strings.split("a", " ")),
-            new ArrayIterator(new String[] {"a"}));
-        assertEquals(new ArrayIterator(Strings.split("abc", "a")),
-            new ArrayIterator(new String[] {"bc"}));
-        assertEquals(new ArrayIterator(Strings.split("abc", "c")),
-            new ArrayIterator(new String[] {"ab"}));
-        assertEquals(new ArrayIterator(Strings.split("a b c", " ")),
-            new ArrayIterator(new String[] {
-                    "a", "b", "c"}));
+        assertEquals(new ArrayIterator<String>(Strings.split("", "")), new EmptyIterator<String>());
+        assertEquals(new ArrayIterator<String>(Strings.split("", "\t")), new EmptyIterator<String>());
+        assertEquals(new ArrayIterator<String>(Strings.split("a", "a")), new EmptyIterator<String>());
+        assertEquals(new ArrayIterator<String>(Strings.split("a", " ")), new ArrayIterator<String>(
+                new String[] { "a" }));
+        assertEquals(new ArrayIterator<String>(Strings.split("abc", "a")), new ArrayIterator<String>(
+                new String[] { "bc" }));
+        assertEquals(new ArrayIterator<String>(Strings.split("abc", "c")), new ArrayIterator<String>(
+                new String[] { "ab" }));
+        assertEquals(new ArrayIterator<String>(Strings.split("a b c", " ")), new ArrayIterator<String>(
+                new String[] { "a", "b", "c" }));
     }
 }
