@@ -1,4 +1,6 @@
-# Compiled source #
+# Compiled source files
+#
+
 ###################
 *.com
 *.class
@@ -19,6 +21,8 @@
 *.rar
 *.tar
 *.zip
+*.war
+*.ear
 
 # Logs and databases #
 ######################
@@ -36,3 +40,13 @@
 Icon?
 ehthumbs.db
 Thumbs.db
+
+# Eclipse
+.classpath
+.project
+.settings/
+.checkstyle
+
+# Maven
+log/
+target/
