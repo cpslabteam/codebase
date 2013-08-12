@@ -5,6 +5,9 @@
 	<artifactId>codebase</artifactId>
 	<version>0.9.0-SNAPSHOT</version>
 	<description>Codebase utility classes</description>
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	</properties>
 	<build>
 		<sourceDirectory>src</sourceDirectory>
 		<testSourceDirectory>test</testSourceDirectory>
