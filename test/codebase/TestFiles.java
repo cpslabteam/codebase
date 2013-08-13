@@ -12,7 +12,7 @@ import junit.framework.TestCase;
 public class TestFiles
         extends TestCase {
     
-    private static final String SUCCESSFULL_FILE_NAME = "./sucessfullFile.dat";
+    private static final String SUCCESSFULL_FILE_NAME = "./test/resources/sucessfullFile.dat";
     
     /**
      * Tests the file creation in invalid and valid places.
