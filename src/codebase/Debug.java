@@ -10,8 +10,8 @@ import codebase.binary.Binary;
 /**
  * Utility class for debugging and logging.
  * <p>
- * This class encapsulates several debugging utilities that can be used for
- * diagnosing purposes while testing
+ * This class encapsulates several debugging utilities that can be used for diagnosing
+ * purposes while testing
  */
 public final class Debug {
 
@@ -22,25 +22,16 @@ public final class Debug {
     }
 
     /**
-     * Exits the program.
-     */
-    public static void exit() {
-        System.exit(0);
-    }
-
-    
-    
-    /**
-     * Computes the string dump of an object.
+     * Obtains the string dump of an object taking care of nulls and arrays.
      * <p>
-     * This methos is specially usefull when a class cast exception occurs
-     * because it gives us the class fo the object and its contents. It handles
-     * iterators and arrays of objects.
+     * This method is specially useful when a class cast exception occurs because it gives
+     * us the class for the object and its contents. It handles iterators and arrays of
+     * objects.
      * 
      * @param o the object to be dumped
      * @return the type of the object and its contents
      */
-    public static String asString(final Object o) {
+    public static String toStringDump(final Object o) {
         final String result;
         if (o == null) {
             result = "null";
@@ -51,37 +42,54 @@ public final class Debug {
         return result;
     }
 
-    public static String binaryDump(final byte[] buffer) {
+    /**
+     * Create a string with a binary dump.
+     * 
+     * @param buffer the byte buffer
+     * @return a line in the format XXXX HHHHHHHHH where X is a character and HH is its
+     *         corresponding hex code.
+     */
+    public static String toBinaryStringDump(final byte[] buffer) {
         final String result = Format.visibleAsciiString(new String(buffer), '.') + "  "
                 + Binary.toHexString(buffer);
         return result;
     }
 
-    public static String multiLineDump(final byte[] buffer, final int segmentSize) {
-        String result = "";
+    /**
+     * Create a multi-line string with a binary dump.
+     * 
+     * @param buffer the byte buffer
+     * @param segmentSize the number of bytes of the buffer to be dumped on each line
+     * @return XXXX HHHHHHHHH\n ... XXXX HHHHHHHHH here X is a character and HH is its
+     *         corresponding hex code.
+     * @see #toBinaryStringDump(byte[])
+     */
+    public static String toBinaryStringMultiLineDump(final byte[] buffer, final int segmentSize) {
+        final StringBuffer result = new StringBuffer();
         int i = 0;
         for (; i + segmentSize <= buffer.length; i += segmentSize) {
             final byte[] segment = new byte[segmentSize];
             System.arraycopy(buffer, i, segment, 0, segmentSize);
-            result += binaryDump(segment) + "\n";
+            result.append(toBinaryStringDump(segment) + "\n");
         }
 
         if (i < buffer.length) {
             final int remaining = buffer.length - i;
             final byte[] segment = new byte[remaining];
             System.arraycopy(buffer, i, segment, 0, remaining);
-            result += binaryDump(segment) + "\n";
+            result.append(toBinaryStringDump(segment) + "\n");
         }
-        return result;
+
+        return result.toString();
     }
 
     /**
      * Prints a the contents of an iterator
      * <p>
-     * Calling the <code>toString()</code> of all objects returned by the
-     * iterator.
+     * Calling the <code>toString()</code> of all objects returned by the iterator.
      * 
-     * @param i is the cursor to be analysed
+     * @param i is the cursor to be analyzed
+     * @throws IllegalStateException is an exception in
      */
     public static void print(final Iterator<String> i) {
         System.out.println("---ITERATOR STARTING---");
@@ -103,11 +111,11 @@ public final class Debug {
             try {
                 str = codebase.Debug.toString(o);
             } catch (Exception e) {
-                new IllegalStateException("Exception when performing o.toString():"
+                throw new IllegalStateException("Exception when performing o.toString():"
                         + e.toString());
             }
 
-            System.out.println(new Integer(rowNum).toString() + ":" + str);
+            System.out.println(Integer.toString(rowNum) + ":" + str);
             System.out.flush();
             rowNum++;
         }
@@ -116,7 +124,7 @@ public final class Debug {
     }
 
     /**
-     * Prints an object to the console by calling {@link Debug#toString(Object)}
+     * Prints an object to the console by calling {@link Debug#toString(Object)}.
      * 
      * @param o the object to be dumped
      */
@@ -126,21 +134,21 @@ public final class Debug {
     }
 
     /**
-     * Prints an integer
+     * Prints an integer.
      * 
      * @param i the integer to dumped
      */
     public static void print(final int i) {
-        print(new Integer(i));
+        print(Integer.toString(i));
     }
 
     /**
-     * Prints a long
+     * Prints a long.
      * 
      * @param l the long to be dumped
      */
     public static void print(final long l) {
-        print(new Long(l));
+        print(Long.toString(l));
     }
 
     /**
@@ -178,35 +186,34 @@ public final class Debug {
      * @return a string of the form <code>[o1, ..., on]</code>
      */
     public static String toString(final Object[] objs) {
-        String result = "";
+        final StringBuffer result = new StringBuffer();
         for (int i = 0; i < objs.length; i++) {
-            if (result != "") {
-                result += "," + toString(objs[i]);
+            if (result.length() != 0) {
+                result.append("," + toString(objs[i]));
             } else {
-                result += toString(objs[i]);
+                result.append(toString(objs[i]));
             }
         }
-        result = "[" + result + "]";
-        return result;
+
+        return "[" + result.toString() + "]";
     }
 
     /**
-     * Obtains the string representation of an array of integers
+     * Obtains the string representation of an array of integers.
      * 
      * @param objs the integer values to be converted
      * @return a string of the form <code>[i1, ..., in]</code>
      */
     public static String toString(final int[] objs) {
-        String result = "";
+        final StringBuffer result = new StringBuffer();
         for (int i = 0; i < objs.length; i++) {
-            if (result != "") {
-                result += "," + Integer.toString(objs[i]);
+            if (result.length() != 0) {
+                result.append("," + Integer.toString(objs[i]));
             } else {
-                result += Integer.toString(objs[i]);
+                result.append(Integer.toString(objs[i]));
             }
         }
-        result = "[" + result + "]";
-        return result;
+        return "[" + result.toString() + "]";
     }
 
     /**
@@ -238,7 +245,7 @@ public final class Debug {
                 break;
             }
 
-            final String nextElement = new Integer(rowNum).toString() + ":" + str;
+            final String nextElement = Integer.toString(rowNum) + ":" + str;
             if (result.length() == 0) {
                 result = nextElement;
             } else {
