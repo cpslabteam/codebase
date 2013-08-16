@@ -3,6 +3,9 @@
  */
 package codebase;
 
+import java.io.IOException;
+import java.io.OutputStream;
+import java.io.PrintStream;
 import java.util.Iterator;
 
 import codebase.binary.Binary;
@@ -10,94 +13,55 @@ import codebase.binary.Binary;
 /**
  * Utility class for debugging and logging.
  * <p>
- * This class encapsulates several debugging utilities that can be used for diagnosing
- * purposes while testing
+ * Encapsulates utilities to dump the contents of objects for debugging, diagnosis and
+ * testing. The utilities include:
+ * <ol>
+ * <li>Printing the contents of objects or iterators to the console</li>
+ * <li>Dumping the contents of objects or iterators to the output stream</li>
+ * <li>Converting arrays of objects to string</li>
+ * </ol>
  */
 public final class Debug {
 
     /**
-     * Prevent instantiation.
+     * Default string encoding.
      */
-    private Debug() {
-    }
+    private static final String DEFAULT_STRING_ENCODING = "UTF-8";
 
     /**
-     * Obtains the string dump of an object taking care of nulls and arrays.
-     * <p>
-     * This method is specially useful when a class cast exception occurs because it gives
-     * us the class for the object and its contents. It handles iterators and arrays of
-     * objects.
-     * 
-     * @param o the object to be dumped
-     * @return the type of the object and its contents
-     */
-    public static String toStringDump(final Object o) {
-        final String result;
-        if (o == null) {
-            result = "null";
-        } else {
-            result = o.getClass().toString() + ":" + toString(o);
-        }
-
-        return result;
-    }
-
-    /**
-     * Create a string with a binary dump.
-     * 
-     * @param buffer the byte buffer
-     * @return a line in the format XXXX HHHHHHHHH where X is a character and HH is its
-     *         corresponding hex code.
-     */
-    public static String toBinaryStringDump(final byte[] buffer) {
-        final String result = Format.visibleAsciiString(new String(buffer), '.') + "  "
-                + Binary.toHexString(buffer);
-        return result;
-    }
-
-    /**
-     * Create a multi-line string with a binary dump.
-     * 
-     * @param buffer the byte buffer
-     * @param segmentSize the number of bytes of the buffer to be dumped on each line
-     * @return XXXX HHHHHHHHH\n ... XXXX HHHHHHHHH here X is a character and HH is its
-     *         corresponding hex code.
-     * @see #toBinaryStringDump(byte[])
-     */
-    public static String toBinaryStringMultiLineDump(final byte[] buffer, final int segmentSize) {
-        final StringBuffer result = new StringBuffer();
-        int i = 0;
-        for (; i + segmentSize <= buffer.length; i += segmentSize) {
-            final byte[] segment = new byte[segmentSize];
-            System.arraycopy(buffer, i, segment, 0, segmentSize);
-            result.append(toBinaryStringDump(segment) + "\n");
-        }
-
-        if (i < buffer.length) {
-            final int remaining = buffer.length - i;
-            final byte[] segment = new byte[remaining];
-            System.arraycopy(buffer, i, segment, 0, remaining);
-            result.append(toBinaryStringDump(segment) + "\n");
-        }
-
-        return result.toString();
-    }
-
-    /**
-     * Prints a the contents of an iterator
+     * Prints a the contents of an iterator to the console.
      * <p>
      * Calling the <code>toString()</code> of all objects returned by the iterator.
      * 
-     * @param i is the cursor to be analyzed
-     * @throws IllegalStateException is an exception in
+     * @param i is the iterator to be exhausted
+     * @throws IllegalStateException is an exception occurs while exhausting the iterator
      */
-    public static void print(final Iterator<String> i) {
-        System.out.println("---ITERATOR STARTING---");
-        System.out.flush();
+    public static void dump(final Iterator<?> i) {
+        try {
+            Debug.dump(i, System.out);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Prints the contents of an iterator to the specified output stream.
+     * <p>
+     * Each element returned by the iterator is dumped preceded by the line number by
+     * calling the <code>toString()</code> of all objects returned by the iterator.
+     * 
+     * @param i is the cursor to be analyzed
+     * @param out the output stream to write the dump of each element
+     * @throws IOException if an exception occurs while writing on the output stream
+     * @throws IllegalStateException is an exception occurs while exhausting the iterator.
+     */
+    public static void dump(final Iterator<?> i, PrintStream out) throws IOException {
+        out.println("---ITERATOR STARTING---");
+        out.flush();
 
         int rowNum = 0;
         if (!i.hasNext()) {
-            System.out.println("The iterator is empty.");
+            out.println("The iterator is empty.");
         }
         while (i.hasNext()) {
             Object o = null;
@@ -115,105 +79,201 @@ public final class Debug {
                         + e.toString());
             }
 
-            System.out.println(Integer.toString(rowNum) + ":" + str);
-            System.out.flush();
+            out.println(Integer.toString(rowNum) + ":" + str);
+            out.flush();
             rowNum++;
         }
-        System.out.println("---ITERATOR ENDED---");
-        System.out.flush();
+        out.println("---ITERATOR ENDED---");
+        out.flush();
     }
 
     /**
-     * Prints an object to the console by calling {@link Debug#toString(Object)}.
+     * Prints the dump of an object to the console by calling
+     * {@link Debug#toString(Object)}.
      * 
      * @param o the object to be dumped
      */
-    public static void print(final Object o) {
-        System.out.println(toString(o));
+    public static void dump(final Object o) {
+        try {
+            Debug.dump(o, System.out);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Dumps an object to a stream the console by calling {@link Debug#toString(Object)}.
+     * 
+     * @param o the object to be dumped
+     * @param out the output stream to write the object
+     * @throws IOException if an exception occurs while writing on the output stream
+     */
+    public static void dump(final Object o, final OutputStream out) throws IOException {
+        out.write(Debug.toString(o).getBytes(DEFAULT_STRING_ENCODING));
+        out.flush();
         System.out.flush();
     }
 
     /**
-     * Prints an integer.
+     * Prints an object[] to the console by calling {@link Debug#toString(Object[])}.
      * 
-     * @param i the integer to dumped
+     * @param objs the object array to be dumped
      */
-    public static void print(final int i) {
-        print(Integer.toString(i));
+    public static void dump(final Object[] objs) {
+        try {
+            Debug.dump(objs, System.out);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
-     * Prints a long.
+     * Dumps an object[] to a stream by calling {@link Debug#toString(Object[])}.
      * 
-     * @param l the long to be dumped
+     * @param objs the objects to be dumped
+     * @param out the output stream to write the object
+     * @throws IOException if an exception occurs while writing on the output stream
      */
-    public static void print(final long l) {
-        print(Long.toString(l));
+    public static void dump(final Object[] objs, OutputStream out) throws IOException {
+        out.write(toString(objs).getBytes(DEFAULT_STRING_ENCODING));
+        out.flush();
     }
 
     /**
-     * Obtains a string that represents an object.
+     * Prints the binary dump of a byte[] buffer to the standard output by calling
+     * {@link #toHexStringDump(byte[])}.
+     * 
+     * @param buffer the buffer to be dumped
+     */
+    public static void dumpToHexString(final byte[] buffer) {
+        try {
+            Debug.dumpToHexString(buffer, System.out);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Prints the binary dump of a byte[] buffer <i>in multiple lines</i> to the standard
+     * output by calling {@link #toHexStringDump(byte[], int)}.
+     * 
+     * @param buffer the buffer to be dumped
+     * @param size the number of bytes to be dumped from the buffer on each line.
+     */
+    public static void dumpToHexString(final byte[] buffer, final int size) {
+        try {
+            Debug.dumpToHexString(buffer, System.out, size);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Dumps the binary dump of a byte[] buffer to the given output stream by calling
+     * {@link #toHexStringDump(byte[])}.
      * <p>
-     * Handles <code>null</code> and object arrays correctly.
+     * The object will be dumped according to the format of
+     * {@link #dumpToHexString(byte[])}.
      * 
-     * @param o Object to print as a string
-     * @return the string representation of the object
+     * @param buffer the object to be dumped
+     * @param out the output stream to write the buffer to
+     * @throws IOException if an exception occurs while writing on the output stream
+     * @see #toHexString(Object)
      */
-    public static String toString(final Object o) {
-        String result = "";
-        if (o == null) {
-            result = "null";
-        } else {
-            if (o instanceof Object[]) {
-                result = toString((Object[]) o);
-            } else if (o instanceof int[]) {
-                result = toString((int[]) o);
-            } else if (o instanceof String) {
-                result = "'" + o.toString() + "'";
-            } else {
+    public static void dumpToHexString(final byte[] buffer, final OutputStream out) throws IOException {
+        out.write(toHexStringDump(buffer).getBytes(DEFAULT_STRING_ENCODING));
+        out.flush();
+    }
 
-                result = o.toString();
-            }
+    /**
+     * Dumps the binary dump of a byte[] buffer to the given output stream by calling
+     * {@link #toHexStringDump(byte[], int)}.
+     * <p>
+     * The object will be dumped according to the format of
+     * {@link #dumpToHexString(byte[])}.
+     * 
+     * @param buffer the object to be dumped
+     * @param out the output stream to write the buffer to
+     * @param size the size of each segment (in bytes) to take from the buffer
+     * @throws IOException if an exception occurs while writing on the output stream
+     * @see #toHexString(Object)
+     */
+    public static void dumpToHexString(final byte[] buffer, final OutputStream out, final int size) throws IOException {
+        out.write(toHexStringDump(buffer, size).getBytes(DEFAULT_STRING_ENCODING));
+        out.flush();
+    }
+
+    /**
+     * Prints the dump of an object along with its class type to the standard output by
+     * calling {@link #toStringWithClass(Object)}.
+     * 
+     * @param o the object to be dumped
+     */
+    public static void dumpWithClass(final Object o) {
+        try {
+            Debug.dumpWithClass(o, System.out);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
+    }
+
+    /**
+     * Dumps an object along with its class type to a given output stream by calling
+     * {@link #toStringWithClass(Object)}.
+     * <p>
+     * The object will be dumped according to the format of
+     * {@link #dumpWithClass(Object, OutputStream)}. The string is converted into a byte[]
+     * using ' UTF-8' encoding.
+     * 
+     * @param o the object to be dumped
+     * @param out the output stream to write the object
+     * @throws IOException if an exception occurs while writing on the output stream
+     * @see #toStringWithClass(Object)
+     */
+    public static void dumpWithClass(final Object o, final OutputStream out) throws IOException {
+        out.write(toStringWithClass(o).getBytes(DEFAULT_STRING_ENCODING));
+        out.flush();
+    }
+
+    /**
+     * Create a string with a binary dump.
+     * 
+     * @param buffer the byte buffer
+     * @return a line in the format <code>XXXX HHHHHHHHH</code> where <code>X</code> is a
+     *         character and <code>HH</code> is its corresponding hex code.
+     */
+    public static String toHexStringDump(final byte[] buffer) {
+        final String result = Format.visibleAsciiString(new String(buffer), '.') + "  "
+                + Binary.toHexString(buffer);
         return result;
-
     }
 
     /**
-     * Obtains the string representation of an array of objects.
+     * Create a multi-line string with a binary dump.
      * 
-     * @param objs the objects array to be converted
-     * @return a string of the form <code>[o1, ..., on]</code>
+     * @param buffer the byte buffer
+     * @param size the number of bytes of the buffer to be dumped on each line
+     * @return a line in the format <code>XXXX HHHHHHHHH\n ... XXXX HHHHHHHHH</code> here
+     *         <code>X</code> is a character and <code>HH</code> is its corresponding hex code.
+     * @see #toHexStringDump(byte[])
      */
-    public static String toString(final Object[] objs) {
+    public static String toHexStringDump(final byte[] buffer, final int size) {
         final StringBuffer result = new StringBuffer();
-        for (int i = 0; i < objs.length; i++) {
-            if (result.length() != 0) {
-                result.append("," + toString(objs[i]));
-            } else {
-                result.append(toString(objs[i]));
-            }
+        int i = 0;
+        for (; i + size <= buffer.length; i += size) {
+            final byte[] segment = new byte[size];
+            System.arraycopy(buffer, i, segment, 0, size);
+            result.append(toHexStringDump(segment) + "\n");
         }
 
-        return "[" + result.toString() + "]";
-    }
-
-    /**
-     * Obtains the string representation of an array of integers.
-     * 
-     * @param objs the integer values to be converted
-     * @return a string of the form <code>[i1, ..., in]</code>
-     */
-    public static String toString(final int[] objs) {
-        final StringBuffer result = new StringBuffer();
-        for (int i = 0; i < objs.length; i++) {
-            if (result.length() != 0) {
-                result.append("," + Integer.toString(objs[i]));
-            } else {
-                result.append(Integer.toString(objs[i]));
-            }
+        if (i < buffer.length) {
+            final int remaining = buffer.length - i;
+            final byte[] segment = new byte[remaining];
+            System.arraycopy(buffer, i, segment, 0, remaining);
+            result.append(toHexStringDump(segment) + "\n");
         }
-        return "[" + result.toString() + "]";
+
+        return result.toString();
     }
 
     /**
@@ -255,5 +315,85 @@ public final class Debug {
             rowNum += 1;
         }
         return "<" + result + ">";
+    }
+
+    /**
+     * Obtains a string that represents an object.
+     * <p>
+     * An <code>null</code> reference is translated <code>null</code>, a String object to
+     * <code>'object'</code> and and object array to <code>[o1,...,on]</code>.
+     * 
+     * @param o Object to print as a string
+     * @return the string representation of the object
+     */
+    public static String toString(final Object o) {
+        String result = "";
+        if (o == null) {
+            result = "null";
+        } else {
+            if (o instanceof Object[]) {
+                result = toString((Object[]) o);
+            } else if (o instanceof byte[]) {
+                result = Arrays.toString((byte[]) o);
+            } else if (o instanceof int[]) {
+                result = Arrays.toString((int[]) o);
+            } else if (o instanceof long[]) {
+                result = Arrays.toString((long[]) o);
+            } else if (o instanceof String) {
+                result = "'" + o.toString() + "'";
+            } else {
+                result = o.toString();
+            }
+        }
+        return result;
+
+    }
+
+    /**
+     * Obtains the string representation of an array of objects.
+     * 
+     * @param objs the objects array to be converted
+     * @return a string of the form <code>[o1, ..., on]</code>
+     */
+    public static String toString(final Object[] objs) {
+        final StringBuffer result = new StringBuffer();
+        for (int i = 0; i < objs.length; i++) {
+            if (result.length() != 0) {
+                result.append("," + toString(objs[i]));
+            } else {
+                result.append(toString(objs[i]));
+            }
+        }
+
+        return "[" + result.toString() + "]";
+    }
+
+    /**
+     * Obtains the string dump of an object along with its class type.
+     * <p>
+     * This method is specially useful when a class cast exception occurs because it gives
+     * us the class for the object and its contents. It handles iterators and arrays of
+     * objects.
+     * 
+     * @param o the object to be dumped
+     * @return a string in the form <code><i>c</i>:<i>o</i></code> where
+     *         <code><i>c</i></code> is the class type and <code><i>o</i></code> is the
+     *         object dump.
+     */
+    public static String toStringWithClass(final Object o) {
+        final String result;
+        if (o == null) {
+            result = "null";
+        } else {
+            result = o.getClass().toString() + ":" + Debug.toString(o);
+        }
+
+        return result;
+    }
+
+    /**
+     * Prevent instantiation.
+     */
+    private Debug() {
     }
 }
