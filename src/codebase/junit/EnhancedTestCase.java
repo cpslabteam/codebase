@@ -66,12 +66,18 @@ public class EnhancedTestCase extends
         /**
          * Checks if are equal to another object. It compares the underling base elements
          * but not through the java equals() method instead is uses the Debug.equals()
-         * method wich is capable of handeling arrays.
+         * method which is capable of handeling arrays.
          * 
          * @param o another entry to compare to
          * @return <code>true</code> if the underling base elements have the same content.
          */
         public boolean equals(final Object o) {
+            if (o == null)
+                return false;
+
+            if (!(o instanceof RefObject))
+                return false;
+
             final RefObject entry = (RefObject) o;
             return Arrays.isEqualArrayDeep(entry.baseElem, baseElem);
         }
@@ -120,8 +126,8 @@ public class EnhancedTestCase extends
         public String toString() {
             final String elementRepr = Debug.toString(baseElem);
             return "Element <" + elementRepr + "> expected <"
-                    + new Integer(expectedRefCount).toString() + "> times; seen <"
-                    + new Integer(actualRefCount) + "> times.";
+                    + Integer.valueOf(expectedRefCount).toString() + "> times; seen <"
+                    + Integer.valueOf(actualRefCount) + "> times.";
         }
     }
 
@@ -251,6 +257,18 @@ public class EnhancedTestCase extends
                     + safeChar(actual) + "> (" + (int) actual + ", 0x" + Binary.toHex(actual)
                     + ").");
         }
+    }
+
+    /**
+     * Checks that two arrays of bytes are equal.
+     * 
+     * @param expected the expected byte array
+     * @param actual the result against which the expected is to be checked
+     */
+    public static final void assertEquals(final byte[] expected, final byte[] actual) {
+        performBaseNullChecks(expected, actual);
+        performArrayEmptyChecks(Arrays.toByteArray(expected), Arrays.toByteArray(actual));
+        performArrayComparison(Arrays.toByteArray(expected), Arrays.toByteArray(actual));
     }
 
     /**
@@ -676,13 +694,14 @@ public class EnhancedTestCase extends
                     + Debug.toString(actual) + ">. Expecting the singleton element <"
                     + Debug.toString(expected) + ">.");
         }
+
         final Object result = actual[0];
         if ((result == null) && (expected != null)) {
             throw new junit.framework.AssertionFailedError(
                     "The function returned one null value. Expecting the singleton element <"
                             + Debug.toString(expected) + ">.");
         }
-        if (!result.equals(expected)) {
+        if (result != null && !result.equals(expected)) {
             throw new junit.framework.AssertionFailedError("The function returned value <"
                     + Debug.toString(result) + "> differs from the expected value <"
                     + Debug.toString(expected) + ">.");
