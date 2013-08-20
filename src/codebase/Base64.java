@@ -377,20 +377,15 @@ public final class Base64 {
         }
 
         /**
-         * Flushes and closes (I think, in the superclass) the stream.
+         * Flushes the base64 output buffer of the output stream.
          * 
          * @throws IOException if the output stream throws an exception while flushing or
          *             closing
          */
-        public void close() throws IOException {
-            // 1. Ensure that pending characters are written
+        @Override
+        public void flush() throws IOException {
             flushBase64();
-
-            // 2. Actually close the stream
-            // Base class both flushes and closes.
-            super.close();
-
-            java.util.Arrays.fill(inputBuffer, (byte) 0);
+            super.flush();
         }
 
         /**
@@ -399,7 +394,7 @@ public final class Base64 {
          * @throws IOException if the output stream throws an exception while writing the
          *             pad bytes.
          */
-        public void flushBase64() throws IOException {
+        private void flushBase64() throws IOException {
             if (currentPosition > 0) {
                 if (encode) {
                     out.write(encode3to4(inputBuffer, outputBuffer, currentPosition, options));
@@ -487,7 +482,7 @@ public final class Base64 {
                     currentPosition = 0;
                 }
             }
-            // Else, Decoding
+            // Else, we are decoding
             else {
                 // Meaningful Base64 character?
                 if (decodabet[b & UNSIGNED_BYTE_MASK] > WHITE_SPACE_ENC) {
