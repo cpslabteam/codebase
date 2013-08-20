@@ -1,5 +1,6 @@
 package codebase;
 
+import java.io.UnsupportedEncodingException;
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 import java.security.GeneralSecurityException;
@@ -14,7 +15,7 @@ import javax.crypto.spec.SecretKeySpec;
 /**
  * Utility class that simplifies AES cyphering and decyphering operations.
  */
-public final class AesUtil {
+public final class AESUtil {
 
     /**
      * Default padding for small messages.
@@ -29,22 +30,21 @@ public final class AesUtil {
     /**
      * Prevent the instantiation of this utility class.
      */
-    private AesUtil() {
+    private AESUtil() {
     }
 
     /**
-     * Pads a byte array with nulls so that its length is a multiple of a given length.
+     * Pads a byte array with nulls so that its length is a multiple of the AES block.
      * 
      * @param bytes the bytes to be padded
-     * @param lengthMultiple the length multiple
      * @return the byte[] padded in null bytes
      */
-    private static byte[] padWithNulls(byte[] bytes, int lengthMultiple) {
-        int r = bytes.length % lengthMultiple;
+    public static byte[] padBuffer(byte[] bytes) {
+        int r = bytes.length % AES_DEFAULT_PADDING;
         if (r == 0) {
             return bytes;
         } else {
-            int newLength = bytes.length + (lengthMultiple - r);
+            int newLength = bytes.length + (AES_DEFAULT_PADDING - r);
             return Arrays.copyOf(bytes, newLength);
         }
     }
@@ -74,10 +74,10 @@ public final class AesUtil {
     /**
      * Encrypts text with the given key.
      * <p>
-     * The text is converted to UTF-8 before being encrypted. The result is returned in
-     * Base64 encoding.
+     * The text is converted to UTF-8 and padded with zeroes to meet the AES block
+     * standard before being encrypted. The result is returned in Base64 encoding.
      * 
-     * @param key AES key
+     * @param key the AES key
      * @param iv the initialization vector
      * @param plaintext The text to encrypt.
      * @return encrypted data in Base64 encoding.
@@ -91,11 +91,14 @@ public final class AesUtil {
         final Cipher cipher = Cipher.getInstance("AES/CBC/NoPadding");
         cipher.init(Cipher.ENCRYPT_MODE, key, iv);
 
-        final byte[] inputBytes = Charset.forName(DEFAULT_STRING_ENCODING).encode(plaintext)
-                .array();
-        final byte[] outputBytes = cipher.doFinal(padWithNulls(inputBytes, AES_DEFAULT_PADDING));
+        try {
+            final byte[] inputBytes = plaintext.getBytes(DEFAULT_STRING_ENCODING);
+            final byte[] outputBytes = cipher.doFinal(padBuffer(inputBytes));
 
-        return Base64.encode(outputBytes);
+            return Base64.encode(outputBytes);
+        } catch (UnsupportedEncodingException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     /**
@@ -104,17 +107,17 @@ public final class AesUtil {
      * @param key AES key
      * @param iv the iv
      * @param cyphertext encrypted data in Base64 encoding.
-     * @return The decyphered text
+     * @return the decyphered text
      * @throws GeneralSecurityException the general security exception
      */
     public static String decypherText(Key key, IvParameterSpec iv, String cyphertext) throws GeneralSecurityException {
         final Cipher cipher = Cipher.getInstance("AES/CBC/NoPadding");
         cipher.init(Cipher.DECRYPT_MODE, key, iv);
 
-        byte[] inputBytes = Base64.decode(cyphertext);
-        byte[] outputBytes = cipher.doFinal(inputBytes);
+        final byte[] inputBytes = Base64.decode(cyphertext);
+        final byte[] outputBytes = cipher.doFinal(inputBytes);
 
-        ByteBuffer bb = ByteBuffer.wrap(outputBytes);
+        final ByteBuffer bb = ByteBuffer.wrap(outputBytes);
         return Charset.forName(DEFAULT_STRING_ENCODING).decode(bb).toString();
     }
 

@@ -8,7 +8,9 @@ public class AllTests {
     public static Test suite() {
         TestSuite suite = new TestSuite(AllTests.class.getName());
         //$JUnit-BEGIN$
+        suite.addTestSuite(TestAesUtil.class);
         suite.addTestSuite(TestConversions.class);
+        suite.addTestSuite(TestBase64.class);
         suite.addTestSuite(TestString.class);
         suite.addTestSuite(TestMath.class);
         suite.addTestSuite(TestMD5.class);

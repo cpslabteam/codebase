@@ -1,19 +1,38 @@
 package codebase;
 
+import java.io.UnsupportedEncodingException;
 import java.security.GeneralSecurityException;
 
-import javax.crypto.KeyGenerator;
-import javax.crypto.SecretKey;
+import codebase.junit.EnhancedTestCase;
 
 import junit.framework.TestCase;
 
+/**
+ * Tests the {@link AESUtil} utility class.
+ */
 public class TestAesUtil extends
         TestCase {
 
+    /**
+     * A key with the correct size.
+     */
+    private static final byte[] KEY_VALUE = new byte[] { 'T', 'h', 'i', 's', 'I', 's', 'A', 'S',
+            'e', 'c', 'r', 'e', 't', 'K', 'e', 'y' };
+
+    /**
+     * An initialization vector with the correct size.
+     */
+    private static final byte[] IV_VALUE = new byte[] { '1', '2', '3', '4', '5', '6', '7', '8',
+            '9', '0', '1', '2', '3', '4', '5', '6' };
+
+    /**
+     * Test strings.
+     */
     private static final String[] TEST_STRINGS = new String[] {
             "",
             "1",
-            "Hello World",
+            "1234567890",
+            "Hello World!",
             "At vero eos et accusamus et iusto odio dignissimos ducimus qui "
                     + "blanditiis praesentium voluptatum deleniti atque corrupti quos "
                     + "dolores et quas molestias excepturi sint occaecati cupiditate non "
@@ -28,24 +47,25 @@ public class TestAesUtil extends
                     + " reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus "
                     + "asperiores repellat" };
 
-    public void testCryptDecrypt() throws GeneralSecurityException {
-        KeyGenerator kgen = KeyGenerator.getInstance("AES");
-        kgen.init(128);
-        SecretKey aesKey = kgen.generateKey();
-
+    /**
+     * Test that cyphered messages are correctly decyphered.
+     * <p>
+     * Cyphers a messages, then decyphers it and compares it padded because the AES
+     * algorithm forces padding to a certaing block size.
+     */
+    public void testCryptDecrypt() throws GeneralSecurityException, UnsupportedEncodingException {
         for (String s : TEST_STRINGS) {
             // Cypher
-            final String cypheredText = AesUtil.cypherText(
-                    AesUtil.getKey(aesKey.toString().getBytes()),
-                    AesUtil.getIv(aesKey.getEncoded()), s);
+            final String cypheredText = AESUtil.cypherText(AESUtil.getKey(KEY_VALUE),
+                    AESUtil.getIv(IV_VALUE), s);
 
             // Decypher
-            final String decypheredText = AesUtil.decypherText(
-                    AesUtil.getKey(aesKey.toString().getBytes()),
-                    AesUtil.getIv(aesKey.getEncoded()), cypheredText);
-            
-            // Check that decyphering the cyphered text is the original
-            assertEquals(s, decypheredText);
+            final String decypheredText = AESUtil.decypherText(AESUtil.getKey(KEY_VALUE),
+                    AESUtil.getIv(IV_VALUE), cypheredText);
+
+            // Check that decyphering the cyphered text is the original after padding
+            EnhancedTestCase.assertEquals(AESUtil.padBuffer(s.getBytes("UTF-8")),
+                    decypheredText.getBytes("UTF-8"));
         }
     }
 }
