@@ -8,13 +8,13 @@ import java.lang.reflect.Array;
 /**
  * Utility class for arrays.
  * <p>
- * This class implements various operations for manipulating arrays of primitive
- * types that are not present in {@link java.util.Arrays} as well as some
- * operations with <tt>Object[]</tt>.
+ * This class implements various operations for manipulating arrays of primitive types
+ * that are not present in {@link java.util.Arrays} as well as some operations with
+ * <tt>Object[]</tt>.
  * <p>
- * The operations include adding elements, cloning, copying, appending,
- * intersecting and other utilities such as flattening on an array and repeating
- * by replication of a value of by a enumeration of a range of values.
+ * The operations include adding elements, cloning, copying, appending, intersecting and
+ * other utilities such as flattening on an array and repeating by replication of a value
+ * of by a enumeration of a range of values.
  */
 public final class Arrays {
 
@@ -27,16 +27,16 @@ public final class Arrays {
     /**
      * Adds a new integer to a set of integers represented as an array.
      * <p>
-     * This operation implements a set semantics, i.e. it checks to see if the
-     * element already exists, if so it does not add the element
+     * This operation implements a set semantics, i.e. it checks to see if the element
+     * already exists, if so it does not add the element
      * 
      * @param set the set of integer values
      * @param i the new integer element
-     * @return a new array with all the elements of the given set plus the new
-     *         integer value if <code>i</code> is not contained in
-     *         <code>set</code> or, the given set if <code>i</code> is contained
-     *         in <code>set</code>. If the set is <code>null</code> then a
-     *         singleton set containing <code>i</code> is returned.
+     * @return a new array with all the elements of the given set plus the new integer
+     *         value if <code>i</code> is not contained in <code>set</code> or, the given
+     *         set if <code>i</code> is contained in <code>set</code>. If the set is
+     *         <code>null</code> then a singleton set containing <code>i</code> is
+     *         returned.
      */
     public static int[] add(final int[] set, final int i) {
         if (set == null) {
@@ -57,16 +57,16 @@ public final class Arrays {
     /**
      * Adds a new long to a set of longs represented as an array.
      * <p>
-     * This operation implements a set semantics, i.e. it checks to see if the
-     * element already exists, if so
+     * This operation implements a set semantics, i.e. it checks to see if the element
+     * already exists, if so
      * 
      * @param set the set of longs
      * @param i the new long element
-     * @return a new array with all the elements of the given set plus the new
-     *         long value if <code>i</code> is not contained in <code>set</code>
-     *         or, the given set if <code>i</code> is contained in
-     *         <code>set</code>. If the set is <code>null</code> then a
-     *         singleton set containing <code>i</code> is returned.
+     * @return a new array with all the elements of the given set plus the new long value
+     *         if <code>i</code> is not contained in <code>set</code> or, the given set if
+     *         <code>i</code> is contained in <code>set</code>. If the set is
+     *         <code>null</code> then a singleton set containing <code>i</code> is
+     *         returned.
      */
     public static long[] add(final long[] set, final long i) {
         if (set == null) {
@@ -88,13 +88,13 @@ public final class Arrays {
      * Appends an object array with another.
      * <p>
      * This is an efficient implementation that uses
-     * {@link System#arraycopy(java.lang.Object, int, java.lang.Object, int, int)}
-     * in its implementation.
+     * {@link System#arraycopy(java.lang.Object, int, java.lang.Object, int, int)} in its
+     * implementation.
      * 
      * @param leftArray the left hand array
      * @param rightArray the right hand array
-     * @return a array composed of the the left hand array elements followed by
-     *         the elements of the right hand array
+     * @return a array composed of the the left hand array elements followed by the
+     *         elements of the right hand array
      */
     public static Object[] append(Object[] leftArray, Object[] rightArray) {
         final Object[] result = new Object[leftArray.length + rightArray.length];
@@ -108,8 +108,8 @@ public final class Arrays {
      * 
      * @param left the left hand side array
      * @param right the right hand array.
-     * @return an array filled with all elements of the left array followed by
-     *         the elements of the right array.
+     * @return an array filled with all elements of the left array followed by the
+     *         elements of the right array.
      */
     public static byte[] append(final byte[] left, final byte[] right) {
         final byte[] z = new byte[left.length + right.length];
@@ -125,11 +125,13 @@ public final class Arrays {
      * @param right the right hand array
      * @param rightStart the right position to start
      * @param length the length of the segment to copy
-     * @return an array filled with all elements of the left array followed by
-     *         the elements of the right array.
+     * @return an array filled with all elements of the left array followed by the
+     *         elements of the right array.
      */
-    public static byte[] append(final byte[] left, final byte[] right,
-            final int rightStart, final int length) {
+    public static byte[] append(final byte[] left,
+                                final byte[] right,
+                                final int rightStart,
+                                final int length) {
         final byte[] target = new byte[left.length + length];
         System.arraycopy(left, 0, target, 0, left.length);
         System.arraycopy(right, rightStart, target, left.length, length);
@@ -143,8 +145,7 @@ public final class Arrays {
      * @param max the maximum limit
      * @param min the minimum
      * @return <code>true</code> if for every element <i>e</i> of the array
-     *         <code>min<=<i>e</i><=max</code>. Returns <code>false</code>
-     *         otherwise.
+     *         <code>min<=<i>e</i><=max</code>. Returns <code>false</code> otherwise.
      */
     public static boolean inBounds(final int[] array, final int min, final int max) {
         for (int i = 0; i < array.length; i++) {
@@ -161,9 +162,9 @@ public final class Arrays {
      * 
      * @param what the first parameter to be compared
      * @param to the seconds parameter to be compared
-     * @return <code>true</code> if the arrays are the same, both
-     *         <code>null</code> or the elements compare to true using the
-     *         method {@link Object#equals(java.lang.Object)}
+     * @return <code>true</code> if the arrays are the same, both <code>null</code> or the
+     *         elements compare to true using the method
+     *         {@link Object#equals(java.lang.Object)}
      */
     public static boolean equals(final Object[] what, final Object[] to) {
         /*
@@ -261,14 +262,15 @@ public final class Arrays {
     /**
      * Fills an segment of an array with a predefined value.
      * 
-     * @param value is the value (an Object) that will be replicated to fill the
-     *            array
+     * @param value is the value (an Object) that will be replicated to fill the array
      * @param startIndex index where the replication should start
      * @param length number of elements to replicate
      * @param array is the array that will receive the elements
      */
-    public static void fill(final Object value, final int startIndex, final int length,
-            final Object[] array) {
+    public static void fill(final Object value,
+                            final int startIndex,
+                            final int length,
+                            final Object[] array) {
         for (int i = startIndex; i < startIndex + length; i++) {
             array[i] = value;
         }
@@ -278,8 +280,8 @@ public final class Arrays {
      * Fills an array with an object value.
      * 
      * @param array is the array that will receive the elements
-     * @param value is the value (an Object) whose reference will be replicated
-     *            to fill the array
+     * @param value is the value (an Object) whose reference will be replicated to fill
+     *            the array
      */
     public static void fill(final Object[] array, final Object value) {
         fill(value, 0, array.length, array);
@@ -290,11 +292,10 @@ public final class Arrays {
      * Converts flattens an object array.
      * <p>
      * 
-     * @param o the object to flattened, a simple object or a Object[] with
-     *            nested Object[].
-     * @return a simple <code>[o]</code> if <code>o</code> is not an array; or
-     *         an array <code>[o1,o2,...]</code> if <code>o</code> is an object
-     *         array.
+     * @param o the object to flattened, a simple object or a Object[] with nested
+     *            Object[].
+     * @return a simple <code>[o]</code> if <code>o</code> is not an array; or an array
+     *         <code>[o1,o2,...]</code> if <code>o</code> is an object array.
      */
     public static Object[] flatten(final Object o) {
 
@@ -318,8 +319,7 @@ public final class Arrays {
      * It searches for each element of the set in the universe.
      * <p>
      * <b>Note: </b> This method is not symmetric in the sense that, for example
-     * <code>{1} - {0,1,2} = {}</code> and not <code>{0,2}</code> as one could
-     * expect.
+     * <code>{1} - {0,1,2} = {}</code> and not <code>{0,2}</code> as one could expect.
      * 
      * @param s the set to be complemented
      * @param t the set of integers the represents the universe
@@ -339,15 +339,13 @@ public final class Arrays {
     /**
      * Removes an element from a set of integers.
      * <p>
-     * It searches for each element of the set in the universe and the removes
-     * it.
+     * It searches for each element of the set in the universe and the removes it.
      * <p>
      * 
      * @param s the set where the element will be searched
      * @param elem the element to be searched
-     * @return a reference to a copy of the s without all the ocurrences of the
-     *         element if elem was found. If elem was not found returns a copy
-     *         of s.
+     * @return a reference to a copy of the s without all the ocurrences of the element if
+     *         elem was found. If elem was not found returns a copy of s.
      */
     public static int[] remove(final int elem, final int[] s) {
         int[] result = new int[] {};
@@ -362,14 +360,12 @@ public final class Arrays {
     /**
      * Removes an element from a set of integers.
      * <p>
-     * It searches for each element of the set in the universe and the removes
-     * it.
+     * It searches for each element of the set in the universe and the removes it.
      * 
      * @param s the set where the element will be searched
      * @param elem the element to be searched
-     * @return a reference to a copy of the s without all the ocurrences of the
-     *         element if elem was found. If elem was not found returns a copy
-     *         of s.
+     * @return a reference to a copy of the s without all the ocurrences of the element if
+     *         elem was found. If elem was not found returns a copy of s.
      */
     public static long[] remove(final long elem, final long[] s) {
         long[] result = new long[] {};
@@ -405,8 +401,7 @@ public final class Arrays {
      * 
      * @param left the left hand object
      * @param right the right hand object
-     * @return true if the objects are equal and their array elements are equal
-     *         as well.
+     * @return true if the objects are equal and their array elements are equal as well.
      */
     public static boolean isEqualArrayDeep(final Object left, final Object right) {
         if ((left instanceof Object[]) && (right instanceof Object[])) {
@@ -436,13 +431,13 @@ public final class Arrays {
     }
 
     /**
-     * Returns all integers <i>i </i> such that <code>begin</code> &leq; <i>i
-     * </i>&lt; <code>end</code>.
+     * Returns all integers <i>i </i> such that <code>begin</code> &leq; <i>i </i>&lt;
+     * <code>end</code>.
      * 
      * @param begin starting value of the enumeration
      * @param end limit value of the enumeration (exclusive)
-     * @return all the integers within an interval Note: begin must be less or
-     *         equal than end
+     * @return all the integers within an interval Note: begin must be less or equal than
+     *         end
      */
     public static int[] enumeration(final int begin, final int end) {
         if (begin > end) {
@@ -457,16 +452,15 @@ public final class Arrays {
     }
 
     /**
-     * Copies all objects of one array into another array, starting at a
-     * specified position.
+     * Copies all objects of one array into another array, starting at a specified
+     * position.
      * 
      * @param fromArray array to read the elements from
      * @param toArray an array to write the elements to
-     * @param toStartIndex index of the target array where elements should start
-     *            to be written.
+     * @param toStartIndex index of the target array where elements should start to be
+     *            written.
      */
-    public static void copy(final Object[] fromArray, final Object[] toArray,
-            final int toStartIndex) {
+    public static void copy(final Object[] fromArray, final Object[] toArray, final int toStartIndex) {
         copy(fromArray, 0, toArray, toStartIndex, toArray.length - (1 + toStartIndex));
     }
 
@@ -486,8 +480,8 @@ public final class Arrays {
      * @param array the array with the segment to be cloned
      * @param start the initial position of the segment
      * @param length the lenght of the segment to be cloned
-     * @return a new byte array filled with the elements corresponding to the
-     *         specified segment
+     * @return a new byte array filled with the elements corresponding to the specified
+     *         segment
      */
     public static byte[] clone(final byte[] array, final int start, final int length) {
         final byte[] result = new byte[length];
@@ -504,8 +498,11 @@ public final class Arrays {
      * @param to the target start position
      * @param length how many elements to copy
      */
-    public static void copy(final int[] source, final int[] target, final int from,
-            final int to, final int length) {
+    public static void copy(final int[] source,
+                            final int[] target,
+                            final int from,
+                            final int to,
+                            final int length) {
         System.arraycopy(source, from, target, to, length);
     }
 
@@ -518,104 +515,102 @@ public final class Arrays {
      * @param to the target start position
      * @param length how many elements to copy
      */
-    public static void copy(final long[] source, final long[] target, final int from,
-            final int to, final int length) {
+    public static void copy(final long[] source,
+                            final long[] target,
+                            final int from,
+                            final int to,
+                            final int length) {
         System.arraycopy(source, from, target, to, length);
     }
 
     /**
-     * Copies a elements of one array into another array. Copies an array from
-     * the specified source array, beginning at the specified position, to the
-     * specified position of the destination array. A subsequence of array
-     * components are copied from the source array referenced by
-     * <code>source</code> to the destination array referenced by
-     * <code>target</code>. The number of components copied is equal to the
-     * <code>size</code> argument. The components at positions
-     * <code>sourceOffset</code> through <code>sourceOffset+size-1</code> in the
-     * source array are copied into positions <code>targetOffset</code> through
-     * <code>targetOffset+size-1</code>, respectively, of the destination array.
+     * Copies a elements of one array into another array. Copies an array from the
+     * specified source array, beginning at the specified position, to the specified
+     * position of the destination array. A subsequence of array components are copied
+     * from the source array referenced by <code>source</code> to the destination array
+     * referenced by <code>target</code>. The number of components copied is equal to the
+     * <code>size</code> argument. The components at positions <code>sourceOffset</code>
+     * through <code>sourceOffset+size-1</code> in the source array are copied into
+     * positions <code>targetOffset</code> through <code>targetOffset+size-1</code>,
+     * respectively, of the destination array.
      * <p>
-     * If the <code>source</code> and <code>target</code> arguments refer to the
-     * same array object, then the copying is performed as if the components at
-     * positions <code>sourceOffset</code> through
-     * <code>sourceOffset+size-1</code> were first copied to a temporary array
-     * with <code>size</code> components and then the contents of the temporary
-     * array were copied into positions <code>targetOffset</code> through
+     * If the <code>source</code> and <code>target</code> arguments refer to the same
+     * array object, then the copying is performed as if the components at positions
+     * <code>sourceOffset</code> through <code>sourceOffset+size-1</code> were first
+     * copied to a temporary array with <code>size</code> components and then the contents
+     * of the temporary array were copied into positions <code>targetOffset</code> through
      * <code>targetOffset+size-1</code> of the destination array.
      * <p>
      * If <code>target</code> is <code>null</code>, then a
      * <code>NullPointerException</code> is thrown.
      * <p>
      * If <code>source</code> is <code>null</code>, then a
-     * <code>NullPointerException</code> is thrown and the destination array is
-     * not modified.
+     * <code>NullPointerException</code> is thrown and the destination array is not
+     * modified.
      * <p>
-     * Otherwise, if any of the following is true, an
-     * <code>ArrayStoreException</code> is thrown and the destination is not
-     * modified:
+     * Otherwise, if any of the following is true, an <code>ArrayStoreException</code> is
+     * thrown and the destination is not modified:
      * <ul>
-     * <li>The <code>source</code> argument refers to an object that is not an
-     * array.
-     * <li>The <code>target</code> argument refers to an object that is not an
-     * array.
-     * <li>The <code>source</code> argument and <code>target</code> argument
-     * refer to arrays whose component types are different primitive types.
-     * <li>The <code>source</code> argument refers to an array with a primitive
-     * component type and the <code>target</code> argument refers to an array
-     * with a reference component type.
-     * <li>The <code>source</code> argument refers to an array with a reference
-     * component type and the <code>target</code> argument refers to an array
-     * with a primitive component type.
+     * <li>The <code>source</code> argument refers to an object that is not an array.
+     * <li>The <code>target</code> argument refers to an object that is not an array.
+     * <li>The <code>source</code> argument and <code>target</code> argument refer to
+     * arrays whose component types are different primitive types.
+     * <li>The <code>source</code> argument refers to an array with a primitive component
+     * type and the <code>target</code> argument refers to an array with a reference
+     * component type.
+     * <li>The <code>source</code> argument refers to an array with a reference component
+     * type and the <code>target</code> argument refers to an array with a primitive
+     * component type.
      * </ul>
      * <p>
      * Otherwise, if any of the following is true, an
-     * <code>IndexOutOfBoundsException</code> is thrown and the destination is
-     * not modified:
+     * <code>IndexOutOfBoundsException</code> is thrown and the destination is not
+     * modified:
      * <ul>
      * <li>The <code>sourceOffset</code> argument is negative.
      * <li>The <code>targetOffset</code> argument is negative.
      * <li>The <code>size</code> argument is negative.
-     * <li><code>sourceOffset+size</code> is greater than
-     * <code>source.length</code>, the length of the source array.
-     * <li><code>targetOffset+size</code> is greater than
-     * <code>target.length</code>, the length of the destination array.
+     * <li><code>sourceOffset+size</code> is greater than <code>source.length</code>, the
+     * length of the source array.
+     * <li><code>targetOffset+size</code> is greater than <code>target.length</code>, the
+     * length of the destination array.
      * </ul>
      * <p>
      * Otherwise, if any actual component of the source array from position
-     * <code>sourceOffset</code> through <code>sourceOffset+size-1</code> cannot
-     * be converted to the component type of the destination array by assignment
-     * conversion, an <code>ArrayStoreException</code> is thrown. In this case,
-     * let <b><i>k </i> </b> be the smallest nonnegative integer less than
-     * length such that <code>source[sourceOffset+</code> <i>k </i>
-     * <code>]</code> cannot be converted to the component type of the
-     * destination array; when the exception is thrown, source array components
-     * from positions <code>sourceOffset</code> through
-     * <code>sourceOffset+</code> <i>k </i> <code>-1</code> will already have
-     * been copied to destination array positions <code>targetOffset</code>
-     * through <code>targetOffset+</code> <i>k </I> <code>-1</code> and no other
-     * positions of the destination array will have been modified. (Because of
-     * the restrictions already itemized, this paragraph effectively applies
-     * only to the situation where both arrays have component types that are
-     * reference types.)
+     * <code>sourceOffset</code> through <code>sourceOffset+size-1</code> cannot be
+     * converted to the component type of the destination array by assignment conversion,
+     * an <code>ArrayStoreException</code> is thrown. In this case, let <b><i>k </i> </b>
+     * be the smallest nonnegative integer less than length such that
+     * <code>source[sourceOffset+</code> <i>k </i> <code>]</code> cannot be converted to
+     * the component type of the destination array; when the exception is thrown, source
+     * array components from positions <code>sourceOffset</code> through
+     * <code>sourceOffset+</code> <i>k </i> <code>-1</code> will already have been copied
+     * to destination array positions <code>targetOffset</code> through
+     * <code>targetOffset+</code> <i>k </I> <code>-1</code> and no other positions of the
+     * destination array will have been modified. (Because of the restrictions already
+     * itemized, this paragraph effectively applies only to the situation where both
+     * arrays have component types that are reference types.)
      * <p>
-     * This method calls
-     * {@link java.lang.System#arraycopy(Object,int,Object,int,int)}.
+     * This method calls {@link java.lang.System#arraycopy(Object,int,Object,int,int)}.
      * 
      * @param source the source array
      * @param from start position in the source array
      * @param target the destination array
      * @param to start position in the destination data
      * @param size the number of array elements to be copied
-     * @throws IndexOutOfBoundsException if copying would cause access of data
-     *             outside array bounds.
-     * @throws ArrayStoreException if an element in the <code>source</code>
-     *             array could not be stored into the <code>target</code> array
-     *             because of a type mismatch.
-     * @throws NullPointerException if either <code>source</code> or
-     *             <code>target</code> is <code>null</code>.
+     * @throws IndexOutOfBoundsException if copying would cause access of data outside
+     *             array bounds.
+     * @throws ArrayStoreException if an element in the <code>source</code> array could
+     *             not be stored into the <code>target</code> array because of a type
+     *             mismatch.
+     * @throws NullPointerException if either <code>source</code> or <code>target</code>
+     *             is <code>null</code>.
      */
-    public static void copy(final Object[] source, final int from, final Object[] target,
-            final int to, final int size) {
+    public static void copy(final Object[] source,
+                            final int from,
+                            final Object[] target,
+                            final int to,
+                            final int size) {
         final int sourceLength = Array.getLength(source);
         final int targetLength = Array.getLength(target);
         int start = from;
@@ -623,8 +618,8 @@ public final class Arrays {
         int elemCount = size;
 
         while (elemCount > 0) {
-            final int length = java.lang.Math.min(java.lang.Math.min(sourceLength - start, targetLength
-                    - finish), size);
+            final int length = java.lang.Math.min(
+                    java.lang.Math.min(sourceLength - start, targetLength - finish), size);
             System.arraycopy(source, start, target, finish, length);
             start = (start + length) % sourceLength;
             finish = (finish + length) % targetLength;
@@ -633,8 +628,8 @@ public final class Arrays {
     }
 
     /**
-     * Returns a the duplicate of an array of any type. Performs a shallow copy
-     * of an array generically
+     * Returns a the duplicate of an array of any type. Performs a shallow copy of an
+     * array generically
      * 
      * @param array the aray to be duplicated
      * @return the reference to the duplicate array
@@ -652,8 +647,7 @@ public final class Arrays {
      * 
      * @param what the element to be replicated
      * @param times the number of times to replicate, must be positive
-     * @return an object array with the specified number of copies of the same
-     *         element
+     * @return an object array with the specified number of copies of the same element
      */
     public static Object[] replicate(final Object what, final int times) {
         final Object[] result = new Object[times];
@@ -666,13 +660,12 @@ public final class Arrays {
     /**
      * Returns a new array of a given size.
      * <p>
-     * The new array contains as many elements of the original array as it can
-     * hold. N.B. Always returns a new array even if newsize parameter is the
-     * same as the old size.
+     * The new array contains as many elements of the original array as it can hold. N.B.
+     * Always returns a new array even if newsize parameter is the same as the old size.
      * 
      * @param source the array to resized
-     * @param size the size of the new array, must not be smaller than the size
-     *            of the specified array
+     * @param size the size of the new array, must not be smaller than the size of the
+     *            specified array
      * @return a new array with the elements of the original array
      */
     public static Object resize(final Object source, final int size) {
@@ -708,8 +701,8 @@ public final class Arrays {
      * 
      * @param elem the element to be searched
      * @param array the array to seach on
-     * @return the position of the element in the array or <code>-1</code> if
-     *         the element is not found.
+     * @return the position of the element in the array or <code>-1</code> if the element
+     *         is not found.
      */
     public static int pos(final byte elem, final byte[] array) {
         return pos(elem, 0, array);
@@ -721,8 +714,8 @@ public final class Arrays {
      * @param elem the element to be searched
      * @param startOffset the position where to start
      * @param array the array to seach on
-     * @return he position of the element in the array or <code>-1</code> if the
-     *         element is not found after the specified offset.
+     * @return he position of the element in the array or <code>-1</code> if the element
+     *         is not found after the specified offset.
      */
     public static int pos(final byte elem, final int startOffset, final byte[] array) {
         final int n = array.length;
@@ -739,8 +732,8 @@ public final class Arrays {
      * 
      * @param elem the element to search for
      * @param array the array of elements
-     * @return the position of the element in the array or the <code>-1</code>
-     *         if the element is not found
+     * @return the position of the element in the array or the <code>-1</code> if the
+     *         element is not found
      */
     public static int pos(final int elem, final int[] array) {
         final int length = array.length;
@@ -757,8 +750,8 @@ public final class Arrays {
      * 
      * @param elem the element to search for
      * @param array the array of elements
-     * @return the position of the element in the array or the <code>-1</code>
-     *         if the element is not found
+     * @return the position of the element in the array or the <code>-1</code> if the
+     *         element is not found
      */
     public static int pos(final char elem, final char[] array) {
         final int length = array.length;
@@ -775,8 +768,8 @@ public final class Arrays {
      * 
      * @param elem the element to search for
      * @param array the array of elements
-     * @return the position of the element in the array or the <code>-1</code>
-     *         if the element is not found
+     * @return the position of the element in the array or the <code>-1</code> if the
+     *         element is not found
      */
     public static int pos(final long elem, final long[] array) {
         final int length = array.length;
@@ -789,9 +782,8 @@ public final class Arrays {
     }
 
     /**
-     * Produces an array with the unique integers that occour on the input
-     * array. Formally this function computes the set of unique integers from a
-     * bag of integers.
+     * Produces an array with the unique integers that occour on the input array. Formally
+     * this function computes the set of unique integers from a bag of integers.
      * 
      * @param unorderedValues the input array with integer values, must not be
      *            <code>null</code>.
@@ -808,7 +800,7 @@ public final class Arrays {
             int lastSeen = orderedValues[0];
             int distincts = 1;
             /*
-             * Compacts the array bringin all distinct values together
+             * Compacts the array bringing all distinct values together
              */
             for (int i = 1; i < orderedValues.length; i++) {
                 if (orderedValues[i] != lastSeen) {
@@ -828,12 +820,12 @@ public final class Arrays {
     /**
      * Finds ass indices that are not <code>null</code>.
      * <p>
-     * Produces an array of indices corresponding to all the positions of an
-     * array of object that are not <code>null</code>
+     * Produces an array of indices corresponding to all the positions of an array of
+     * object that are not <code>null</code>
      * 
      * @param values the input object array, must not be <code>null</code>
-     * @return an integer array with the position of the input array that are
-     *         not <code>null</code>
+     * @return an integer array with the position of the input array that are not
+     *         <code>null</code>
      */
     public static int[] findNotNullIndices(final Object[] values) {
         final int[] notNullCandidateIndices = new int[values.length];
@@ -851,6 +843,58 @@ public final class Arrays {
         return notNullIndices;
     }
 
+    /**
+     * Obtains the string representation of an array of integers.
+     * 
+     * @param bytes the byte values to be converted
+     * @return a string of the form <code>[b1, ..., bn]</code>
+     */
+    public static String toString(final byte[] bytes) {
+        final StringBuffer result = new StringBuffer();
+        for (int i = 0; i < bytes.length; i++) {
+            if (result.length() != 0) {
+                result.append("," + Byte.toString(bytes[i]));
+            } else {
+                result.append(Integer.toString(bytes[i]));
+            }
+        }
+        return "[" + result.toString() + "]";
+    }
 
+    /**
+     * Obtains the string representation of an array of integers.
+     * 
+     * @param ints the integer values to be converted
+     * @return a string of the form <code>[i1, ..., in]</code>
+     */
+    public static String toString(final int[] ints) {
+        final StringBuffer result = new StringBuffer();
+        for (int i = 0; i < ints.length; i++) {
+            if (result.length() != 0) {
+                result.append("," + Integer.toString(ints[i]));
+            } else {
+                result.append(Integer.toString(ints[i]));
+            }
+        }
+        return "[" + result.toString() + "]";
+    }
+
+    /**
+     * Obtains the string representation of an array of longs.
+     * 
+     * @param longs the long values to be converted
+     * @return a string of the form <code>[l1, ..., ln]</code>
+     */
+    public static String toString(final long[] longs) {
+        final StringBuffer result = new StringBuffer();
+        for (int i = 0; i < longs.length; i++) {
+            if (result.length() != 0) {
+                result.append("," + Long.toString(longs[i]));
+            } else {
+                result.append(Long.toString(longs[i]));
+            }
+        }
+        return "[" + result.toString() + "]";
+    }
 
 }

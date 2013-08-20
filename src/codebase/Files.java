@@ -140,7 +140,7 @@ public final class Files {
     }
       
     /**
-     * Deletes a directories and all its sub-direcotries and files recursively
+     * Deletes a directory and all its sub-directories and files recursively.
      * 
      * @param dir the directory to be deleted
      * @throws IllegalStateException if a sub-directory could not be deleted
