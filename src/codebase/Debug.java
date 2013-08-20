@@ -142,6 +142,13 @@ public final class Debug {
     /**
      * Prints the binary dump of a byte[] buffer to the standard output by calling
      * {@link #toHexStringDump(byte[])}.
+     * <p>
+     * This method can be used to for example to conveniently dump data from a stream as
+     * follows: <code>
+     *    byte[] buffer = new byte[1024];
+          someInputStream.read(buffer);
+          Debug.dumpToHexString(b, 32);
+     * </code>
      * 
      * @param buffer the buffer to be dumped
      */
@@ -254,7 +261,8 @@ public final class Debug {
      * @param buffer the byte buffer
      * @param size the number of bytes of the buffer to be dumped on each line
      * @return a line in the format <code>XXXX HHHHHHHHH\n ... XXXX HHHHHHHHH</code> here
-     *         <code>X</code> is a character and <code>HH</code> is its corresponding hex code.
+     *         <code>X</code> is a character and <code>HH</code> is its corresponding hex
+     *         code.
      * @see #toHexStringDump(byte[])
      */
     public static String toHexStringDump(final byte[] buffer, final int size) {
