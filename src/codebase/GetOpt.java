@@ -12,7 +12,7 @@ import java.util.ResourceBundle;
  * Implementation of the GNU GetOpt command-line parser.
  * <p>
  * Nowadays, GetOpt is a part of the GNU C library as part of POSIX 2 standard.
- * Unfortunately Java does not offer a call as powerfull as GNU's GetOpt.
+ * Unfortunately Java does not offer a call as powerful as GNU's GetOpt.
  * <p>
  * This class implements a parser guided by two important parameters specified in the
  * constructor: <i>(i)</i> the string with short options and <i>(ii)</i> the array of long
@@ -69,9 +69,7 @@ import java.util.ResourceBundle;
  * {@link #getOpt()} to return {@link #EOF} with
  * <code>{@link #optInd} != argv.length</code>.
  * <p>
- * <b>Example:</b>
- * 
- * <pre>
+ * <b>Example:</b> <code>
  * public static void main(String[] argv) {
  * 
  *     StringBuffer sbDelete = new StringBuffer();
@@ -170,9 +168,12 @@ import java.util.ResourceBundle;
  *         }
  *     }
  * }
- * </pre>
+ * </code>
  * 
- * TODO: Implement appropriate error reporting.
+ * @author Ported from the GNU's C++ version of GetOpt. Original author unknown.
+ * 
+ * TODO:
+ *         Implement appropriate error reporting.
  */
 public class GetOpt {
 
@@ -241,17 +242,17 @@ public class GetOpt {
          *            the equivalent short option character.
          * @param valueChar The value to return for this long option, or the equivalent
          *            single letter option to emulate if the argument buffer is null.
-         * @exception IllegalArgumentException If the has_arg param is not one of
-         *                NO_ARGUMENT, REQUIRED_ARGUMENT or OPTIONAL_ARGUMENT.
+         * @throws IllegalArgumentException If the has_arg param is not one of
+         *             NO_ARGUMENT, REQUIRED_ARGUMENT or OPTIONAL_ARGUMENT.
          */
         public LongOption(final String name,
                           final int argKind,
                           final StringBuffer argumentBuffer,
-                          final char valueChar) throws IllegalArgumentException {
+                          final char valueChar) {
 
             if ((argKind != NO_ARGUMENT) && (argKind != REQUIRED_ARGUMENT)
                     && (argKind != OPTIONAL_ARGUMENT)) {
-                final Object[] msgArgs = { new Integer(argKind).toString() };
+                final Object[] msgArgs = { Integer.valueOf(argKind).toString() };
                 throw new IllegalArgumentException(MessageFormat.format(
                         MESSAGES.getString("getopt.invalidValue"), msgArgs));
             }
@@ -263,12 +264,12 @@ public class GetOpt {
         }
 
         /**
-         * Returns the name of this Long Option as a String.
+         * Returns the value of the 'flag' field for this long option.
          * 
-         * @return Then name of the long option
+         * @return The value of 'flag'
          */
-        public String getOptionName() {
-            return (optionName);
+        public StringBuffer getFlag() {
+            return (flag);
         }
 
         /**
@@ -281,12 +282,12 @@ public class GetOpt {
         }
 
         /**
-         * Returns the value of the 'flag' field for this long option.
+         * Returns the name of this Long Option as a String.
          * 
-         * @return The value of 'flag'
+         * @return Then name of the long option
          */
-        public StringBuffer getFlag() {
-            return (flag);
+        public String getOptionName() {
+            return (optionName);
         }
 
         /**
@@ -337,7 +338,7 @@ public class GetOpt {
             "codebase/MessagesBundle", Locale.getDefault());
 
     /*
-     * Argument handeling
+     * Argument handling
      */
 
     /**
@@ -354,7 +355,7 @@ public class GetOpt {
      * Name to print as the program name in error messages. This is necessary since Java
      * does not place the program name in argv[0].
      */
-    protected final String progName;
+    protected final String programName;
 
     /**
      * A flag which communicates whether or not checkLongOption() did all necessary
@@ -370,7 +371,7 @@ public class GetOpt {
     /**
      * This flag determines whether or not we are parsing only long args.
      */
-    private final boolean longOnly;
+    private final boolean isLongOnly;
 
     /**
      * Array of LongOpt describing the valid long options.
@@ -444,13 +445,126 @@ public class GetOpt {
     private String nextChar;
 
     /**
-     * This function is called to report the command line parsing errors.
+     * Construct a basic Getopt instance with the given input data. Note that this handles
+     * "short" options only.
      * 
-     * @param error
+     * @param progname The name to display as the program name when printing errors
+     * @param argv The String array passed as the command line to the program.
+     * @param optstring A String containing a description of the valid args for this
+     *            program
      */
-    private void reportError(final String error) {
-        // Should we throw exceptions?
+    public GetOpt(final String progname, final String[] argv, final String optstring) {
+        this(progname, argv, optstring, new LongOption[] {}, false);
     }
+
+    /**
+     * Construct a Getopt instance with given input data that is capable of parsing long
+     * options as well as short.
+     * 
+     * @param progName the name to display as the program name when printing errors
+     * @param argv the String array passed as the command line to the program
+     * @param optString a String containing a description of the valid short args for this
+     *            program
+     * @param longOpts an array of LongOpt objects that describes the valid long args for
+     *            this program
+     */
+    public GetOpt(final String progName,
+                  final String[] argv,
+                  String optString,
+                  final LongOption[] longOpts) {
+        this(progName, argv, optString, longOpts, false);
+    }
+
+    /**
+     * Construct a Getopt instance with given input data that is capable of parsing long
+     * options and short options. Contrary to what you might think, the flag 'long_only'
+     * does not determine whether or not we scan for only long arguments. Instead, a value
+     * of true here allows long arguments to start with a '-' instead of '--' unless there
+     * is a conflict with a short option name.
+     * 
+     * @param progName the name to display as the program name when printing errors
+     * @param args the String array passed as the command line to the program
+     * @param optstring a String containing a description of the valid short args for this
+     *            program
+     * @param longOpts an array of LongOpt objects that describes the valid long args for
+     *            this program
+     * @param longOnly true if long options that do not conflict with short options can
+     *            start with a '-' as well as '--'
+     */
+    public GetOpt(final String progName,
+                  final String[] args,
+                  final String optstring,
+                  final LongOption[] longOpts,
+                  final boolean longOnly) {
+
+        // _getopt_initialize from GNU getopt
+        programName = progName;
+
+        argv = new String[args.length];
+        System.arraycopy(args, 0, argv, 0, args.length);
+
+        if (optstring.length() == 0) {
+            optString = " ";
+        } else {
+            optString = optstring;
+        }
+
+        longOptions = new LongOption[longOpts.length];
+        System.arraycopy(longOpts, 0, longOptions, 0, longOptions.length);
+
+        isLongOnly = longOnly;
+
+        // Check for property "POSIXLY_CORRECT" to determine whether to
+        // strictly follow the POSIX standard.
+        if (System.getProperty("POSIXLY_CORRECT", null) == null) {
+            posixlyCorrect = false;
+        } else {
+            posixlyCorrect = true;
+        }
+
+        // Determine how to handle the ordering of options and non-options
+        if (optstring.charAt(0) == '-') {
+            ordering = RETURN_IN_ORDER;
+            if (optString.length() > 1) {
+                optString = optString.substring(1);
+            }
+        } else if (optstring.charAt(0) == '+') {
+            ordering = REQUIRE_ORDER;
+            if (optString.length() > 1) {
+                optString = optString.substring(1);
+            }
+        } else if (posixlyCorrect) {
+            ordering = REQUIRE_ORDER;
+        } else {
+            /*
+             * normal default case
+             */
+            ordering = PERMUTE;
+        }
+    }
+
+    /**
+     * Internal only. Should not call this directly. Scan elements of argv (whose length
+     * is argc) for option characters given in opt_string. if an element of argv starts
+     * with '-', and is not exactly "-" or "--", then it is an option element. The
+     * characters of this element (aside from the initial '-') are option characters. If
+     * there are no more option characters, `get_opt' returns `EOF'. Then `OptInd' is the
+     * index in argv of the first argv-element that is not an option. (the argv-elements
+     * have been permuted so that those that are not options now come last.) The elements
+     * of argv aren't really final, because we permute them. But we pretend they're final
+     * in the prototype to be compatible with other systems.
+     * 
+     * @param argc the number of arguments
+     * @param argv the array of arguments
+     * @param short_opts
+     * @param long_opts is a vector for long options made of `struct option' terminated by
+     *            an element containing a name which is zero.
+     * @param long_ind returns the index in GetLongOpt of the long-named option found. It
+     *            is only valid when a long-named option has been found by the most recent
+     *            call
+     * @param long_only if nonzero, '-' as well as '--' can introduce long-named options.
+     * @return <code></code>
+     */
 
     /**
      * Check to see if an option is a valid long option.
@@ -458,7 +572,7 @@ public class GetOpt {
      * Called by {@link #getOpt()}. Put in a separate method because this needs to be done
      * twice.
      * 
-     * @return Various things depending on circumstances
+     * @return various things depending on circumstances
      */
     private char checkLongOption() {
         LongOption pfound = null;
@@ -498,7 +612,7 @@ public class GetOpt {
         // Print out an error if the option specified was ambiguous
         if (ambig && !exact) {
             if (optErr) {
-                Object[] msgArgs = { progName, argv[optInd] };
+                Object[] msgArgs = { programName, argv[optInd] };
                 System.err.println(MessageFormat.format(MESSAGES.getString("getopt.ambigious"),
                         msgArgs));
             }
@@ -524,15 +638,15 @@ public class GetOpt {
                     if (optErr) {
                         // -- option
                         if (argv[optInd - 1].startsWith("--")) {
-                            Object[] msgArgs = { progName, pfound.optionName };
+                            Object[] msgArgs = { programName, pfound.optionName };
                             System.err.println(MessageFormat.format(
                                     MESSAGES.getString("getopt.arguments1"), msgArgs));
                         } else {
                             /*
                              * +option or -option
                              */
-                            Object[] msgArgs = { progName,
-                                    new Character(argv[optInd - 1].charAt(0)).toString(),
+                            Object[] msgArgs = { programName,
+                                    Character.valueOf(argv[optInd - 1].charAt(0)).toString(),
                                     pfound.optionName };
 
                             reportError(MessageFormat.format(
@@ -551,7 +665,7 @@ public class GetOpt {
                     ++optInd;
                 } else {
                     if (optErr) {
-                        Object[] msgArgs = { progName, argv[optInd - 1] };
+                        Object[] msgArgs = { programName, argv[optInd - 1] };
                         reportError(MessageFormat.format(MESSAGES.getString("getopt.requires"),
                                 msgArgs));
                     }
@@ -637,119 +751,24 @@ public class GetOpt {
     }
 
     /**
-     * Internal only. Should not call this directly. Scan elements of argv (whose length
-     * is argc) for option characters given in opt_string. if an element of argv starts
-     * with '-', and is not exactly "-" or "--", then it is an option element. The
-     * characters of this element (aside from the initial '-') are option characters. If
-     * there are no more option characters, `get_opt' returns `EOF'. Then `OptInd' is the
-     * index in argv of the first argv-element that is not an option. (the argv-elements
-     * have been permuted so that those that are not options now come last.) The elements
-     * of argv aren't really final, because we permute them. But we pretend they're final
-     * in the prototype to be compatible with other systems.
+     * This function is called to report the command line parsing errors.
      * 
-     * @param argc the number of arguments
-     * @param argv the array of arguments
-     * @param short_opts
-     * @param long_opts is a vector for long options made of `struct option' terminated by
-     *            an element containing a name which is zero.
-     * @param long_ind returns the index in GetLongOpt of the long-named option found. It
-     *            is only valid when a long-named option has been found by the most recent
-     *            call
-     * @param long_only if nonzero, '-' as well as '--' can introduce long-named options.
-     * @return <code></code>
+     * @param error
      */
-
-    /**
-     * Construct a basic Getopt instance with the given input data. Note that this handles
-     * "short" options only.
-     * 
-     * @param progname The name to display as the program name when printing errors
-     * @param argv The String array passed as the command line to the program.
-     * @param optstring A String containing a description of the valid args for this
-     *            program
-     */
-    public GetOpt(final String progname, final String[] argv, final String optstring) {
-        this(progname, argv, optstring, null, false);
+    private void reportError(final String error) {
+        // Should we throw exceptions?
     }
 
     /**
-     * Construct a Getopt instance with given input data that is capable of parsing long
-     * options as well as short.
+     * Returns the index into the array of long options of the current option.
+     * <p>
+     * The index is not into argv.
      * 
-     * @param progname The name to display as the program name when printing errors
-     * @param argv The String array passed as the command ilne to the program
-     * @param optstring A String containing a description of the valid short args for this
-     *            program
-     * @param long_options An array of LongOpt objects that describes the valid long args
-     *            for this program
+     * @return an index into the array of long options that represents the long option
+     *         that was found.
      */
-    public GetOpt(final String progname,
-                  final String[] argv,
-                  String optstring,
-                  final LongOption[] long_options) {
-        this(progname, argv, optstring, long_options, false);
-    }
-
-    /**
-     * Construct a Getopt instance with given input data that is capable of parsing long
-     * options and short options. Contrary to what you might think, the flag 'long_only'
-     * does not determine whether or not we scan for only long arguments. Instead, a value
-     * of true here allows long arguments to start with a '-' instead of '--' unless there
-     * is a conflict with a short option name.
-     * 
-     * @param progname The name to display as the program name when printing errors
-     * @param args The String array passed as the command line to the program
-     * @param optstring A String containing a description of the valid short args for this
-     *            program
-     * @param long_options An array of LongOpt objects that describes the valid long args
-     *            for this program
-     * @param long_only true if long options that do not conflict with short options can
-     *            start with a '-' as well as '--'
-     */
-    public GetOpt(final String progname,
-                  final String[] args,
-                  final String optstring,
-                  final LongOption[] long_options,
-                  final boolean long_only) {
-
-        // _getopt_initialize from GNU getopt
-        progName = progname;
-        argv = args;
-        if (optstring.length() == 0) {
-            optString = " ";
-        } else {
-            optString = optstring;
-        }
-        longOptions = long_options;
-        longOnly = long_only;
-
-        // Check for property "POSIXLY_CORRECT" to determine whether to
-        // strictly follow the POSIX standard.
-        if (System.getProperty("POSIXLY_CORRECT", null) == null) {
-            posixlyCorrect = false;
-        } else {
-            posixlyCorrect = true;
-        }
-
-        // Determine how to handle the ordering of options and non-options
-        if (optstring.charAt(0) == '-') {
-            ordering = RETURN_IN_ORDER;
-            if (optString.length() > 1) {
-                optString = optString.substring(1);
-            }
-        } else if (optstring.charAt(0) == '+') {
-            ordering = REQUIRE_ORDER;
-            if (optString.length() > 1) {
-                optString = optString.substring(1);
-            }
-        } else if (posixlyCorrect) {
-            ordering = REQUIRE_ORDER;
-        } else {
-            /*
-             * normal default case
-             */
-            ordering = PERMUTE;
-        }
+    public final int getLongInd() {
+        return (longIndex);
     }
 
     /**
@@ -785,7 +804,7 @@ public class GetOpt {
             return EOF;
         }
 
-        if ((nextChar == null) || (nextChar.equals(""))) {
+        if ((nextChar == null) || (nextChar.isEmpty())) {
             // If we have just processed some options following some
             // non-options,
             // exchange them so that the options come first.
@@ -879,7 +898,7 @@ public class GetOpt {
          * seems to be the most useful approach.
          */
         if ((longOptions != null)
-                && (argv[optInd].startsWith("--") || (longOnly && ((argv[optInd].length() > 2) || (optString
+                && (argv[optInd].startsWith("--") || (isLongOnly && ((argv[optInd].length() > 2) || (optString
                         .indexOf(argv[optInd].charAt(1)) == -1))))) {
             char c = checkLongOption();
 
@@ -891,16 +910,16 @@ public class GetOpt {
             // or the option starts with '--' or is not a valid short
             // option, then it's an error.
             // Otherwise interpret it as a short option.
-            if (!longOnly || argv[optInd].startsWith("--")
+            if (!isLongOnly || argv[optInd].startsWith("--")
                     || (optString.indexOf(nextChar.charAt(0)) == -1)) {
                 if (optErr) {
                     if (argv[optInd].startsWith("--")) {
-                        Object[] msgArgs = { progName, nextChar };
+                        Object[] msgArgs = { programName, nextChar };
                         reportError(MessageFormat.format(MESSAGES.getString("getopt.unrecognized"),
                                 msgArgs));
                     } else {
-                        Object[] msgArgs = { progName,
-                                new Character(argv[optInd].charAt(0)).toString(), nextChar };
+                        Object[] msgArgs = { programName,
+                                Character.valueOf(argv[optInd].charAt(0)).toString(), nextChar };
                         reportError(MessageFormat.format(
                                 MESSAGES.getString("getopt.unrecognized2"), msgArgs));
                     }
@@ -927,17 +946,17 @@ public class GetOpt {
         if (optString.indexOf(c) != -1) {
             temp = optString.substring(optString.indexOf(c));
         }
-        if (nextChar.equals("")) {
+        if (nextChar.isEmpty()) {
             ++optInd;
         }
         if ((temp == null) || (c == ':')) {
             if (optErr) {
                 if (posixlyCorrect) {
                     // 1003.2 specifies the format of this message
-                    Object[] msgArgs = { progName, new Character((char) c).toString() };
+                    Object[] msgArgs = { programName, Character.valueOf((char) c).toString() };
                     reportError(MessageFormat.format(MESSAGES.getString("getopt.illegal"), msgArgs));
                 } else {
-                    Object[] msgArgs = { progName, new Character((char) c).toString() };
+                    Object[] msgArgs = { programName, Character.valueOf((char) c).toString() };
                     reportError(MessageFormat.format(MESSAGES.getString("getopt.invalid"), msgArgs));
                 }
             }
@@ -949,7 +968,7 @@ public class GetOpt {
 
         // Convenience. Treat POSIX -W foo same as long option --foo
         if ((temp.charAt(0) == 'W') && (temp.length() > 1) && (temp.charAt(1) == ';')) {
-            if (!nextChar.equals("")) {
+            if (!nextChar.isEmpty()) {
                 optArg = nextChar;
             } else if (optInd == argv.length) {
                 /*
@@ -958,7 +977,7 @@ public class GetOpt {
                  */
                 if (optErr) {
                     // 1003.2 specifies the format of this message.
-                    Object[] msgArgs = { progName, new Character((char) c).toString() };
+                    Object[] msgArgs = { programName, Character.valueOf((char) c).toString() };
                     reportError(MessageFormat.format(MESSAGES.getString("getopt.requires2"),
                             msgArgs));
                 }
@@ -995,7 +1014,7 @@ public class GetOpt {
                 /*
                  * This is an option that accepts and argument optionally
                  */
-                if (!nextChar.equals("")) {
+                if (!nextChar.isEmpty()) {
                     optArg = nextChar;
                     ++optInd;
                 } else {
@@ -1004,13 +1023,13 @@ public class GetOpt {
 
                 nextChar = null;
             } else {
-                if (!nextChar.equals("")) {
+                if (!nextChar.isEmpty()) {
                     optArg = nextChar;
                     ++optInd;
                 } else if (optInd == argv.length) {
                     if (optErr) {
                         // 1003.2 specifies the format of this message
-                        Object[] msgArgs = { progName, new Character((char) c).toString() };
+                        Object[] msgArgs = { programName, Character.valueOf((char) c).toString() };
                         reportError(MessageFormat.format(MESSAGES.getString("getopt.requires2"),
                                 msgArgs));
                     }
@@ -1030,12 +1049,13 @@ public class GetOpt {
                     // we get -o -- foo, then we're supposed to skip the --,
                     // end parsing of options, and make foo an operand to -o.
                     // Only do this in Posix mode.
-                    if ((posixlyCorrect) && optArg.equals("--")) {
+                    if ((posixlyCorrect) && "--".equals(optArg)) {
                         // If end of argv, error out
                         if (optInd == argv.length) {
                             if (optErr) {
                                 // 1003.2 specifies the format of this message
-                                Object[] msgArgs = { progName, new Character((char) c).toString() };
+                                Object[] msgArgs = { programName,
+                                        Character.valueOf((char) c).toString() };
                                 reportError(MessageFormat.format(
                                         MESSAGES.getString("getopt.requires2"), msgArgs));
                             }
@@ -1065,18 +1085,6 @@ public class GetOpt {
         }
 
         return c;
-    }
-
-    /**
-     * Returns the index into the array of long options of the current option.
-     * <p>
-     * The index is not into argv.
-     * 
-     * @return an index into the array of long options that represents the long option
-     *         that was found.
-     */
-    public final int getLongInd() {
-        return (longIndex);
     }
 
     /**
