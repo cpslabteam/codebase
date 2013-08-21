@@ -14,14 +14,6 @@ import java.io.IOException;
 public final class Base64 {
 
 
-    private static final int UNSIGNED_BYTE_MASK = 0xFF;
-
-    /**
-     * Only the low 6 bits.
-     */
-    private static final int BASE64_BYTE_MASK = 0x7f;
-
-
     /**
      * A {@link Base64.InputStream} that reads data from another
      * <tt>java.io.InputStream</tt> and encodes/decodes to/from Base64 notation on the
@@ -377,18 +369,6 @@ public final class Base64 {
         }
 
         /**
-         * Flushes the base64 output buffer of the output stream.
-         * 
-         * @throws IOException if the output stream throws an exception while flushing or
-         *             closing
-         */
-        @Override
-        public void flush() throws IOException {
-            flushBase64();
-            super.flush();
-        }
-
-        /**
          * Pads the buffer without closing the stream.
          * 
          * @throws IOException if the output stream throws an exception while writing the
@@ -403,6 +383,18 @@ public final class Base64 {
                     throw new java.io.IOException("Base64 input not properly padded.");
                 }
             }
+        }
+
+        /**
+         * Flushes the base64 output buffer of the output stream.
+         * 
+         * @throws IOException if the output stream throws an exception while flushing or
+         *             closing
+         */
+        @Override
+        public void flush() throws IOException {
+            flushBase64();
+            super.flush();
         }
 
         /**
@@ -500,6 +492,14 @@ public final class Base64 {
         }
 
     }
+
+
+    private static final int UNSIGNED_BYTE_MASK = 0xFF;
+
+    /**
+     * Only the low 6 bits.
+     */
+    private static final int BASE64_BYTE_MASK = 0x7f;
 
     /*
      * Encoding/Decoding options.
@@ -740,139 +740,6 @@ public final class Base64 {
     };
 
     /**
-     * Returns one of the <tt>ALPHABET</tt> byte arrays depending on the options
-     * specified.
-     * <p>
-     * It's possible, though silly, to specify ORDERED and URLSAFE in which case one of
-     * them will be picked, though there is no guarantee as to which one will be picked.
-     */
-    private static byte[] getAlphabet(int options) {
-        if ((options & URL_SAFE) == URL_SAFE)
-            return URL_SAFE_ALPHABET;
-        else if ((options & ORDERED) == ORDERED)
-            return ORDERED_ALPHABET;
-        else
-            return STANDARD_ALPHABET;
-    }
-
-
-    /**
-     * Returns one of the <tt>DECODABET</tt> byte arrays depending on the options
-     * specified.
-     * <p>
-     * It's possible, though silly, to specify ORDERED and URL_SAFE in which case one of
-     * them will be picked, though there is no guarantee as to which one will be picked.
-     */
-    private static byte[] getDecodabet(int options) {
-        if ((options & URL_SAFE) == URL_SAFE)
-            return URL_SAFE_DECODABET;
-        else if ((options & ORDERED) == ORDERED)
-            return ORDERED_DECODABET;
-        else
-            return STANDARD_DECODABET;
-    }
-
-
-    /**
-     * Prevents instantiation.
-     */
-    private Base64() {
-    }
-
-    /**
-     * Decodes Base-64 ASCII characters in the form of a byte array.
-     * <p>
-     * Very low-level access. Does not support automatically gunzipping or any other
-     * 'fancy' features.
-     * 
-     * @param source the Base64 encoded data
-     * @param off The offset of where to begin decoding
-     * @param len The length of characters to decode
-     * @param options the decoding options return decoded data
-     * @return the decoded binary data
-     */
-    public static byte[] decode(byte[] source, int off, int len, int options) {
-        final byte[] decodabet = getDecodabet(options);
-
-        // CHECKSTYLE:OFF - array access indexes 
-        final int maxBufferSize = len * 3 / 4;
-        final byte[] outBuff = new byte[maxBufferSize]; // Upper limit on size of output
-        int outBuffPos = 0;
-
-        final byte[] b4 = new byte[4];
-
-        int b4Posn = 0;
-        int i = 0;
-        byte sbiCrop = 0;
-        byte sbiDecode = 0;
-        for (i = off; i < off + len; i++) {
-            sbiCrop = (byte) (source[i] & UNSIGNED_BYTE_MASK);
-            sbiDecode = decodabet[sbiCrop];
-
-            /*
-             * White space, Equals sign or better
-             */
-            if (sbiDecode >= WHITE_SPACE_ENC) {
-                if (sbiDecode >= EQUALS_SIGN_ENC) {
-                    b4[b4Posn++] = sbiCrop;
-                    if (b4Posn > 3) {
-                        outBuffPos += decode4to3(b4, 0, outBuff, outBuffPos, options);
-                        b4Posn = 0;
-
-                        // If that was the equals sign, break out of 'for' loop
-                        if (sbiCrop == EQUALS_SIGN)
-                            break;
-                    }
-                }
-            } else {
-                throw new IllegalArgumentException("Bad Base64 input character at " + i + ": "
-                        + source[i] + "(decimal)");
-            }
-        }
-        // CHECKSTYLE:ON 
-
-        final byte[] out = new byte[outBuffPos];
-        System.arraycopy(outBuff, 0, out, 0, outBuffPos);
-        return out;
-    }
-
-
-    /*
-     * Encoding methods
-     */
-
-
-    /**
-     * Decodes data from Base64 notation.
-     * 
-     * @param s the string to decode
-     * @return the decoded data
-     */
-    public static byte[] decode(String s) {
-        return decode(s, NO_OPTIONS);
-    }
-
-    /**
-     * Decodes data from Base64 notation.
-     * 
-     * @param s the string to decode
-     * @param options encode options such as URL_SAFE
-     * @return the decoded data
-     */
-    public static byte[] decode(String s, int options) {
-        byte[] bytes;
-        try {
-            bytes = s.getBytes(PREFERRED_TEXT_ENCODING);
-        } catch (java.io.UnsupportedEncodingException uee) {
-            bytes = s.getBytes();
-        }
-
-        // Decode
-        return decode(bytes, 0, bytes.length, options);
-    }
-
-
-    /**
      * Decodes four bytes from array <tt>source</tt> and writes the resulting bytes (up to
      * three of them) to <tt>destination</tt>.
      * <p>
@@ -1046,6 +913,133 @@ public final class Base64 {
     }
 
     /**
+     * Returns one of the <tt>ALPHABET</tt> byte arrays depending on the options
+     * specified.
+     * <p>
+     * It's possible, though silly, to specify ORDERED and URLSAFE in which case one of
+     * them will be picked, though there is no guarantee as to which one will be picked.
+     */
+    private static byte[] getAlphabet(int options) {
+        if ((options & URL_SAFE) == URL_SAFE)
+            return URL_SAFE_ALPHABET;
+        else if ((options & ORDERED) == ORDERED)
+            return ORDERED_ALPHABET;
+        else
+            return STANDARD_ALPHABET;
+    }
+
+
+    /*
+     * Encoding methods
+     */
+
+
+    /**
+     * Returns one of the <tt>DECODABET</tt> byte arrays depending on the options
+     * specified.
+     * <p>
+     * It's possible, though silly, to specify ORDERED and URL_SAFE in which case one of
+     * them will be picked, though there is no guarantee as to which one will be picked.
+     */
+    private static byte[] getDecodabet(int options) {
+        if ((options & URL_SAFE) == URL_SAFE)
+            return URL_SAFE_DECODABET;
+        else if ((options & ORDERED) == ORDERED)
+            return ORDERED_DECODABET;
+        else
+            return STANDARD_DECODABET;
+    }
+
+    /**
+     * Decodes Base-64 ASCII characters in the form of a byte array.
+     * <p>
+     * Very low-level access. Does not support automatically gunzipping or any other
+     * 'fancy' features.
+     * 
+     * @param source the Base64 encoded data
+     * @param off The offset of where to begin decoding
+     * @param len The length of characters to decode
+     * @param options the decoding options return decoded data
+     * @return the decoded binary data
+     */
+    public static byte[] decode(byte[] source, int off, int len, int options) {
+        final byte[] decodabet = getDecodabet(options);
+
+        // CHECKSTYLE:OFF - array access indexes 
+        final int maxBufferSize = len * 3 / 4;
+        final byte[] outBuff = new byte[maxBufferSize]; // Upper limit on size of output
+        int outBuffPos = 0;
+
+        final byte[] b4 = new byte[4];
+
+        int b4Posn = 0;
+        int i = 0;
+        byte sbiCrop = 0;
+        byte sbiDecode = 0;
+        for (i = off; i < off + len; i++) {
+            sbiCrop = (byte) (source[i] & UNSIGNED_BYTE_MASK);
+            sbiDecode = decodabet[sbiCrop];
+
+            /*
+             * White space, Equals sign or better
+             */
+            if (sbiDecode >= WHITE_SPACE_ENC) {
+                if (sbiDecode >= EQUALS_SIGN_ENC) {
+                    b4[b4Posn++] = sbiCrop;
+                    if (b4Posn > 3) {
+                        outBuffPos += decode4to3(b4, 0, outBuff, outBuffPos, options);
+                        b4Posn = 0;
+
+                        // If that was the equals sign, break out of 'for' loop
+                        if (sbiCrop == EQUALS_SIGN)
+                            break;
+                    }
+                }
+            } else {
+                throw new IllegalArgumentException("Bad Base64 input character at " + i + ": "
+                        + source[i] + "(decimal)");
+            }
+        }
+        // CHECKSTYLE:ON 
+
+        final byte[] out = new byte[outBuffPos];
+        System.arraycopy(outBuff, 0, out, 0, outBuffPos);
+        return out;
+    }
+
+
+    /**
+     * Decodes data from Base64 notation.
+     * 
+     * @param s the string to decode
+     * @return the decoded data
+     */
+    public static byte[] decode(String s) {
+        return decode(s, NO_OPTIONS);
+    }
+
+
+    /**
+     * Decodes data from Base64 notation.
+     * 
+     * @param s the string to decode
+     * @param options encode options such as URL_SAFE
+     * @return the decoded data
+     */
+    public static byte[] decode(String s, int options) {
+        byte[] bytes;
+        try {
+            bytes = s.getBytes(PREFERRED_TEXT_ENCODING);
+        } catch (java.io.UnsupportedEncodingException uee) {
+            bytes = s.getBytes();
+        }
+
+        // Decode
+        return decode(bytes, 0, bytes.length, options);
+    }
+
+
+    /**
      * Encodes a byte array into Base64 notation.
      * 
      * @param source The data to convert
@@ -1054,12 +1048,6 @@ public final class Base64 {
     public static String encode(byte[] source) {
         return encode(source, 0, source.length, NO_OPTIONS);
     }
-
-
-    /*
-     * Decoding methods
-     */
-
 
     /**
      * Encodes a byte array into Base64 notation.
@@ -1083,6 +1071,11 @@ public final class Base64 {
     }
 
 
+    /*
+     * Decoding methods
+     */
+
+
     /**
      * Encodes a byte array into Base64 notation.
      * 
@@ -1094,6 +1087,7 @@ public final class Base64 {
     public static String encode(byte[] source, int off, int len) {
         return encode(source, off, len, NO_OPTIONS);
     }
+
 
     /**
      * Encodes a byte array into Base64 notation.
@@ -1154,5 +1148,11 @@ public final class Base64 {
         } catch (java.io.UnsupportedEncodingException uue) {
             return new String(outBuffer, 0, e);
         }
+    }
+
+    /**
+     * Prevents instantiation.
+     */
+    private Base64() {
     }
 }

@@ -8,7 +8,6 @@ import java.io.DataOutput;
 import java.io.DataInput;
 
 
-
 /**
  * Optimized implementation of a vector of bits.
  * <p>
@@ -24,17 +23,17 @@ public final class BitVector {
     static final int BIT_IDX_MASK = 0x0007;
 
     /**
-     * Array of bytes that encode the bit array
+     * Array of bytes that encode the bit array.
      */
     private byte[] bits;
 
     /**
-     * Size of the array in bits
+     * Size of the array in bits.
      */
     private int size;
 
     /**
-     * Number of set bits
+     * Number of set bits.
      */
     private int cachedCount = -1;
 
@@ -54,16 +53,6 @@ public final class BitVector {
     }
 
     /**
-     * Sets the value of bit to one.
-     *
-     * @param bitIndex the index of the bit to set
-     */
-    public void set(final int bitIndex) {
-        bits[bitIndex >> Binary.DIV_8_SHIFTS] |= (1 << (bitIndex & BIT_IDX_MASK));
-        cachedCount = -1;
-    }
-
-    /**
      * Sets the value of bit to zero.
      *
      * @param bitIndex the index of the bit to set
@@ -71,28 +60,6 @@ public final class BitVector {
     public void clear(final int bitIndex) {
         bits[bitIndex >> Binary.DIV_8_SHIFTS] &= ~(1 << (bitIndex & BIT_IDX_MASK));
         cachedCount = -1;
-    }
-
-    /**
-     * Returns true if bit is one and false if it is zero.
-     *
-     * @param bitIndex the index of the bit to set
-     * @return the value of <code>bits[bitIndex]</code>
-     */
-    public boolean get(final int bitIndex) {
-        return (bits[bitIndex >> Binary.DIV_8_SHIFTS] & (1 << (bitIndex & BIT_IDX_MASK))) != 0;
-    }
-
-    /**
-     * Returns the number of bits in this vector.
-     * <p>
-     * This is also one greater than the number of the largest valid bit
-     * number.
-     *
-     * @return the size in bits
-     */
-    public int size() {
-        return size;
     }
 
     /**
@@ -121,6 +88,52 @@ public final class BitVector {
     }
 
     /**
+     * Returns true if bit is one and false if it is zero.
+     *
+     * @param bitIndex the index of the bit to set
+     * @return the value of <code>bits[bitIndex]</code>
+     */
+    public boolean get(final int bitIndex) {
+        return (bits[bitIndex >> Binary.DIV_8_SHIFTS] & (1 << (bitIndex & BIT_IDX_MASK))) != 0;
+    }
+
+    /**
+     * Constructs a bit vector from a data input.
+     *
+     * @param input the data input to be used
+     * @throws IOException if an error occurs while reading from the data
+     *             input
+     */
+    public void read(final DataInput input) throws IOException {
+        size = input.readInt(); // read size
+        cachedCount = input.readInt(); // read cachedCount
+        bits = new byte[(size >> Binary.DIV_8_SHIFTS) + 1]; // allocate bits
+        input.readFully(bits, 0, bits.length); // read bits
+    }
+
+    /**
+     * Sets the value of bit to one.
+     *
+     * @param bitIndex the index of the bit to set
+     */
+    public void set(final int bitIndex) {
+        bits[bitIndex >> Binary.DIV_8_SHIFTS] |= (1 << (bitIndex & BIT_IDX_MASK));
+        cachedCount = -1;
+    }
+
+    /**
+     * Returns the number of bits in this vector.
+     * <p>
+     * This is also one greater than the number of the largest valid bit
+     * number.
+     *
+     * @return the size in bits
+     */
+    public int size() {
+        return size;
+    }
+
+    /**
      * Writes this vector to a data output.
      *
      * @param output the data output to write the vector
@@ -130,19 +143,5 @@ public final class BitVector {
         output.writeInt(size());
         output.writeInt(count());
         output.write(bits);
-    }
-
-    /**
-     * Constructs a bit vector from a data input
-     *
-     * @param input the data input to be used
-     * @throws IOException if an error occours while reading from the data
-     *             input
-     */
-    public void read(final DataInput input) throws IOException {
-        size = input.readInt(); // read size
-        cachedCount = input.readInt(); // read cachedCount
-        bits = new byte[(size >> Binary.DIV_8_SHIFTS) + 1]; // allocate bits
-        input.readFully(bits, 0, bits.length); // read bits
     }
 }

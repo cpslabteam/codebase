@@ -28,50 +28,6 @@ public final class AESUtil {
     private static final String DEFAULT_STRING_ENCODING = "UTF-8";
 
     /**
-     * Prevent the instantiation of this utility class.
-     */
-    private AESUtil() {
-    }
-
-    /**
-     * Pads a byte array with nulls so that its length is a multiple of the AES block.
-     * 
-     * @param bytes the bytes to be padded
-     * @return the byte[] padded in null bytes
-     */
-    public static byte[] padBuffer(byte[] bytes) {
-        int r = bytes.length % AES_DEFAULT_PADDING;
-        if (r == 0) {
-            return bytes;
-        } else {
-            int newLength = bytes.length + (AES_DEFAULT_PADDING - r);
-            return Arrays.copyOf(bytes, newLength);
-        }
-    }
-
-
-    /**
-     * Instantiates an AES key.
-     * 
-     * @param keyData The key bytes
-     * @return An AES key
-     */
-    public static Key getKey(byte[] keyData) {
-        return new SecretKeySpec(keyData, "AES");
-    }
-
-    /**
-     * Instantiates an initialization vector (IV).
-     * 
-     * @param ivData the initialization vector bytes
-     * @return an initialization vector
-     */
-    public static IvParameterSpec getIv(byte[] ivData) {
-        return new IvParameterSpec(ivData);
-    }
-
-
-    /**
      * Encrypts text with the given key.
      * <p>
      * The text is converted to UTF-8 and padded with zeroes to meet the AES block
@@ -119,6 +75,50 @@ public final class AESUtil {
 
         final ByteBuffer bb = ByteBuffer.wrap(outputBytes);
         return Charset.forName(DEFAULT_STRING_ENCODING).decode(bb).toString();
+    }
+
+
+    /**
+     * Instantiates an initialization vector (IV).
+     * 
+     * @param ivData the initialization vector bytes
+     * @return an initialization vector
+     */
+    public static IvParameterSpec getIv(byte[] ivData) {
+        return new IvParameterSpec(ivData);
+    }
+
+    /**
+     * Instantiates an AES key.
+     * 
+     * @param keyData The key bytes
+     * @return An AES key
+     */
+    public static Key getKey(byte[] keyData) {
+        return new SecretKeySpec(keyData, "AES");
+    }
+
+
+    /**
+     * Pads a byte array with nulls so that its length is a multiple of the AES block.
+     * 
+     * @param bytes the bytes to be padded
+     * @return the byte[] padded in null bytes
+     */
+    public static byte[] padBuffer(byte[] bytes) {
+        int r = bytes.length % AES_DEFAULT_PADDING;
+        if (r == 0) {
+            return bytes;
+        } else {
+            int newLength = bytes.length + (AES_DEFAULT_PADDING - r);
+            return Arrays.copyOf(bytes, newLength);
+        }
+    }
+
+    /**
+     * Prevent the instantiation of this utility class.
+     */
+    private AESUtil() {
     }
 
 }

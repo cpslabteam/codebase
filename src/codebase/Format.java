@@ -8,29 +8,36 @@ package codebase;
  * 
  * TODO: upgrade to a Java formatter for better integration.
  */
-public class Format {
+public final class Format {
 
     /**
-     * Converts a string to a visible ascii string.
-     * <p>
-     * This routine is means to be used in to dump strings that may have binary data.
+     * Formats a size in bytes adjusting it to (KB, MB, GB).
      * 
-     * @param string the string to be converted
-     * @param invisible the character to replace the invisible control characters
-     * @return a string where invisible characters are replaced by a predefined character.
+     * @param bytes the amount of bytes
+     * @param decimals places for the rounding
+     * @return human readable string for bytes including the unit
      */
-    public static String visibleAsciiString(final String string, final char invisible) {
-        final byte[] target = string.getBytes();
-        for (int i = 0; i < target.length; i++) {
-            if (Strings.isControl((char) target[i])) {
-                target[i] = (byte) invisible;
-            }
+    public static String formatBytes(final long bytes, final int decimals) {
+        final String result;
+
+        if (bytes >= Conversions.GB) {
+            result = Double.toString(Math.round(Conversions.gb(bytes), decimals))
+                    + Conversions.GB_UNIT;
+        } else if (bytes >= Conversions.MB) {
+            result = Double.toString(Math.round(Conversions.mb(bytes), decimals))
+                    + Conversions.MB_UNIT;
+        } else if (bytes >= Conversions.KB) {
+            result = Double.toString(Math.round(Conversions.kb(bytes), decimals))
+                    + Conversions.KB_UNIT;
+        } else {
+            result = Long.toString(bytes) + Conversions.BYTE_UNIT;
         }
-        return new String(target);
+
+        return result;
     }
 
     /**
-     * Parses a string to a size in bytes
+     * Parses a string to a size in bytes.
      * <p>
      * Note that the case of the units is irrelevant
      * 
@@ -61,29 +68,28 @@ public class Format {
     }
 
     /**
-     * Formats a size in bytes adjusting it to (KB, MB, GB)
+     * Converts a string to a visible ascii string.
+     * <p>
+     * This routine is means to be used in to dump strings that may have binary data.
      * 
-     * @param bytes the ammount of bytes
-     * @param decimals places for the rounding
-     * @return human readable string for bytes including the unit
+     * @param string the string to be converted
+     * @param invisible the character to replace the invisible control characters
+     * @return a string where invisible characters are replaced by a predefined character.
      */
-    public static String formatBytes(final long bytes, final int decimals) {
-        final String result;
-
-        if (bytes >= Conversions.GB) {
-            result = Double.toString(Math.round(Conversions.gb(bytes), decimals))
-                    + Conversions.GB_UNIT;
-        } else if (bytes >= Conversions.MB) {
-            result = Double.toString(Math.round(Conversions.mb(bytes), decimals))
-                    + Conversions.MB_UNIT;
-        } else if (bytes >= Conversions.KB) {
-            result = Double.toString(Math.round(Conversions.kb(bytes), decimals))
-                    + Conversions.KB_UNIT;
-        } else {
-            result = Long.toString(bytes) + Conversions.BYTE_UNIT;
+    public static String visibleAsciiString(final String string, final char invisible) {
+        final byte[] target = string.getBytes();
+        for (int i = 0; i < target.length; i++) {
+            if (Strings.isControl((char) target[i])) {
+                target[i] = (byte) invisible;
+            }
         }
+        return new String(target);
+    }
 
-        return result;
+    /**
+     * Prevent instantiation.
+     */
+    private Format() {
     }
 
 }

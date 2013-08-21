@@ -72,9 +72,71 @@ public final class Strings {
             "End of Trans. Block", "Cancel", "End of Medium", "Substitute" };
 
     /**
-     * Avoid this class form being instantiated.
+     * Returns the complete name of a char.
+     * 
+     * @param c is the character
+     * @return a name like <code>Carriage Return</code> if the character is a special
+     *         charcter. Returns the string representation otherwise.
      */
-    private Strings() {
+    public static String charNameLong(final char c) {
+        if (isControl(c)) {
+            return LONG_CHAR_NAMES[c];
+        } else {
+            return Character.toString(c);
+        }
+    }
+
+    /**
+     * Retruns the compact name of a char.
+     * 
+     * @param c is the character
+     * @return a name like <code>TAB</code>, <code>EOT</code> or <code>CR</code> if the
+     *         character is a special chatarcter. Returns the string representation
+     *         otherwise.
+     */
+    public static String charNameShort(final char c) {
+        if (isControl(c)) {
+            return SHORT_CHAR_NAMES[c];
+        } else {
+            return Character.toString(c);
+        }
+    }
+
+    /**
+     * Compacts a string for displaying.
+     * <p>
+     * This function is meant to be used to avoid the user to be overwelmed by very large
+     * size dumps. To that end it gets the header of the string and the trailer that serve
+     * as a summary of the string.
+     * <p>
+     * If the original string is smaller that the specified size, the original string is
+     * returned.
+     * 
+     * @param str the original string
+     * @param size the maximum size for display. The size must be greater than 5. If the
+     *            specified size is smaller than 5, it is ignored.
+     * @return a string of the form <code>xxxxxx ... xxxxxx</code> with atmost
+     *         <code>size</code> characters.
+     */
+    public static String compactFormat(final String str, final int size) {
+        final String ellipsis = "...";
+        final int lenEllipsis = ellipsis.length();
+        final int len = str.length();
+        if ((size < ellipsis.length() + 2) || (len <= size)) {
+            return str;
+        } else {
+            final int headerSize = (size - lenEllipsis) / 2;
+            final int trailerSize;
+            if ((2 * (headerSize + 1) + lenEllipsis) <= size + 1) {
+                trailerSize = headerSize + 1;
+            } else {
+                trailerSize = headerSize;
+            }
+            final String result = str.substring(0, headerSize) + ellipsis
+                    + str.substring(len - (trailerSize - 1), len);
+            // ASSERT: result.length = size
+            return result;
+        }
     }
 
     /**
@@ -97,6 +159,16 @@ public final class Strings {
             index += 1;
         }
         return -1;
+    }
+
+    /**
+     * Determines if an ascii character is a control character.
+     * 
+     * @param c a character
+     * @return <code>true</code> if <code>0&leq;c and c<{@link #ASCII_SPACE_BYTE}</code>.
+     */
+    public static boolean isControl(final char c) {
+        return (0 <= c) && (c < ASCII_SPACE_BYTE);
     }
 
     /**
@@ -136,16 +208,6 @@ public final class Strings {
         }
 
         return result;
-    }
-
-    /**
-     * Determines if an ascii character is a control character.
-     * 
-     * @param c a character
-     * @return <code>true</code> if <code>0&leq;c and c<{@link #ASCII_SPACE_BYTE}</code>.
-     */
-    public static boolean isControl(final char c) {
-        return (0 <= c) && (c < ASCII_SPACE_BYTE);
     }
 
     /**
@@ -189,6 +251,26 @@ public final class Strings {
     }
 
     /**
+     * Create a string with with a char repeated a number of times.
+     * 
+     * @param chr the char to be repeted
+     * @param n the number of times that the string shound be repeated
+     * @return a new string with filled with the specified char n times.
+     */
+    public static String repeat(final char chr, final int n) {
+        if (n > 0) {
+            final char[] buffer = new char[n];
+            for (int i = 0; i < n; i++) {
+                buffer[i] = chr;
+            }
+
+            return new String(buffer);
+        } else {
+            return "";
+        }
+    }
+
+    /**
      * Create a string with a string repeated a number of times.
      * 
      * @param str the string to be repeted
@@ -210,127 +292,23 @@ public final class Strings {
     }
 
     /**
-     * Create a string with with a char repeated a number of times.
+     * Tests two strings for equality when one or both of them can be <code>null</code>.
      * 
-     * @param chr the char to be repeted
-     * @param n the number of times that the string shound be repeated
-     * @return a new string with filled with the specified char n times.
+     * @param left the left hand string
+     * @param right the right hand string
+     * @return <code>true</code> if both left and right are <code>null</code>, returns
+     *         <code>false</code> if one of them is <code>null</code> and the other is
+     *         not, returns <code>left.equals(right)</code> is none of them is
+     *         <code>null</code>
      */
-    public static String repeat(final char chr, final int n) {
-        if (n > 0) {
-            final char[] buffer = new char[n];
-            for (int i = 0; i < n; i++) {
-                buffer[i] = chr;
-            }
-
-            return new String(buffer);
+    public static boolean safeStrEquals(final String left, final String right) {
+        if (left == right) {
+            return true;
+        } else if ((left != null && right == null) || (left == null)) {
+            return false;
         } else {
-            return "";
+            return left.equals(right);
         }
-    }
-
-    /**
-     * Trims white white spaces right from the string.
-     * 
-     * @param str the string to skip white spaces from
-     * @return the pointer to a buffer with the string trimmed from spaces on the right.
-     *         If there are no spaces to trim it returns the string itself.
-     */
-    public static String trimRight(final java.lang.String str) {
-        return trimCharRight(str, ' ');
-    }
-
-    /**
-     * Trims characters right from the string.
-     * 
-     * @param str the string to skip white spaces from
-     * @param ch is the character to be trimed
-     * @return the pointer to a buffer with the string trimmed from all occourences of ch
-     *         on the right. If ch is not found returns the original string.
-     */
-    public static String trimCharRight(final java.lang.String str, final char ch) {
-        int noCharPosIdx = lastIndexNotOf(str, ch);
-        if (noCharPosIdx > -1) {
-            return str.substring(0, noCharPosIdx + 1);
-        } else {
-            return str;
-        }
-    }
-
-    /**
-     * Skips white spaces from the left of a string.
-     * 
-     * @param str the string to skip white spaces from
-     * @return the first non-SPACE character of the string or the original string if the
-     *         SPACE character is not found
-     */
-    public static String trimLeft(final String str) {
-        return trimCharLeft(str, ' ');
-    }
-
-    /**
-     * Skips all occourences of ch from a string.
-     * 
-     * @param str the string to skip white spaces from
-     * @param ch is the char to be trimmed
-     * @return the first non-SPACE character or the original string if the character ch is
-     *         not found
-     */
-    public static String trimCharLeft(final java.lang.String str, final char ch) {
-        int noCharPosIdx = firstIndexNotOf(str, ch);
-        if (noCharPosIdx > -1) {
-            return str.substring(noCharPosIdx);
-        } else {
-            return str;
-        }
-    }
-
-    /**
-     * Skips the first occurrence of token from a string.
-     * 
-     * @param str the string where the token is to be found.
-     * @param token is the token to be skipped
-     * @return a pointer to the character immediately after the token or the void. Returns
-     *         the original string if the token is not found.
-     */
-    public static String stripPrefix(final String str, final java.lang.String token) {
-        if (token.length() > 0 && str.startsWith(token)) {
-            return str.substring(token.length());
-        } else {
-            return str;
-        }
-    }
-
-    /**
-     * Puts " before and after the string.
-     * 
-     * @param str the string to stringify
-     * @return a new string with " before and after
-     */
-    public static String stringify(final String str) {
-        return DOUBLE_QUOTE + str + DOUBLE_QUOTE;
-    }
-
-    /**
-     * Trims white spaces right and left from the string.
-     * 
-     * @param str the string to skip white spaces from
-     * @return the pointer to a buffer with the string trimmed from spaces on both sizes.
-     *         if there are no spaces to trim it returns the string itself.
-     */
-    public static String trim(final String str) {
-        return str.trim();
-    }
-
-    /**
-     * Trims characters right and left from the string.
-     * 
-     * @param str the string to skip white spaces from
-     * @param ch is the char to be trimmed
-     * @return the the string trimmed from all occurrences of the ch character.
-     */
-    public static String trimChar(final String str, final char ch) {
-        return trimCharRight(trimCharLeft(str, ch), ch);
     }
 
     /**
@@ -365,90 +343,112 @@ public final class Strings {
     }
 
     /**
-     * Compacts a string for displaying.
-     * <p>
-     * This function is meant to be used to avoid the user to be overwelmed by very large
-     * size dumps. To that end it gets the header of the string and the trailer that serve
-     * as a summary of the string.
-     * <p>
-     * If the original string is smaller that the specified size, the original string is
-     * returned.
+     * Puts " before and after the string.
      * 
-     * @param str the original string
-     * @param size the maximum size for display. The size must be greater than 5. If the
-     *            specified size is smaller than 5, it is ignored.
-     * @return a string of the form <code>xxxxxx ... xxxxxx</code> with atmost
-     *         <code>size</code> characters.
+     * @param str the string to stringify
+     * @return a new string with " before and after
      */
-    public static String compactFormat(final String str, final int size) {
-        final String ellipsis = "...";
-        final int lenEllipsis = ellipsis.length();
-        final int len = str.length();
-        if ((size < ellipsis.length() + 2) || (len <= size)) {
+    public static String stringify(final String str) {
+        return DOUBLE_QUOTE + str + DOUBLE_QUOTE;
+    }
+
+    /**
+     * Skips the first occurrence of token from a string.
+     * 
+     * @param str the string where the token is to be found.
+     * @param token is the token to be skipped
+     * @return a pointer to the character immediately after the token or the void. Returns
+     *         the original string if the token is not found.
+     */
+    public static String stripPrefix(final String str, final java.lang.String token) {
+        if (token.length() > 0 && str.startsWith(token)) {
+            return str.substring(token.length());
+        } else {
             return str;
-        } else {
-            final int headerSize = (size - lenEllipsis) / 2;
-            final int trailerSize;
-            if ((2 * (headerSize + 1) + lenEllipsis) <= size + 1) {
-                trailerSize = headerSize + 1;
-            } else {
-                trailerSize = headerSize;
-            }
-            final String result = str.substring(0, headerSize) + ellipsis
-                    + str.substring(len - (trailerSize - 1), len);
-            // ASSERT: result.length = size
-            return result;
         }
     }
 
     /**
-     * Retruns the compact name of a char.
+     * Trims white spaces right and left from the string.
      * 
-     * @param c is the character
-     * @return a name like <code>TAB</code>, <code>EOT</code> or <code>CR</code> if the
-     *         character is a special chatarcter. Returns the string representation
-     *         otherwise.
+     * @param str the string to skip white spaces from
+     * @return the pointer to a buffer with the string trimmed from spaces on both sizes.
+     *         if there are no spaces to trim it returns the string itself.
      */
-    public static String charNameShort(final char c) {
-        if (isControl(c)) {
-            return SHORT_CHAR_NAMES[c];
+    public static String trim(final String str) {
+        return str.trim();
+    }
+
+    /**
+     * Trims characters right and left from the string.
+     * 
+     * @param str the string to skip white spaces from
+     * @param ch is the char to be trimmed
+     * @return the the string trimmed from all occurrences of the ch character.
+     */
+    public static String trimChar(final String str, final char ch) {
+        return trimCharRight(trimCharLeft(str, ch), ch);
+    }
+
+    /**
+     * Skips all occourences of ch from a string.
+     * 
+     * @param str the string to skip white spaces from
+     * @param ch is the char to be trimmed
+     * @return the first non-SPACE character or the original string if the character ch is
+     *         not found
+     */
+    public static String trimCharLeft(final java.lang.String str, final char ch) {
+        int noCharPosIdx = firstIndexNotOf(str, ch);
+        if (noCharPosIdx > -1) {
+            return str.substring(noCharPosIdx);
         } else {
-            return Character.toString(c);
+            return str;
         }
     }
 
     /**
-     * Returns the complete name of a char.
+     * Trims characters right from the string.
      * 
-     * @param c is the character
-     * @return a name like <code>Carriage Return</code> if the character is a special
-     *         charcter. Returns the string representation otherwise.
+     * @param str the string to skip white spaces from
+     * @param ch is the character to be trimed
+     * @return the pointer to a buffer with the string trimmed from all occourences of ch
+     *         on the right. If ch is not found returns the original string.
      */
-    public static String charNameLong(final char c) {
-        if (isControl(c)) {
-            return LONG_CHAR_NAMES[c];
+    public static String trimCharRight(final java.lang.String str, final char ch) {
+        int noCharPosIdx = lastIndexNotOf(str, ch);
+        if (noCharPosIdx > -1) {
+            return str.substring(0, noCharPosIdx + 1);
         } else {
-            return Character.toString(c);
+            return str;
         }
     }
 
     /**
-     * Tests two strings for equality when one or both of them can be <code>null</code>.
+     * Skips white spaces from the left of a string.
      * 
-     * @param left the left hand string
-     * @param right the right hand string
-     * @return <code>true</code> if both left and right are <code>null</code>, returns
-     *         <code>false</code> if one of them is <code>null</code> and the other is
-     *         not, returns <code>left.equals(right)</code> is none of them is
-     *         <code>null</code>
+     * @param str the string to skip white spaces from
+     * @return the first non-SPACE character of the string or the original string if the
+     *         SPACE character is not found
      */
-    public static boolean safeStrEquals(final String left, final String right) {
-        if (left == right) {
-            return true;
-        } else if ((left != null && right == null) || (left == null)) {
-            return false;
-        } else {
-            return left.equals(right);
-        }
+    public static String trimLeft(final String str) {
+        return trimCharLeft(str, ' ');
+    }
+
+    /**
+     * Trims white white spaces right from the string.
+     * 
+     * @param str the string to skip white spaces from
+     * @return the pointer to a buffer with the string trimmed from spaces on the right.
+     *         If there are no spaces to trim it returns the string itself.
+     */
+    public static String trimRight(final java.lang.String str) {
+        return trimCharRight(str, ' ');
+    }
+
+    /**
+     * Avoid this class form being instantiated.
+     */
+    private Strings() {
     }
 }

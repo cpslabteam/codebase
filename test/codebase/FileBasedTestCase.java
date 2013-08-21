@@ -12,7 +12,7 @@ import junit.framework.AssertionFailedError;
 import junit.framework.TestCase;
 
 /**
- * Base class for testcases doing tests with files.
+ * Base class for test cases doing tests with files.
  */
 public abstract class FileBasedTestCase extends
         TestCase {

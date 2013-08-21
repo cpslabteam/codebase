@@ -12,40 +12,28 @@ import codebase.binary.Binary;
 /**
  * Implementation of the MD5 message digest algorithm.
  * <p>
- * The MD5 algorithm (RFC1321) developed by Professor Ronald L Rivest of MIT.
+ * The MD5 algorithm (RFC1321) developed by Professor Rivest of MIT. In essence, MD5 is a
+ * way to verify data integrity, and is much more reliable than checksum and many other
+ * commonly used methods.
  * <p>
- * In essence, MD5 is a way to verify data integrity, and is much more
- * reliable than checksum and many other commonly used methods.
+ * Note that for security critical applications MD5 should not be used. Instead use SHA1.
  * <p>
- * Note that for security critical applications MD5 should no be used. Instead
- * use SHA1.
+ * Licensing: Implements RSA Data Security, Inc. MD5 Message-Digest Algorithm and/or its
+ * reference implementation.
  * <p>
- * Licensing: Implements RSA Data Security, Inc. MD5 Message-Digest Algorithm
- * and/or its reference implementation.
  */
 public final class MD5 {
 
     /**
-     * The size in bytes of the message digest output
+     * Prevent instantiation.
      */
-    private static final int DIGEST_SIZE = 16;
+    private MD5() {
+    }
 
     /**
-     * Size in bytes of the treatment unit. We perform the treatment in block
-     * of 64 bytes.
+     * Encapsulates the math details and constants used by the MD5 algorithm.
      */
-    private static final int BLOCK_TREATMENT_SIZE = DIGEST_SIZE
-            * Binary.INT_LENGTH_BYTES;
-
-    /**
-     * Size of the blocks to be read from the stream
-     */
-    private static final int STREAM_BLOCK_READ_SIZE = 2048;
-
-    /**
-     * Encapsulates the math details and constants used
-     */
-    private static final class Funcs {
+    private static final class MD5Funcs {
         private static final int S11 = 7;
 
         private static final int S12 = 12;
@@ -78,87 +66,98 @@ public final class MD5 {
 
         private static final int S44 = 21;
 
-        private static byte[] padding = {
-                (byte) 0x80, (byte) 0, (byte) 0, (byte) 0, (byte) 0,
-                (byte) 0, (byte) 0, (byte) 0, (byte) 0, (byte) 0, (byte) 0,
-                (byte) 0, (byte) 0, (byte) 0, (byte) 0, (byte) 0, (byte) 0,
-                (byte) 0, (byte) 0, (byte) 0, (byte) 0, (byte) 0, (byte) 0,
-                (byte) 0, (byte) 0, (byte) 0, (byte) 0, (byte) 0, (byte) 0,
-                (byte) 0, (byte) 0, (byte) 0, (byte) 0, (byte) 0, (byte) 0,
-                (byte) 0, (byte) 0, (byte) 0, (byte) 0, (byte) 0, (byte) 0,
-                (byte) 0, (byte) 0, (byte) 0, (byte) 0, (byte) 0, (byte) 0,
-                (byte) 0, (byte) 0, (byte) 0, (byte) 0, (byte) 0, (byte) 0,
-                (byte) 0, (byte) 0, (byte) 0, (byte) 0, (byte) 0, (byte) 0,
-                (byte) 0, (byte) 0, (byte) 0, (byte) 0, (byte) 0};
+        //CHECKSTYLE:OFF
 
-        private static final int F(int x, int y, int z) {
+        /*
+         * Checkstyle complains about constants and about the function names of the 
+         * MD5 algorithm below. Fixing this would make the code less readable.
+         */
+        private static final byte[] PADDING = { (byte) 0x80, (byte) 0, (byte) 0, (byte) 0,
+                (byte) 0, (byte) 0, (byte) 0, (byte) 0, (byte) 0, (byte) 0, (byte) 0, (byte) 0,
+                (byte) 0, (byte) 0, (byte) 0, (byte) 0, (byte) 0, (byte) 0, (byte) 0, (byte) 0,
+                (byte) 0, (byte) 0, (byte) 0, (byte) 0, (byte) 0, (byte) 0, (byte) 0, (byte) 0,
+                (byte) 0, (byte) 0, (byte) 0, (byte) 0, (byte) 0, (byte) 0, (byte) 0, (byte) 0,
+                (byte) 0, (byte) 0, (byte) 0, (byte) 0, (byte) 0, (byte) 0, (byte) 0, (byte) 0,
+                (byte) 0, (byte) 0, (byte) 0, (byte) 0, (byte) 0, (byte) 0, (byte) 0, (byte) 0,
+                (byte) 0, (byte) 0, (byte) 0, (byte) 0, (byte) 0, (byte) 0, (byte) 0, (byte) 0,
+                (byte) 0, (byte) 0, (byte) 0, (byte) 0 };
+
+        private static int F(int x, int y, int z) {
             return ((x & y) | ((~x) & z));
         }
 
-        private static final int G(int x, int y, int z) {
+        private static int FF(int a, int b, int c, int d, int x, int s, int ac) {
+            int ff = a;
+            ff += (F(b, c, d) + x + ac);
+            ff = rotateLeft(ff, s);
+            ff += b;
+            return ff;
+        }
+
+        private static int G(int x, int y, int z) {
             return ((x & z) | (y & (~z)));
         }
 
-        private static final int H(int x, int y, int z) {
+        private static int GG(int a, int b, int c, int d, int x, int s, int ac) {
+            int gg = a;
+            gg += (G(b, c, d) + x + ac);
+            gg = rotateLeft(gg, s);
+            gg += b;
+            return gg;
+        }
+
+        private static int H(int x, int y, int z) {
             return (x ^ y ^ z);
         }
 
-        private static final int I(int x, int y, int z) {
+        private static int HH(int a, int b, int c, int d, int x, int s, int ac) {
+            int hh = a;
+            hh += (H(b, c, d) + x + ac);
+            hh = rotateLeft(hh, s);
+            hh += b;
+            return hh;
+        }
+
+        private static int I(int x, int y, int z) {
             return (y ^ (x | (~z)));
         }
 
-        private static final int rotateLeft(int x, int n) {
-            return ((x << n) | (x >>> (32 - n)));
+        private static int II(int a, int b, int c, int d, int x, int s, int ac) {
+            int ii = a;
+            ii += (I(b, c, d) + x + ac);
+            ii = rotateLeft(ii, s);
+            ii += b;
+            return ii;
         }
 
-        private static final int FF(int a, int b, int c, int d, int x, int s,
-                int ac) {
-            a += (F(b, c, d) + x + ac);
-            a = rotateLeft(a, s);
-            a += b;
-            return a;
-        }
+        // CHECKSTYLE:ON
 
-        private static final int GG(int a, int b, int c, int d, int x, int s,
-                int ac) {
-            a += (G(b, c, d) + x + ac);
-            a = rotateLeft(a, s);
-            a += b;
-            return a;
-        }
-
-        private static final int HH(int a, int b, int c, int d, int x, int s,
-                int ac) {
-            a += (H(b, c, d) + x + ac);
-            a = rotateLeft(a, s);
-            a += b;
-            return a;
-        }
-
-        private static final int II(int a, int b, int c, int d, int x, int s,
-                int ac) {
-            a += (I(b, c, d) + x + ac);
-            a = rotateLeft(a, s);
-            a += b;
-            return a;
+        private static int rotateLeft(int x, int n) {
+            return ((x << n) | (x >>> (Binary.BITS_FOR_FOUR_BYTES - n)));
         }
 
         /**
-         * Builds a new digest from a previous digest, with a block of 64
-         * bytes (four 16 bytes)
-         *
+         * Builds a new digest from a previous digest, with a block of 64 bytes (four 16
+         * bytes).
+         * 
          * @param block the block to be added
-         * @param offset the the
+         * @param offset the offset in the block to take the bytes from
+         * @param state the state vector with four integer that will be updated
          */
-        private static final void transform(byte[] block, int offset,
-                final int[] state) {
+        private static void transform(byte[] block, int offset, final int[] state) {
+            // CHECKSTYLE:OFF
+
+            /*
+             * The implementation of this method uses array offsets and constants that 
+             * cause checkstyle to complain.
+             */
+
             int a = state[0];
             int b = state[1];
             int c = state[2];
             int d = state[3];
 
-            int[] x = Binary.encodeBytesToIntegers(block, offset,
-                BLOCK_TREATMENT_SIZE);
+            final int[] x = Binary.encodeBytesToIntegers(block, offset, BLOCK_TREATMENT_SIZE);
 
             /* Round 1 */
             a = FF(a, b, c, d, x[0], S11, 0xd76aa478); /* 1 */
@@ -231,6 +230,8 @@ public final class MD5 {
             c = II(c, d, a, b, x[2], S43, 0x2ad7d2bb); /* 63 */
             b = II(b, c, d, a, x[9], S44, 0xeb86d391); /* 64 */
 
+            //CHECKTYLE:ON
+
             state[0] += a;
             state[1] += b;
             state[2] += c;
@@ -239,13 +240,13 @@ public final class MD5 {
     }
 
     /**
-     * State of the algorithm comprising the 16-bytes. The state can be used
-     * to digest very long streams, by calling update successively
+     * State of the algorithm comprising the 16-bytes. The state can be used to digest
+     * very long streams, by calling update successively
      */
     private static class State {
         /**
-         * Number of positions in the array of integers that correspond to the
-         * size of 16 bytes
+         * Number of positions in the array of integers that correspond to the size of 16
+         * bytes
          */
         private static final int NUM_POSITIONS = 16 / Binary.INT_LENGTH_BYTES;
 
@@ -260,7 +261,7 @@ public final class MD5 {
         private long count = 0;
 
         /**
-         * 64-byte tretment buffer.
+         * 64-byte treatment buffer.
          */
         private byte[] buffer = null;
 
@@ -271,22 +272,22 @@ public final class MD5 {
             init();
         }
 
-        /**
-         * Initializes the digest array This method can be called to start
-         * before digesting another string
-         */
-        public final void init() {
-            digest[0] = 0x67452301;
-            digest[1] = 0xefcdab89;
-            digest[2] = 0x98badcfe;
-            digest[3] = 0x10325476;
-            count = 0;
-            buffer = new byte[BLOCK_TREATMENT_SIZE];
+        private byte[] end() {
+            byte[] bits = new byte[Binary.BITS_PER_BYTE];
+            for (int i = 0; i < Binary.BITS_PER_BYTE; i++) {
+                final int displacement = (i * Binary.BITS_PER_BYTE);
+                bits[i] = (byte) ((count >>> displacement) & Binary.INT_LOW_BYTE_MASK);
+            }
+            int index = ((int) (count >> 3)) & 0x3f;
+            int padlen = (index < 56) ? (56 - index) : (120 - index);
+            update(MD5Funcs.PADDING, padlen);
+            update(bits, Binary.BITS_PER_BYTE);
+            return Binary.decodeIntegersToBytes(digest, 2 * Binary.BITS_PER_BYTE);
         }
 
         /**
          * Updates the digest with length bytes takes from the input buffer
-         *
+         * 
          * @param input the input buffer
          * @param length the number of bytes to be consumed
          */
@@ -297,9 +298,9 @@ public final class MD5 {
             int i = 0;
             if (length >= remainingBytes) {
                 System.arraycopy(input, 0, buffer, index, remainingBytes);
-                Funcs.transform(buffer, 0, digest);
+                MD5Funcs.transform(buffer, 0, digest);
                 for (i = remainingBytes; i + 63 < length; i += 64)
-                    Funcs.transform(input, i, digest);
+                    MD5Funcs.transform(input, i, digest);
                 index = 0;
             } else {
                 i = 0;
@@ -308,78 +309,84 @@ public final class MD5 {
         }
 
         /**
-         * @return
+         * Initializes the digest array This method can be called to start before
+         * digesting another string
          */
-        private byte[] end() {
-            byte[] bits = new byte[Binary.BITS_PER_BYTE];
-            for (int i = 0; i < Binary.BITS_PER_BYTE; i++) {
-                final int displacement = (i * Binary.BITS_PER_BYTE);
-                bits[i] = (byte) ((count >>> displacement) & Binary.INT_LOW_BYTE_MASK);
-            }
-            int index = ((int) (count >> 3)) & 0x3f;
-            int padlen = (index < 56) ? (56 - index) : (120 - index);
-            update(Funcs.padding, padlen);
-            update(bits, Binary.BITS_PER_BYTE);
-            return Binary.decodeIntegersToBytes(digest,
-                2 * Binary.BITS_PER_BYTE);
+        public final void init() {
+            digest[0] = 0x67452301;
+            digest[1] = 0xefcdab89;
+            digest[2] = 0x98badcfe;
+            digest[3] = 0x10325476;
+            count = 0;
+            buffer = new byte[BLOCK_TREATMENT_SIZE];
         }
 
-    };
-
-    /**
-     * Get the digestt of a string. This method constructs the digest of a
-     * string following the MD5 (RFC1321) algorithm, and returns it as an hex
-     * string assuming a UTF-8 as default encoding
-     *
-     * @param s the string to be digested
-     * @return An instance of String, with the MD5 result of a message.
-     */
-    public static String getDigest(final String s) {
-        final String hexDigest = Binary.toHexString(getDigestRaw(s,
-            Strings.UTF8_ENCODING));
-        return hexDigest;
     }
 
     /**
-     * Get the digest of a string. This method constructs the digest of a
-     * string of a given encoding following the MD5 (RFC1321) algorithm, and
-     * returns it as an hex string. This method is encoding aware. This is
-     * very important because the number of bytes (not chars) may be
-     * different. We need the encoding to obtain the bytes of the String
-     * object.
-     *
-     * @param s the string to be digested
-     * @param encoding the encoding to be used
-     * @return An instance of String, with the MD5 result of a message.
+     * The size in bytes of the message digest output.
      */
-    public static String getDigest(final String s, final String encoding) {
-        final String hexDigest = Binary
-            .toHexString(getDigestRaw(s, encoding));
-        return hexDigest;
-    }
+    private static final int DIGEST_SIZE = 16;
+
+    /**
+     * Size in bytes of the treatment unit. We perform the treatment in block of 64 bytes.
+     */
+    private static final int BLOCK_TREATMENT_SIZE = DIGEST_SIZE * Binary.INT_LENGTH_BYTES;
+
+    /**
+     * Size of the blocks to be read from the stream.
+     */
+    private static final int STREAM_BLOCK_READ_SIZE = 2048;;
 
     /**
      * Computes the digest of a stream of bytes
-     *
+     * 
      * @param input the input stream
      * @return an hex string with the message digest
      * @throws IOException if a problem occurs while reading the stream
      */
-    public static String getDigest(final InputStream input)
-            throws IOException {
+    public static String getDigest(final InputStream input) throws IOException {
         final String hexDigest = Binary.toHexString(getDigestRaw(input));
         return hexDigest;
     }
 
     /**
+     * Get the digestt of a string. This method constructs the digest of a string
+     * following the MD5 (RFC1321) algorithm, and returns it as an hex string assuming a
+     * UTF-8 as default encoding
+     * 
+     * @param s the string to be digested
+     * @return An instance of String, with the MD5 result of a message.
+     */
+    public static String getDigest(final String s) {
+        final String hexDigest = Binary.toHexString(getDigestRaw(s, Strings.UTF8_ENCODING));
+        return hexDigest;
+    }
+
+    /**
+     * Get the digest of a string. This method constructs the digest of a string of a
+     * given encoding following the MD5 (RFC1321) algorithm, and returns it as an hex
+     * string. This method is encoding aware. This is very important because the number of
+     * bytes (not chars) may be different. We need the encoding to obtain the bytes of the
+     * String object.
+     * 
+     * @param s the string to be digested
+     * @param encoding the encoding to be used
+     * @return An instance of String, with the MD5 result of a message.
+     */
+    public static String getDigest(final String s, final String encoding) {
+        final String hexDigest = Binary.toHexString(getDigestRaw(s, encoding));
+        return hexDigest;
+    }
+
+    /**
      * Returns a message digest from a string and an encoding
-     *
+     * 
      * @param input the input stream to be treated
      * @return the 16-byte array containing the message digest
      * @throws RuntimeException if the encoding is not supported
      */
-    public static final byte[] getDigestRaw(final InputStream input)
-            throws IOException {
+    public static final byte[] getDigestRaw(final InputStream input) throws IOException {
         byte[] bytes = new byte[STREAM_BLOCK_READ_SIZE];
 
         int size = -1;
@@ -396,14 +403,13 @@ public final class MD5 {
 
     /**
      * Returns a message digest from a string and an encoding
-     *
+     * 
      * @param s the string to be treated
      * @param encoding the encoding to be used
      * @return the 16-byte array containg the message digest
      * @throws RuntimeException if the encoding is not supported
      */
-    public static final byte[] getDigestRaw(final String s,
-            final String encoding) {
+    public static final byte[] getDigestRaw(final String s, final String encoding) {
         byte[] bytes = null;
 
         try {

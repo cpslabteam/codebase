@@ -18,10 +18,19 @@ import java.lang.reflect.Array;
  */
 public final class Arrays {
 
-    /**
-     * Avoid instantiation of utility class.
+    /*
+     * Tests if two object arrays are equal!
      */
-    private Arrays() {
+    private static boolean isEqualArrayDeep1(Object[] left, Object[] right) {
+        if (left.length == right.length) {
+            for (int objIndex = 0; objIndex < left.length; objIndex++) {
+                if (!isEqualArrayDeep(left[objIndex], right[objIndex])) {
+                    return false;
+                }
+            }
+            return true;
+        }
+        return false;
     }
 
     /**
@@ -85,25 +94,6 @@ public final class Arrays {
     }
 
     /**
-     * Appends an object array with another.
-     * <p>
-     * This is an efficient implementation that uses
-     * {@link System#arraycopy(java.lang.Object, int, java.lang.Object, int, int)} in its
-     * implementation.
-     * 
-     * @param leftArray the left hand array
-     * @param rightArray the right hand array
-     * @return a array composed of the the left hand array elements followed by the
-     *         elements of the right hand array
-     */
-    public static Object[] append(Object[] leftArray, Object[] rightArray) {
-        final Object[] result = new Object[leftArray.length + rightArray.length];
-        System.arraycopy(leftArray, 0, result, 0, leftArray.length);
-        System.arraycopy(rightArray, 0, result, leftArray.length, rightArray.length);
-        return result;
-    }
-
-    /**
      * Appends one byte array with another.
      * 
      * @param left the left hand side array
@@ -139,329 +129,22 @@ public final class Arrays {
     }
 
     /**
-     * Checks that all elements of integer array are within bounds.
-     * 
-     * @param array the integer array to be checked
-     * @param max the maximum limit
-     * @param min the minimum
-     * @return <code>true</code> if for every element <i>e</i> of the array
-     *         <code>min<=<i>e</i><=max</code>. Returns <code>false</code> otherwise.
-     */
-    public static boolean inBounds(final int[] array, final int min, final int max) {
-        for (int i = 0; i < array.length; i++) {
-            final int e = array[i];
-            if ((min > e) || (max < e)) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    /**
-     * Checks if two arrays are equal element by element.
-     * 
-     * @param what the first parameter to be compared
-     * @param to the seconds parameter to be compared
-     * @return <code>true</code> if the arrays are the same, both <code>null</code> or the
-     *         elements compare to true using the method
-     *         {@link Object#equals(java.lang.Object)}
-     */
-    public static boolean equals(final Object[] what, final Object[] to) {
-        /*
-         * If they are the same reference or both null
-         */
-        if (what == to) {
-            return true;
-        }
-
-        /*
-         * Can we compare them?
-         */
-        if ((what == null) || (to == null)) {
-            return false;
-        }
-
-        if (what.length == to.length) {
-            /*
-             * check all children
-             */
-            for (int i = 0; i < what.length; ++i) {
-                final Object leftElem = what[i];
-                final Object rightElem = to[i];
-                if ((leftElem != null) && (rightElem != null)) {
-                    if (!leftElem.equals(rightElem)) {
-                        return false;
-                    }
-                } else {
-                    if (leftElem != rightElem) {
-                        return false;
-                    }
-                }
-            }
-
-            /*
-             * All them are equal
-             */
-            return true;
-        }
-
-        /*
-         * One of them is different. We were unable to compare them
-         */
-        return false;
-    }
-
-    /**
-     * Produces an array of {@link Integer} objects from an <code>int[]</code>.
+     * Appends an object array with another.
      * <p>
-     * Can be used to produce an array of objects to feed an iterator
+     * This is an efficient implementation that uses
+     * {@link System#arraycopy(java.lang.Object, int, java.lang.Object, int, int)} in its
+     * implementation.
      * 
-     * @param ints the array to be converted
-     * @return an array of {@link Integer} objects
+     * @param leftArray the left hand array
+     * @param rightArray the right hand array
+     * @return a array composed of the the left hand array elements followed by the
+     *         elements of the right hand array
      */
-    public static Integer[] toIntegerArray(final int[] ints) {
-        final Integer[] result = new Integer[ints.length];
-        for (int i = 0; i < ints.length; i++) {
-            result[i] = Integer.valueOf(ints[i]);
-        }
+    public static Object[] append(Object[] leftArray, Object[] rightArray) {
+        final Object[] result = new Object[leftArray.length + rightArray.length];
+        System.arraycopy(leftArray, 0, result, 0, leftArray.length);
+        System.arraycopy(rightArray, 0, result, leftArray.length, rightArray.length);
         return result;
-    }
-
-    /**
-     * Produces an array of {@link Long} objects from a <code>long[]</code>.
-     * <p>
-     * Can be used to produce an array of objects to feed an iterator
-     * 
-     * @param longs the array to be converted
-     * @return an array of {@link Long} objects
-     */
-    public static Long[] toLongArray(final long[] longs) {
-        final Long[] result = new Long[longs.length];
-        for (int i = 0; i < longs.length; i++) {
-            result[i] = Long.valueOf(longs[i]);
-        }
-        return result;
-    }
-
-    /**
-     * Produces an array of Byte objects from an array of bytes.
-     * <p>
-     * Can be used to produce an array of objects to feed an iterator
-     * 
-     * @param bytes the array to be converted
-     * @return an array of Byte objects
-     */
-    public static Byte[] toByteArray(final byte[] bytes) {
-        final Byte[] result = new Byte[bytes.length];
-        for (int i = 0; i < bytes.length; i++) {
-            result[i] = Byte.valueOf(bytes[i]);
-        }
-        return result;
-    }
-
-    /**
-     * Fills an segment of an array with a predefined value.
-     * 
-     * @param value is the value (an Object) that will be replicated to fill the array
-     * @param startIndex index where the replication should start
-     * @param length number of elements to replicate
-     * @param array is the array that will receive the elements
-     */
-    public static void fill(final Object value,
-                            final int startIndex,
-                            final int length,
-                            final Object[] array) {
-        for (int i = startIndex; i < startIndex + length; i++) {
-            array[i] = value;
-        }
-    }
-
-    /**
-     * Fills an array with an object value.
-     * 
-     * @param array is the array that will receive the elements
-     * @param value is the value (an Object) whose reference will be replicated to fill
-     *            the array
-     */
-    public static void fill(final Object[] array, final Object value) {
-        fill(value, 0, array.length, array);
-    }
-
-
-    /**
-     * Converts flattens an object array.
-     * <p>
-     * 
-     * @param o the object to flattened, a simple object or a Object[] with nested
-     *            Object[].
-     * @return a simple <code>[o]</code> if <code>o</code> is not an array; or an array
-     *         <code>[o1,o2,...]</code> if <code>o</code> is an object array.
-     */
-    public static Object[] flatten(final Object o) {
-
-        if (o == null) {
-            return new Object[] { null };
-        } else if (o instanceof Object[]) {
-            final Object[] oa = (Object[]) o;
-            Object[] result = new Object[] {};
-            for (int i = 0; i < oa.length; i++) {
-                result = codebase.Arrays.append(result, flatten(oa[i]));
-            }
-            return result;
-        } else {
-            return new Object[] { o };
-        }
-    }
-
-    /**
-     * Computes the complement of a set of integers.
-     * <p>
-     * It searches for each element of the set in the universe.
-     * <p>
-     * <b>Note: </b> This method is not symmetric in the sense that, for example
-     * <code>{1} - {0,1,2} = {}</code> and not <code>{0,2}</code> as one could expect.
-     * 
-     * @param s the set to be complemented
-     * @param t the set of integers the represents the universe
-     * @return the complement of <code>s</code> with respect to <code>u
-     *         </code>
-     */
-    public static int[] minus(final int[] s, final int[] t) {
-        int[] result = new int[] {};
-        for (int i = 0; i < s.length; i++) {
-            if (pos(s[i], t) < 0) {
-                result = add(result, s[i]);
-            }
-        }
-        return result;
-    }
-
-    /**
-     * Removes an element from a set of integers.
-     * <p>
-     * It searches for each element of the set in the universe and the removes it.
-     * <p>
-     * 
-     * @param s the set where the element will be searched
-     * @param elem the element to be searched
-     * @return a reference to a copy of the s without all the ocurrences of the element if
-     *         elem was found. If elem was not found returns a copy of s.
-     */
-    public static int[] remove(final int elem, final int[] s) {
-        int[] result = new int[] {};
-        for (int i = 0; i < s.length; i++) {
-            if (s[i] != elem) {
-                result = add(result, s[i]);
-            }
-        }
-        return result;
-    }
-
-    /**
-     * Removes an element from a set of integers.
-     * <p>
-     * It searches for each element of the set in the universe and the removes it.
-     * 
-     * @param s the set where the element will be searched
-     * @param elem the element to be searched
-     * @return a reference to a copy of the s without all the ocurrences of the element if
-     *         elem was found. If elem was not found returns a copy of s.
-     */
-    public static long[] remove(final long elem, final long[] s) {
-        long[] result = new long[] {};
-        for (int i = 0; i < s.length; i++) {
-            if (s[i] != elem) {
-                result = add(result, s[i]);
-            }
-        }
-        return result;
-    }
-
-    /**
-     * Computes the intersection of sets of integers.
-     * <p>
-     * It searches for the elements of the left hand set of the right hand set
-     * 
-     * @param s the left hand set
-     * @param t the right hand set
-     * @return the array that contains the intersection of the two sets
-     */
-    public static int[] intersect(final int[] s, final int[] t) {
-        int[] result = new int[] {};
-        for (int i = 0; i < s.length; i++) {
-            if (pos(s[i], t) > -1) {
-                result = add(result, s[i]);
-            }
-        }
-        return result;
-    }
-
-    /**
-     * Verifies if two objects are equal. It recurse down into arrays.
-     * 
-     * @param left the left hand object
-     * @param right the right hand object
-     * @return true if the objects are equal and their array elements are equal as well.
-     */
-    public static boolean isEqualArrayDeep(final Object left, final Object right) {
-        if ((left instanceof Object[]) && (right instanceof Object[])) {
-            return isEqualArrayDeep1((Object[]) left, (Object[]) right);
-        }
-
-        if (left != null) {
-            return left.equals(right);
-        } else {
-            return false;
-        }
-    }
-
-    /*
-     * Tests if two object arrays are equal!
-     */
-    private static boolean isEqualArrayDeep1(Object[] left, Object[] right) {
-        if (left.length == right.length) {
-            for (int objIndex = 0; objIndex < left.length; objIndex++) {
-                if (!isEqualArrayDeep(left[objIndex], right[objIndex])) {
-                    return false;
-                }
-            }
-            return true;
-        }
-        return false;
-    }
-
-    /**
-     * Returns all integers <i>i </i> such that <code>begin</code> &leq; <i>i </i>&lt;
-     * <code>end</code>.
-     * 
-     * @param begin starting value of the enumeration
-     * @param end limit value of the enumeration (exclusive)
-     * @return all the integers within an interval Note: begin must be less or equal than
-     *         end
-     */
-    public static int[] enumeration(final int begin, final int end) {
-        if (begin > end) {
-            throw new IllegalArgumentException("start must be less or equal than end");
-        }
-
-        final int[] result = new int[end - begin];
-        for (int i = begin; i < end; i++) {
-            result[i - begin] = i;
-        }
-        return result;
-    }
-
-    /**
-     * Copies all objects of one array into another array, starting at a specified
-     * position.
-     * 
-     * @param fromArray array to read the elements from
-     * @param toArray an array to write the elements to
-     * @param toStartIndex index of the target array where elements should start to be
-     *            written.
-     */
-    public static void copy(final Object[] fromArray, final Object[] toArray, final int toStartIndex) {
-        copy(fromArray, 0, toArray, toStartIndex, toArray.length - (1 + toStartIndex));
     }
 
     /**
@@ -628,18 +311,391 @@ public final class Arrays {
     }
 
     /**
-     * Returns a the duplicate of an array of any type. Performs a shallow copy of an
-     * array generically
+     * Copies all objects of one array into another array, starting at a specified
+     * position.
      * 
-     * @param array the aray to be duplicated
-     * @return the reference to the duplicate array
+     * @param fromArray array to read the elements from
+     * @param toArray an array to write the elements to
+     * @param toStartIndex index of the target array where elements should start to be
+     *            written.
      */
-    public static Object duplicate(final Object array) {
-        final int size = Array.getLength(array);
-        final Object newarray = Array.newInstance(array.getClass().getComponentType(), size);
-        System.arraycopy(array, 0, newarray, 0, size);
+    public static void copy(final Object[] fromArray, final Object[] toArray, final int toStartIndex) {
+        copy(fromArray, 0, toArray, toStartIndex, toArray.length - (1 + toStartIndex));
+    }
 
-        return newarray;
+    /**
+     * Returns all integers <i>i </i> such that <code>begin</code> &leq; <i>i </i>&lt;
+     * <code>end</code>.
+     * 
+     * @param begin starting value of the enumeration
+     * @param end limit value of the enumeration (exclusive)
+     * @return all the integers within an interval Note: begin must be less or equal than
+     *         end
+     */
+    public static int[] enumeration(final int begin, final int end) {
+        if (begin > end) {
+            throw new IllegalArgumentException("start must be less or equal than end");
+        }
+
+        final int[] result = new int[end - begin];
+        for (int i = begin; i < end; i++) {
+            result[i - begin] = i;
+        }
+        return result;
+    }
+
+    /**
+     * Checks if two arrays are equal element by element.
+     * 
+     * @param what the first parameter to be compared
+     * @param to the seconds parameter to be compared
+     * @return <code>true</code> if the arrays are the same, both <code>null</code> or the
+     *         elements compare to true using the method
+     *         {@link Object#equals(java.lang.Object)}
+     */
+    public static boolean equals(final Object[] what, final Object[] to) {
+        /*
+         * If they are the same reference or both null
+         */
+        if (what == to) {
+            return true;
+        }
+
+        /*
+         * Can we compare them?
+         */
+        if ((what == null) || (to == null)) {
+            return false;
+        }
+
+        if (what.length == to.length) {
+            /*
+             * check all children
+             */
+            for (int i = 0; i < what.length; ++i) {
+                final Object leftElem = what[i];
+                final Object rightElem = to[i];
+                if ((leftElem != null) && (rightElem != null)) {
+                    if (!leftElem.equals(rightElem)) {
+                        return false;
+                    }
+                } else {
+                    if (leftElem != rightElem) {
+                        return false;
+                    }
+                }
+            }
+
+            /*
+             * All them are equal
+             */
+            return true;
+        }
+
+        /*
+         * One of them is different. We were unable to compare them
+         */
+        return false;
+    }
+
+    /**
+     * Fills an segment of an array with a predefined value.
+     * 
+     * @param value is the value (an Object) that will be replicated to fill the array
+     * @param startIndex index where the replication should start
+     * @param length number of elements to replicate
+     * @param array is the array that will receive the elements
+     */
+    public static void fill(final Object value,
+                            final int startIndex,
+                            final int length,
+                            final Object[] array) {
+        for (int i = startIndex; i < startIndex + length; i++) {
+            array[i] = value;
+        }
+    }
+
+    /**
+     * Fills an array with an object value.
+     * 
+     * @param array is the array that will receive the elements
+     * @param value is the value (an Object) whose reference will be replicated to fill
+     *            the array
+     */
+    public static void fill(final Object[] array, final Object value) {
+        fill(value, 0, array.length, array);
+    }
+
+    /**
+     * Finds ass indices that are not <code>null</code>.
+     * <p>
+     * Produces an array of indices corresponding to all the positions of an array of
+     * object that are not <code>null</code>
+     * 
+     * @param values the input object array, must not be <code>null</code>
+     * @return an integer array with the position of the input array that are not
+     *         <code>null</code>
+     */
+    public static int[] findNotNullIndices(final Object[] values) {
+        final int[] notNullCandidateIndices = new int[values.length];
+        int notNullsSoFar = 0;
+        for (int i = 0; i < values.length; i++) {
+            if (values[i] != null) {
+                notNullsSoFar += 1;
+                final int nextNotNullIndex = notNullsSoFar - 1;
+                notNullCandidateIndices[nextNotNullIndex] = i;
+            }
+        }
+
+        final int[] notNullIndices = new int[notNullsSoFar];
+        copy(notNullCandidateIndices, notNullIndices, 0, 0, notNullsSoFar);
+        return notNullIndices;
+    }
+
+    /**
+     * Converts flattens an object array.
+     * <p>
+     * 
+     * @param o the object to flattened, a simple object or a Object[] with nested
+     *            Object[].
+     * @return a simple <code>[o]</code> if <code>o</code> is not an array; or an array
+     *         <code>[o1,o2,...]</code> if <code>o</code> is an object array.
+     */
+    public static Object[] flatten(final Object o) {
+
+        if (o == null) {
+            return new Object[] { null };
+        } else if (o instanceof Object[]) {
+            final Object[] oa = (Object[]) o;
+            Object[] result = new Object[] {};
+            for (int i = 0; i < oa.length; i++) {
+                result = codebase.Arrays.append(result, flatten(oa[i]));
+            }
+            return result;
+        } else {
+            return new Object[] { o };
+        }
+    }
+
+    /**
+     * Checks that all elements of integer array are within bounds.
+     * 
+     * @param array the integer array to be checked
+     * @param max the maximum limit
+     * @param min the minimum
+     * @return <code>true</code> if for every element <i>e</i> of the array
+     *         <code>min<=<i>e</i><=max</code>. Returns <code>false</code> otherwise.
+     */
+    public static boolean inBounds(final int[] array, final int min, final int max) {
+        for (int i = 0; i < array.length; i++) {
+            final int e = array[i];
+            if ((min > e) || (max < e)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /**
+     * Computes the intersection of sets of integers.
+     * <p>
+     * It searches for the elements of the left hand set of the right hand set
+     * 
+     * @param s the left hand set
+     * @param t the right hand set
+     * @return the array that contains the intersection of the two sets
+     */
+    public static int[] intersect(final int[] s, final int[] t) {
+        int[] result = new int[] {};
+        for (int i = 0; i < s.length; i++) {
+            if (pos(s[i], t) > -1) {
+                result = add(result, s[i]);
+            }
+        }
+        return result;
+    }
+
+    /**
+     * Verifies if two objects are equal. It recurse down into arrays.
+     * 
+     * @param left the left hand object
+     * @param right the right hand object
+     * @return true if the objects are equal and their array elements are equal as well.
+     */
+    public static boolean isEqualArrayDeep(final Object left, final Object right) {
+        if ((left instanceof Object[]) && (right instanceof Object[])) {
+            return isEqualArrayDeep1((Object[]) left, (Object[]) right);
+        }
+
+        if (left != null) {
+            return left.equals(right);
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * Computes the complement of a set of integers.
+     * <p>
+     * It searches for each element of the set in the universe.
+     * <p>
+     * <b>Note: </b> This method is not symmetric in the sense that, for example
+     * <code>{1} - {0,1,2} = {}</code> and not <code>{0,2}</code> as one could expect.
+     * 
+     * @param s the set to be complemented
+     * @param t the set of integers the represents the universe
+     * @return the complement of <code>s</code> with respect to <code>u
+     *         </code>
+     */
+    public static int[] minus(final int[] s, final int[] t) {
+        int[] result = new int[] {};
+        for (int i = 0; i < s.length; i++) {
+            if (pos(s[i], t) < 0) {
+                result = add(result, s[i]);
+            }
+        }
+        return result;
+    }
+
+    /**
+     * Searches for a byte on a list of bytes.
+     * 
+     * @param elem the element to be searched
+     * @param array the array to seach on
+     * @return the position of the element in the array or <code>-1</code> if the element
+     *         is not found.
+     */
+    public static int pos(final byte elem, final byte[] array) {
+        return pos(elem, 0, array);
+    }
+
+    /**
+     * Searches for a byte on a list of bytes starting at a given index.
+     * 
+     * @param elem the element to be searched
+     * @param startOffset the position where to start
+     * @param array the array to seach on
+     * @return he position of the element in the array or <code>-1</code> if the element
+     *         is not found after the specified offset.
+     */
+    public static int pos(final byte elem, final int startOffset, final byte[] array) {
+        final int n = array.length;
+        for (int i = startOffset; i < n; i++) {
+            if (array[i] == elem) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    /**
+     * Searches for an charact element on a list of characters.
+     * 
+     * @param elem the element to search for
+     * @param array the array of elements
+     * @return the position of the element in the array or the <code>-1</code> if the
+     *         element is not found
+     */
+    public static int pos(final char elem, final char[] array) {
+        final int length = array.length;
+        for (int i = 0; i < length; i++) {
+            if (array[i] == elem) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    /**
+     * Searches for an integer element on a list of integers.
+     * 
+     * @param elem the element to search for
+     * @param array the array of elements
+     * @return the position of the element in the array or the <code>-1</code> if the
+     *         element is not found
+     */
+    public static int pos(final int elem, final int[] array) {
+        final int length = array.length;
+        for (int i = 0; i < length; i++) {
+            if (array[i] == elem) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    /**
+     * Searches for an long on a list of longs.
+     * 
+     * @param elem the element to search for
+     * @param array the array of elements
+     * @return the position of the element in the array or the <code>-1</code> if the
+     *         element is not found
+     */
+    public static int pos(final long elem, final long[] array) {
+        final int length = array.length;
+        for (int i = 0; i < length; i++) {
+            if (array[i] == elem) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    /**
+     * Removes an element from a set of integers.
+     * <p>
+     * It searches for each element of the set in the universe and the removes it.
+     * <p>
+     * 
+     * @param s the set where the element will be searched
+     * @param elem the element to be searched
+     * @return a reference to a copy of the s without all the ocurrences of the element if
+     *         elem was found. If elem was not found returns a copy of s.
+     */
+    public static int[] remove(final int elem, final int[] s) {
+        int[] result = new int[] {};
+        for (int i = 0; i < s.length; i++) {
+            if (s[i] != elem) {
+                result = add(result, s[i]);
+            }
+        }
+        return result;
+    }
+
+    /**
+     * Removes an element from a set of integers.
+     * <p>
+     * It searches for each element of the set in the universe and the removes it.
+     * 
+     * @param s the set where the element will be searched
+     * @param elem the element to be searched
+     * @return a reference to a copy of the s without all the ocurrences of the element if
+     *         elem was found. If elem was not found returns a copy of s.
+     */
+    public static long[] remove(final long elem, final long[] s) {
+        long[] result = new long[] {};
+        for (int i = 0; i < s.length; i++) {
+            if (s[i] != elem) {
+                result = add(result, s[i]);
+            }
+        }
+        return result;
+    }
+
+    /**
+     * Creates a byte array by repeating the same byte.
+     * 
+     * @param what the byte to be replicated
+     * @param times the number of times to replicate, must be positive
+     * @return a byte array filled with the same byte
+     */
+    public static byte[] replicate(final byte what, final int times) {
+        final byte[] result = new byte[times];
+        for (int i = 0; i < times; i++) {
+            result[i] = what;
+        }
+        return result;
     }
 
     /**
@@ -682,165 +738,51 @@ public final class Arrays {
     }
 
     /**
-     * Creates a byte array by repeating the same byte.
+     * Produces an array of Byte objects from an array of bytes.
+     * <p>
+     * Can be used to produce an array of objects to feed an iterator
      * 
-     * @param what the byte to be replicated
-     * @param times the number of times to replicate, must be positive
-     * @return a byte array filled with the same byte
+     * @param bytes the array to be converted
+     * @return an array of Byte objects
      */
-    public static byte[] replicate(final byte what, final int times) {
-        final byte[] result = new byte[times];
-        for (int i = 0; i < times; i++) {
-            result[i] = what;
+    public static Byte[] toByteArray(final byte[] bytes) {
+        final Byte[] result = new Byte[bytes.length];
+        for (int i = 0; i < bytes.length; i++) {
+            result[i] = Byte.valueOf(bytes[i]);
         }
         return result;
     }
 
     /**
-     * Searches for a byte on a list of bytes.
-     * 
-     * @param elem the element to be searched
-     * @param array the array to seach on
-     * @return the position of the element in the array or <code>-1</code> if the element
-     *         is not found.
-     */
-    public static int pos(final byte elem, final byte[] array) {
-        return pos(elem, 0, array);
-    }
-
-    /**
-     * Searches for a byte on a list of bytes starting at a given index.
-     * 
-     * @param elem the element to be searched
-     * @param startOffset the position where to start
-     * @param array the array to seach on
-     * @return he position of the element in the array or <code>-1</code> if the element
-     *         is not found after the specified offset.
-     */
-    public static int pos(final byte elem, final int startOffset, final byte[] array) {
-        final int n = array.length;
-        for (int i = startOffset; i < n; i++) {
-            if (array[i] == elem) {
-                return i;
-            }
-        }
-        return -1;
-    }
-
-    /**
-     * Searches for an integer element on a list of integers.
-     * 
-     * @param elem the element to search for
-     * @param array the array of elements
-     * @return the position of the element in the array or the <code>-1</code> if the
-     *         element is not found
-     */
-    public static int pos(final int elem, final int[] array) {
-        final int length = array.length;
-        for (int i = 0; i < length; i++) {
-            if (array[i] == elem) {
-                return i;
-            }
-        }
-        return -1;
-    }
-
-    /**
-     * Searches for an charact element on a list of characters.
-     * 
-     * @param elem the element to search for
-     * @param array the array of elements
-     * @return the position of the element in the array or the <code>-1</code> if the
-     *         element is not found
-     */
-    public static int pos(final char elem, final char[] array) {
-        final int length = array.length;
-        for (int i = 0; i < length; i++) {
-            if (array[i] == elem) {
-                return i;
-            }
-        }
-        return -1;
-    }
-
-    /**
-     * Searches for an long on a list of longs.
-     * 
-     * @param elem the element to search for
-     * @param array the array of elements
-     * @return the position of the element in the array or the <code>-1</code> if the
-     *         element is not found
-     */
-    public static int pos(final long elem, final long[] array) {
-        final int length = array.length;
-        for (int i = 0; i < length; i++) {
-            if (array[i] == elem) {
-                return i;
-            }
-        }
-        return -1;
-    }
-
-    /**
-     * Produces an array with the unique integers that occour on the input array. Formally
-     * this function computes the set of unique integers from a bag of integers.
-     * 
-     * @param unorderedValues the input array with integer values, must not be
-     *            <code>null</code>.
-     * @return the distinct integer values
-     */
-    public static int[] unique(final int[] unorderedValues) {
-        if (unorderedValues.length == 0) {
-            return new int[] {};
-        } else {
-            final int[] orderedValues = new int[unorderedValues.length];
-            copy(unorderedValues, orderedValues, 0, 0, unorderedValues.length);
-            java.util.Arrays.sort(orderedValues);
-
-            int lastSeen = orderedValues[0];
-            int distincts = 1;
-            /*
-             * Compacts the array bringing all distinct values together
-             */
-            for (int i = 1; i < orderedValues.length; i++) {
-                if (orderedValues[i] != lastSeen) {
-                    distincts += 1;
-                    lastSeen = orderedValues[i];
-                    final int distinctIndex = distincts - 1;
-                    orderedValues[distinctIndex] = lastSeen;
-                }
-            }
-
-            final int[] uniqueArray = new int[distincts];
-            copy(orderedValues, uniqueArray, 0, 0, distincts);
-            return uniqueArray;
-        }
-    }
-
-    /**
-     * Finds ass indices that are not <code>null</code>.
+     * Produces an array of {@link Integer} objects from an <code>int[]</code>.
      * <p>
-     * Produces an array of indices corresponding to all the positions of an array of
-     * object that are not <code>null</code>
+     * Can be used to produce an array of objects to feed an iterator
      * 
-     * @param values the input object array, must not be <code>null</code>
-     * @return an integer array with the position of the input array that are not
-     *         <code>null</code>
+     * @param ints the array to be converted
+     * @return an array of {@link Integer} objects
      */
-    public static int[] findNotNullIndices(final Object[] values) {
-        final int[] notNullCandidateIndices = new int[values.length];
-        int notNullsSoFar = 0;
-        for (int i = 0; i < values.length; i++) {
-            if (values[i] != null) {
-                notNullsSoFar += 1;
-                final int nextNotNullIndex = notNullsSoFar - 1;
-                notNullCandidateIndices[nextNotNullIndex] = i;
-            }
+    public static Integer[] toIntegerArray(final int[] ints) {
+        final Integer[] result = new Integer[ints.length];
+        for (int i = 0; i < ints.length; i++) {
+            result[i] = Integer.valueOf(ints[i]);
         }
+        return result;
+    }
 
-        final int[] notNullIndices = new int[notNullsSoFar];
-        copy(notNullCandidateIndices, notNullIndices, 0, 0, notNullsSoFar);
-        return notNullIndices;
+    /**
+     * Produces an array of {@link Long} objects from a <code>long[]</code>.
+     * <p>
+     * Can be used to produce an array of objects to feed an iterator
+     * 
+     * @param longs the array to be converted
+     * @return an array of {@link Long} objects
+     */
+    public static Long[] toLongArray(final long[] longs) {
+        final Long[] result = new Long[longs.length];
+        for (int i = 0; i < longs.length; i++) {
+            result[i] = Long.valueOf(longs[i]);
+        }
+        return result;
     }
 
     /**
@@ -895,6 +837,48 @@ public final class Arrays {
             }
         }
         return "[" + result.toString() + "]";
+    }
+
+    /**
+     * Produces an array with the unique integers that occour on the input array. Formally
+     * this function computes the set of unique integers from a bag of integers.
+     * 
+     * @param unorderedValues the input array with integer values, must not be
+     *            <code>null</code>.
+     * @return the distinct integer values
+     */
+    public static int[] unique(final int[] unorderedValues) {
+        if (unorderedValues.length == 0) {
+            return new int[] {};
+        } else {
+            final int[] orderedValues = new int[unorderedValues.length];
+            copy(unorderedValues, orderedValues, 0, 0, unorderedValues.length);
+            java.util.Arrays.sort(orderedValues);
+
+            int lastSeen = orderedValues[0];
+            int distincts = 1;
+            /*
+             * Compacts the array bringing all distinct values together
+             */
+            for (int i = 1; i < orderedValues.length; i++) {
+                if (orderedValues[i] != lastSeen) {
+                    distincts += 1;
+                    lastSeen = orderedValues[i];
+                    final int distinctIndex = distincts - 1;
+                    orderedValues[distinctIndex] = lastSeen;
+                }
+            }
+
+            final int[] uniqueArray = new int[distincts];
+            copy(orderedValues, uniqueArray, 0, 0, distincts);
+            return uniqueArray;
+        }
+    }
+
+    /**
+     * Avoid instantiation of utility class.
+     */
+    private Arrays() {
     }
 
 }
