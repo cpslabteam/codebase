@@ -67,7 +67,9 @@ public abstract class FileBasedTestCase extends
         }
     }
 
-    /** Assert that the content of a file is equal to that in a byte[]. */
+    /**
+     * Assert that the content of a file is equal to that in a byte[].
+     */
     protected void assertEqualContent(byte[] b0, File file) throws IOException {
         InputStream is = new java.io.FileInputStream(file);
         try {
@@ -75,14 +77,17 @@ public abstract class FileBasedTestCase extends
             int numRead = is.read(b1);
             assertTrue("Different number of bytes", numRead == b0.length && is.available() == 0);
             for (int i = 0; i < numRead; assertTrue("Byte " + i + " differs (" + b0[i] + " != "
-                    + b1[i] + ")", b0[i] == b1[i]), i++)
-                ;
+                    + b1[i] + ")", b0[i] == b1[i]), i++) {
+                // skip
+            }
         } finally {
             is.close();
         }
     }
 
-    /** Assert that the content of a file is equal to that in a char[]. */
+    /**
+     * Assert that the content of a file is equal to that in a char[].
+     */
     protected void assertEqualContent(char[] c0, File file) throws IOException {
         Reader ir = new java.io.FileReader(file);
         try {
@@ -90,8 +95,9 @@ public abstract class FileBasedTestCase extends
             int numRead = ir.read(c1);
             assertTrue("Different number of bytes", numRead == c0.length);
             for (int i = 0; i < numRead; assertTrue("Byte " + i + " differs (" + c0[i] + " != "
-                    + c1[i] + ")", c0[i] == c1[i]), i++)
-                ;
+                    + c1[i] + ")", c0[i] == c1[i]), i++) {
+                // skip
+            }
         } finally {
             ir.close();
         }
@@ -120,6 +126,5 @@ public abstract class FileBasedTestCase extends
             assertTrue("Couldn't delete file: " + file, file.delete());
         }
     }
-
 
 }

@@ -250,7 +250,7 @@ public final class Debug {
      *         character and <code>HH</code> is its corresponding hex code.
      */
     public static String toHexStringDump(final byte[] buffer) {
-        final String result = Format.visibleAsciiString(new String(buffer), '.') + "  "
+        final String result = Strings.visibleAsciiString(new String(buffer), '.') + "  "
                 + Binary.toHexString(buffer);
         return result;
     }

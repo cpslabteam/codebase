@@ -3,17 +3,16 @@
  */
 package codebase;
 
-import codebase.Math;
 import junit.framework.TestCase;
 
 /**
- * Tests the math utility class
+ * Tests the math utility class.
  */
 public class TestMath
         extends TestCase {
     
     /**
-     * Tests that the powers of 10 are correctly computed
+     * Tests that the powers of 10 are correctly computed.
      */
     public void testPow10() {
         assertEquals(1L, Math.pow10(0));

@@ -5,12 +5,14 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 
+import junit.framework.TestCase;
+
 
 /**
  * Tests the {@link Filenames} utility class.
  */
 public class TestFilenames extends
-        FileBasedTestCase {
+        TestCase {
 
     private static final String SEP = "" + File.separatorChar;
 

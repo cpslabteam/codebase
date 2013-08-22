@@ -119,9 +119,8 @@ public class TestString extends
         assertEquals(Strings.trimChar("gggggggsomethingggggg", 'g'), "somethin");
     }
 
-    /**
-     * TODO: Finish compact string tests
-     */
+    // TODO: Finish compact string tests
+
     public void xxxCompactString() {
         assertEquals(Strings.compactFormat("", 1), "");
         assertEquals(Strings.compactFormat("xxx", 5), "xxx");
@@ -133,15 +132,17 @@ public class TestString extends
 
     public void testSplit() {
         assertEquals(new ArrayIterator<String>(Strings.split("", "")), new EmptyIterator<String>());
-        assertEquals(new ArrayIterator<String>(Strings.split("", "\t")), new EmptyIterator<String>());
-        assertEquals(new ArrayIterator<String>(Strings.split("a", "a")), new EmptyIterator<String>());
+        assertEquals(new ArrayIterator<String>(Strings.split("", "\t")),
+                new EmptyIterator<String>());
+        assertEquals(new ArrayIterator<String>(Strings.split("a", "a")),
+                new EmptyIterator<String>());
         assertEquals(new ArrayIterator<String>(Strings.split("a", " ")), new ArrayIterator<String>(
                 new String[] { "a" }));
-        assertEquals(new ArrayIterator<String>(Strings.split("abc", "a")), new ArrayIterator<String>(
-                new String[] { "bc" }));
-        assertEquals(new ArrayIterator<String>(Strings.split("abc", "c")), new ArrayIterator<String>(
-                new String[] { "ab" }));
-        assertEquals(new ArrayIterator<String>(Strings.split("a b c", " ")), new ArrayIterator<String>(
-                new String[] { "a", "b", "c" }));
+        assertEquals(new ArrayIterator<String>(Strings.split("abc", "a")),
+                new ArrayIterator<String>(new String[] { "bc" }));
+        assertEquals(new ArrayIterator<String>(Strings.split("abc", "c")),
+                new ArrayIterator<String>(new String[] { "ab" }));
+        assertEquals(new ArrayIterator<String>(Strings.split("a b c", " ")),
+                new ArrayIterator<String>(new String[] { "a", "b", "c" }));
     }
 }

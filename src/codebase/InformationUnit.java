@@ -10,7 +10,7 @@ package codebase;
  * e.g. bytes to kilobytes, among other. TODO: upgrade to a Java formatter for better
  * integration.
  */
-public final class Format {
+public final class InformationUnit {
 
 
     /**
@@ -159,10 +159,11 @@ public final class Format {
         return bytes;
     }
 
+    
     /**
      * Prevent instantiation.
      */
-    private Format() {
+    private InformationUnit() {
     }
 
 }

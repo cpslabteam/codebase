@@ -11,14 +11,15 @@ import java.io.DataInput;
 /**
  * Optimized implementation of a vector of bits.
  * <p>
- * This is more-or-less like java.util.BitSet, but also includes the
- * following: a cachedCount() method, which efficiently computes the number of
- * one bits; optimized read from and write to disk; inlinable get() method
+ * This is more-or-less like java.util.BitSet, but also includes the following: a
+ * cachedCount() method, which efficiently computes the number of one bits, optimized read
+ * and write operations and a boolean {@link #get(int)} method
  */
 public final class BitVector {
+    
     /**
-     * The mask of a bit index. We use the tree lower bits of the integer
-     * index to get the number of the bit to set.
+     * The mask of a bit index. We use the tree lower bits of the integer index to get the
+     * number of the bit to set.
      */
     static final int BIT_IDX_MASK = 0x0007;
 
@@ -39,10 +40,9 @@ public final class BitVector {
 
     /**
      * Constructs a vector capable of holding n bits.
-     *
+     * 
      * @param n size of the array in bits
-     * @throws IllegalArgumentException if the number of bits its not at least
-     *             1
+     * @throws IllegalArgumentException if the number of bits its not at least 1
      */
     public BitVector(final int n) {
         if (n < 1) {
@@ -54,7 +54,7 @@ public final class BitVector {
 
     /**
      * Sets the value of bit to zero.
-     *
+     * 
      * @param bitIndex the index of the bit to set
      */
     public void clear(final int bitIndex) {
@@ -65,9 +65,9 @@ public final class BitVector {
     /**
      * Returns the total number of set bits.
      * <p>
-     * This is efficiently computed and cached, so that, if the vector is not
-     * changed, no recomputation is done for repeated calls.
-     *
+     * This is efficiently computed and cached, so that, if the vector is not changed, no
+     * recomputation is done for repeated calls.
+     * 
      * @return the number of one bits in this vector
      */
     public int count() {
@@ -89,7 +89,7 @@ public final class BitVector {
 
     /**
      * Returns true if bit is one and false if it is zero.
-     *
+     * 
      * @param bitIndex the index of the bit to set
      * @return the value of <code>bits[bitIndex]</code>
      */
@@ -99,10 +99,9 @@ public final class BitVector {
 
     /**
      * Constructs a bit vector from a data input.
-     *
+     * 
      * @param input the data input to be used
-     * @throws IOException if an error occurs while reading from the data
-     *             input
+     * @throws IOException if an error occurs while reading from the data input
      */
     public void read(final DataInput input) throws IOException {
         size = input.readInt(); // read size
@@ -113,7 +112,7 @@ public final class BitVector {
 
     /**
      * Sets the value of bit to one.
-     *
+     * 
      * @param bitIndex the index of the bit to set
      */
     public void set(final int bitIndex) {
@@ -124,9 +123,8 @@ public final class BitVector {
     /**
      * Returns the number of bits in this vector.
      * <p>
-     * This is also one greater than the number of the largest valid bit
-     * number.
-     *
+     * This is also one greater than the number of the largest valid bit number.
+     * 
      * @return the size in bits
      */
     public int size() {
@@ -135,7 +133,7 @@ public final class BitVector {
 
     /**
      * Writes this vector to a data output.
-     *
+     * 
      * @param output the data output to write the vector
      * @throws IOException if an error occours while writting to the stream
      */
