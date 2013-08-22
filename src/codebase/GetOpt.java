@@ -4,7 +4,6 @@
 package codebase;
 
 import java.text.MessageFormat;
-import java.util.Locale;
 import java.util.PropertyResourceBundle;
 import java.util.ResourceBundle;
 
@@ -68,6 +67,9 @@ import java.util.ResourceBundle;
  * the value of 'ordering'. In the case of RETURN_IN_ORDER, only '--' can cause
  * {@link #getOpt()} to return {@link #EOF} with
  * <code>{@link #optInd} != argv.length</code>.
+ * <p>
+ * <b>Error handling.</b>To override the default error handling behavior you should
+ * override the {@link #reportError(String)} method.
  * <p>
  * <b>Example:</b> <code>
  * public static void main(String[] argv) {
@@ -170,10 +172,10 @@ import java.util.ResourceBundle;
  * }
  * </code>
  * 
- * @author Ported from the GNU's C++ version of GetOpt. Original author unknown.
- * 
- * TODO:
- *         Implement appropriate error reporting.
+ * @author Original authors: William King (wrking@eng.sun.com), Aaron M. Renn
+ *         (arenn@urbanophile.com)
+ * @author Ported from the GNU's C++ version of GetOpt and enhanced by Paulo Carreira and
+ *         Andre Goncalves.
  */
 public class GetOpt {
 
@@ -254,7 +256,7 @@ public class GetOpt {
                     && (argKind != OPTIONAL_ARGUMENT)) {
                 final Object[] msgArgs = { Integer.valueOf(argKind).toString() };
                 throw new IllegalArgumentException(MessageFormat.format(
-                        MESSAGES.getString("getopt.invalidValue"), msgArgs));
+                        MESSAGES_RESOURCE_BUNDLE.getString("GetOpt.invalidValue"), msgArgs));
             }
 
             this.optionName = name;
@@ -331,11 +333,14 @@ public class GetOpt {
      */
     public static final char EOF = '\uFFFF';
 
+    private static final String MESSAGE_BUNDLE_NAME = "codebase.messages"; //$NON-NLS-1$
+
     /**
      * The localized strings are kept in a separate file.
      */
-    private static final ResourceBundle MESSAGES = PropertyResourceBundle.getBundle(
-            "codebase/MessagesBundle", Locale.getDefault());
+    private static final ResourceBundle MESSAGES_RESOURCE_BUNDLE = PropertyResourceBundle
+            .getBundle(MESSAGE_BUNDLE_NAME);
+
 
     /*
      * Argument handling
@@ -612,9 +617,9 @@ public class GetOpt {
         // Print out an error if the option specified was ambiguous
         if (ambig && !exact) {
             if (optErr) {
-                Object[] msgArgs = { programName, argv[optInd] };
-                System.err.println(MessageFormat.format(MESSAGES.getString("getopt.ambigious"),
-                        msgArgs));
+                final Object[] msgArgs = { programName, argv[optInd] };
+                reportError(MessageFormat.format(
+                        MESSAGES_RESOURCE_BUNDLE.getString("GetOpt.ambigious"), msgArgs));
             }
 
             nextChar = "";
@@ -623,6 +628,13 @@ public class GetOpt {
 
             return ('?');
         }
+
+        // CHECKSTYLE:OFF
+
+        /* 
+         * This method performs a series of checking that violate maximum if nesting. 
+         * Fixing this, unless some bug is detected here, is a waste of time.
+         */
 
         if (pfound != null) {
             ++optInd;
@@ -638,9 +650,10 @@ public class GetOpt {
                     if (optErr) {
                         // -- option
                         if (argv[optInd - 1].startsWith("--")) {
-                            Object[] msgArgs = { programName, pfound.optionName };
-                            System.err.println(MessageFormat.format(
-                                    MESSAGES.getString("getopt.arguments1"), msgArgs));
+                            final Object[] msgArgs = { programName, pfound.optionName };
+                            reportError(MessageFormat.format(
+                                    MESSAGES_RESOURCE_BUNDLE.getString("GetOpt.arguments1"),
+                                    msgArgs));
                         } else {
                             /*
                              * +option or -option
@@ -650,7 +663,8 @@ public class GetOpt {
                                     pfound.optionName };
 
                             reportError(MessageFormat.format(
-                                    MESSAGES.getString("getopt.arguments2"), msgArgs));
+                                    MESSAGES_RESOURCE_BUNDLE.getString("GetOpt.arguments2"),
+                                    msgArgs));
                         }
                     }
 
@@ -666,8 +680,8 @@ public class GetOpt {
                 } else {
                     if (optErr) {
                         Object[] msgArgs = { programName, argv[optInd - 1] };
-                        reportError(MessageFormat.format(MESSAGES.getString("getopt.requires"),
-                                msgArgs));
+                        reportError(MessageFormat.format(
+                                MESSAGES_RESOURCE_BUNDLE.getString("GetOpt.requires"), msgArgs));
                     }
 
                     nextChar = "";
@@ -679,6 +693,7 @@ public class GetOpt {
                     }
                 }
             } // else if (pfound)
+            // CHECKSTYLE:ON
 
             nextChar = "";
 
@@ -752,11 +767,15 @@ public class GetOpt {
 
     /**
      * This function is called to report the command line parsing errors.
+     * <p>
+     * Clients of this class should override this method to provide an alternative error
+     * handling behavior. The default implementation sends the errors to the <tt>err</tt>
+     * stream.
      * 
-     * @param error
+     * @param error the error string.
      */
-    private void reportError(final String error) {
-        // Should we throw exceptions?
+    protected void reportError(final String error) {
+        System.err.println(error);
     }
 
     /**
@@ -797,7 +816,18 @@ public class GetOpt {
      * @return a char representing the current option that has been parsed from the
      *         command line
      */
+ // CHECKSTYLE:OFF
     public final char getOpt() {
+        /*
+         * This method implements a parsing of command line options 
+         * which through a series of stages. Breaking this method into 
+         * several methods would make the code even more cumbersome.
+         * 
+         * Alternative would be re-designing it all together but we 
+         * didn't yet find time for that. In fact it is probably not 
+         * worth the time.
+         */
+
         optArg = null;
 
         if (endParse) {
@@ -827,8 +857,8 @@ public class GetOpt {
                 // Skip any additional non-options
                 // and extend the range of non-options previously skipped.
                 while ((optInd < argv.length)
-                        && (argv[optInd].equals("") || (argv[optInd].charAt(0) != '-') || argv[optInd]
-                                .equals("-"))) {
+                        && (argv[optInd].isEmpty() || (argv[optInd].charAt(0) != '-') || "-"
+                                .equals(argv[optInd]))) {
                     optInd++;
                 }
 
@@ -840,7 +870,7 @@ public class GetOpt {
             // then exchange with previous non-options as if it were an
             // option,
             // then skip everything else like a non-option.
-            if ((optInd != argv.length) && argv[optInd].equals("--")) {
+            if ((optInd != argv.length) && "--".equals(argv[optInd])) {
                 optInd++;
 
                 if ((firstNonOpt != lastNonOpt) && (lastNonOpt != optInd)) {
@@ -867,8 +897,8 @@ public class GetOpt {
             // If we have come to a non-option and did not permute it,
             // either stop the scan or describe it to the caller and pass it
             // by.
-            if (argv[optInd].equals("") || (argv[optInd].charAt(0) != '-')
-                    || argv[optInd].equals("-")) {
+            if (argv[optInd].isEmpty() || (argv[optInd].charAt(0) != '-')
+                    || "-".equals(argv[optInd])) {
                 if (ordering == REQUIRE_ORDER) {
                     return EOF;
                 }
@@ -914,14 +944,15 @@ public class GetOpt {
                     || (optString.indexOf(nextChar.charAt(0)) == -1)) {
                 if (optErr) {
                     if (argv[optInd].startsWith("--")) {
-                        Object[] msgArgs = { programName, nextChar };
-                        reportError(MessageFormat.format(MESSAGES.getString("getopt.unrecognized"),
-                                msgArgs));
-                    } else {
-                        Object[] msgArgs = { programName,
-                                Character.valueOf(argv[optInd].charAt(0)).toString(), nextChar };
+                        final Object[] msgArgs = { programName, nextChar };
                         reportError(MessageFormat.format(
-                                MESSAGES.getString("getopt.unrecognized2"), msgArgs));
+                                MESSAGES_RESOURCE_BUNDLE.getString("GetOpt.unrecognized"), msgArgs));
+                    } else {
+                        final Object[] msgArgs = { programName,
+                                Character.valueOf(argv[optInd].charAt(0)).toString(), nextChar };
+                        reportError(MessageFormat
+                                .format(MESSAGES_RESOURCE_BUNDLE.getString("GetOpt.unrecognized2"),
+                                        msgArgs));
                     }
                 }
 
@@ -954,10 +985,12 @@ public class GetOpt {
                 if (posixlyCorrect) {
                     // 1003.2 specifies the format of this message
                     Object[] msgArgs = { programName, Character.valueOf((char) c).toString() };
-                    reportError(MessageFormat.format(MESSAGES.getString("getopt.illegal"), msgArgs));
+                    reportError(MessageFormat.format(
+                            MESSAGES_RESOURCE_BUNDLE.getString("GetOpt.illegal"), msgArgs));
                 } else {
                     Object[] msgArgs = { programName, Character.valueOf((char) c).toString() };
-                    reportError(MessageFormat.format(MESSAGES.getString("getopt.invalid"), msgArgs));
+                    reportError(MessageFormat.format(
+                            MESSAGES_RESOURCE_BUNDLE.getString("GetOpt.invalid"), msgArgs));
                 }
             }
 
@@ -978,8 +1011,8 @@ public class GetOpt {
                 if (optErr) {
                     // 1003.2 specifies the format of this message.
                     Object[] msgArgs = { programName, Character.valueOf((char) c).toString() };
-                    reportError(MessageFormat.format(MESSAGES.getString("getopt.requires2"),
-                            msgArgs));
+                    reportError(MessageFormat.format(
+                            MESSAGES_RESOURCE_BUNDLE.getString("GetOpt.requires2"), msgArgs));
                 }
 
                 optOpt = c;
@@ -1030,8 +1063,8 @@ public class GetOpt {
                     if (optErr) {
                         // 1003.2 specifies the format of this message
                         Object[] msgArgs = { programName, Character.valueOf((char) c).toString() };
-                        reportError(MessageFormat.format(MESSAGES.getString("getopt.requires2"),
-                                msgArgs));
+                        reportError(MessageFormat.format(
+                                MESSAGES_RESOURCE_BUNDLE.getString("GetOpt.requires2"), msgArgs));
                     }
 
                     optOpt = c;
@@ -1057,7 +1090,8 @@ public class GetOpt {
                                 Object[] msgArgs = { programName,
                                         Character.valueOf((char) c).toString() };
                                 reportError(MessageFormat.format(
-                                        MESSAGES.getString("getopt.requires2"), msgArgs));
+                                        MESSAGES_RESOURCE_BUNDLE.getString("GetOpt.requires2"),
+                                        msgArgs));
                             }
 
                             optOpt = c;
@@ -1086,7 +1120,8 @@ public class GetOpt {
 
         return c;
     }
-
+    // CHECKSTYLE:ON
+    
     /**
      * Returns the value of the argument of an option.
      * <p>
