@@ -4,11 +4,49 @@
 package codebase;
 
 /**
- * Formats information units. 
- * 
- * TODO: upgrade to a Java formatter for better integration.
+ * Utility class for information size unit conversion and formating
+ * <p>
+ * Defines constants and provides several methods for performing information units like
+ * e.g. bytes to kilobytes, among other. TODO: upgrade to a Java formatter for better
+ * integration.
  */
 public final class Format {
+
+
+    /**
+     * Byte unit character.
+     */
+    public static final String BYTE_UNIT = "B";
+
+    /**
+     * One kilobyte in bytes.
+     */
+    public static final int KB = 1024;
+
+    /**
+     * Kilobyte unit abbreviation.
+     */
+    public static final String KB_UNIT = "KB";
+   
+    /**
+     * One megabyte in bytes.
+     */
+    public static final int MB = 1024 * KB;
+    
+    /**
+     * Megabyte unit abbreviation.
+     */
+    public static final String MB_UNIT = "MB";
+
+    /**
+     * One gigabyte in bytes.
+     */
+    public static final long GB = 1024 * MB;
+
+    /**
+     * Gigabyte unit abbreviation.
+     */
+    public static final String GB_UNIT = "GB";
 
     /**
      * Formats a size in bytes adjusting it to (KB, MB, GB).
@@ -20,20 +58,77 @@ public final class Format {
     public static String formatBytes(final long bytes, final int decimals) {
         final String result;
 
-        if (bytes >= Conversions.GB) {
-            result = Double.toString(Math.round(Conversions.gb(bytes), decimals))
-                    + Conversions.GB_UNIT;
-        } else if (bytes >= Conversions.MB) {
-            result = Double.toString(Math.round(Conversions.mb(bytes), decimals))
-                    + Conversions.MB_UNIT;
-        } else if (bytes >= Conversions.KB) {
-            result = Double.toString(Math.round(Conversions.kb(bytes), decimals))
-                    + Conversions.KB_UNIT;
+        if (bytes >= GB) {
+            result = Double.toString(Math.round(gb(bytes), decimals)) + GB_UNIT;
+        } else if (bytes >= MB) {
+            result = Double.toString(Math.round(mb(bytes), decimals)) + MB_UNIT;
+        } else if (bytes >= KB) {
+            result = Double.toString(Math.round(kb(bytes), decimals)) + KB_UNIT;
         } else {
-            result = Long.toString(bytes) + Conversions.BYTE_UNIT;
+            result = Long.toString(bytes) + BYTE_UNIT;
         }
 
         return result;
+    }
+
+    /**
+     * Converts an amount of bytes to megabytes.
+     * 
+     * @param bytes the number of bytes
+     * @return <code>bytes/2^10</code>
+     */
+    public static double gb(final long bytes) {
+        return bytes / (double) GB;
+    }
+
+    /**
+     * Converts an amount of gigabytes to byte.
+     * 
+     * @param n the amount of gigabytes, must not be negative
+     * @return <code>n * 2^30</code>
+     */
+    public static long gbToBytes(final double n) {
+        return (long) java.lang.Math.ceil(n * GB);
+    }
+
+    /**
+     * Converts an amount of bytes to kilobytes.
+     * 
+     * @param bytes the number of bytes
+     * @return <code>bytes/2^10</code>
+     */
+    public static double kb(final long bytes) {
+        return bytes / (double) KB;
+    }
+
+    /**
+     * Converts an amount of kilobytes to bytes.
+     * 
+     * @param n the amount of kilobytes, must not be negative
+     * @return <code>n * 2^10</code>
+     */
+    public static long kbToBytes(final double n) {
+        return (long) java.lang.Math.ceil(n * KB);
+    }
+
+    /**
+     * Converts an amount of bytes to megabytes.
+     * 
+     * @param bytes the number of bytes
+     * @return <code>bytes/2^10</code>
+     */
+    public static double mb(final long bytes) {
+        return bytes / (double) MB;
+    }
+
+    /**
+     * Converts an amount of megabytes to bytes.
+     * 
+     * @param n the amount of megabytes, must not be negative
+     * @return <code>n * 2^20</code>
+     */
+    public static long mbToBytes(final double n) {
+        return (long) java.lang.Math.ceil(n * MB);
     }
 
     /**
@@ -48,42 +143,20 @@ public final class Format {
     public static long parseBytes(final String s) {
         final String u = s.toUpperCase();
         final long bytes;
-        if (u.endsWith(Conversions.GB_UNIT)) {
-            bytes = Conversions.gbToBytes(Double.parseDouble(u.substring(0, u.length()
-                    - Conversions.GB_UNIT.length())));
-        } else if (u.endsWith(Conversions.MB_UNIT)) {
-            bytes = Conversions.mbToBytes(Double.parseDouble(u.substring(0, u.length()
-                    - Conversions.MB_UNIT.length())));
-        } else if (u.endsWith(Conversions.KB_UNIT)) {
-            bytes = Conversions.kbToBytes(Double.parseDouble(u.substring(0, u.length()
-                    - Conversions.KB_UNIT.length())));
-        } else if (u.endsWith(Conversions.BYTE_UNIT)) {
+        if (u.endsWith(GB_UNIT)) {
+            bytes = gbToBytes(Double.parseDouble(u.substring(0, u.length() - GB_UNIT.length())));
+        } else if (u.endsWith(MB_UNIT)) {
+            bytes = mbToBytes(Double.parseDouble(u.substring(0, u.length() - MB_UNIT.length())));
+        } else if (u.endsWith(KB_UNIT)) {
+            bytes = kbToBytes(Double.parseDouble(u.substring(0, u.length() - KB_UNIT.length())));
+        } else if (u.endsWith(BYTE_UNIT)) {
             bytes = (long) java.lang.Math.ceil(Double.parseDouble(u.substring(0, u.length()
-                    - Conversions.BYTE_UNIT.length())));
+                    - BYTE_UNIT.length())));
         } else {
             bytes = Long.parseLong(s);
         }
 
         return bytes;
-    }
-
-    /**
-     * Converts a string to a visible ascii string.
-     * <p>
-     * This routine is means to be used in to dump strings that may have binary data.
-     * 
-     * @param string the string to be converted
-     * @param invisible the character to replace the invisible control characters
-     * @return a string where invisible characters are replaced by a predefined character.
-     */
-    public static String visibleAsciiString(final String string, final char invisible) {
-        final byte[] target = string.getBytes();
-        for (int i = 0; i < target.length; i++) {
-            if (Strings.isControl((char) target[i])) {
-                target[i] = (byte) invisible;
-            }
-        }
-        return new String(target);
     }
 
     /**
