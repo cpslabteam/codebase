@@ -121,7 +121,7 @@ public final class Enumerator
             nextInt -= 1;
 
         }
-        return new Integer(result);
+        return Integer.valueOf(result);
     }
 
     /**
@@ -130,7 +130,7 @@ public final class Enumerator
      * @throws UnsupportedOperationException because it is not possible to remove elements
      *             from an enumerator iterator.
      */
-    public void remove() throws UnsupportedOperationException {
+    public void remove() {
         throw new UnsupportedOperationException();
     }
 
@@ -179,9 +179,9 @@ public final class Enumerator
      * @throws IllegalStateException when peeking an object past the upper bound of the
      *             enumerator
      */
-    public Integer peek() throws IllegalStateException {
+    public Integer peek() {
         if (isValid()) {
-            return new Integer(nextInt);
+            return Integer.valueOf(nextInt);
         } else {
             throw new IllegalStateException();
         }
@@ -224,7 +224,7 @@ public final class Enumerator
      * @throws UnsupportedOperationException is read-only
      * @see codebase.iterators.ManipulatableIterator#update(java.lang.Object)
      */
-    public void update(final Integer replacement) throws UnsupportedOperationException {
+    public void update(final Integer replacement) {
         throw new UnsupportedOperationException();
     }
 }

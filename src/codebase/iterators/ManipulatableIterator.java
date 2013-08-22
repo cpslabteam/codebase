@@ -18,6 +18,8 @@ package codebase.iterators;
  * Before calling any of the methods above the caller should check that the
  * operation is supported by calling , respectively, {@link #supportsPeek()},
  * {@link #supportsUpdate()} and {@link #supportsRemove()}.
+ * 
+ * @param <E> the type of all the objects to be treated.
  */
 public interface ManipulatableIterator<E>
         extends ResetableIterator<E> {
@@ -38,7 +40,7 @@ public interface ManipulatableIterator<E>
      * @throws IllegalStateException if the operation is supported but called in
      *             an illegal state state of the object
      */
-    E peek() throws UnsupportedOperationException, IllegalStateException;
+    E peek();
     
     /**
      * Checks if the item supports peek or not.
@@ -61,8 +63,7 @@ public interface ManipulatableIterator<E>
      * @throws IllegalStateException if the replacement cannot occur in the
      *             current state of the object
      */
-    void update(final E replacement) throws UnsupportedOperationException,
-            IllegalStateException;
+    void update(final E replacement);
     
     /**
      * Check is the iterator supports the update operation.
@@ -81,7 +82,7 @@ public interface ManipulatableIterator<E>
      *             already been called after the last call to the
      *             <code>next</code> method.
      */
-    void remove() throws UnsupportedOperationException, IllegalStateException;
+    void remove(); 
     
     /**
      * Checks if remove is supported.

@@ -3,12 +3,16 @@
  */
 package codebase.iterators;
 
+import java.util.NoSuchElementException;
+
 
 /**
  * An iterator that throws {@link IllegalStateException} when an operation is called.
  * <p>
  * An invalid iterator is used for initializing iterator in situations where
  * <code>null</code> cannot be used.
+ * 
+ * @param <E> the type of all the objects to be treated.
  */
 public final class NullIterator<E>
         implements ManipulatableIterator<E> {
@@ -30,7 +34,7 @@ public final class NullIterator<E>
      * @see java.util.Iterator#hasNext()
      * @throws IllegalStateException when called
      */
-    public boolean hasNext() throws IllegalStateException {
+    public boolean hasNext() {
         reportInvalidIterator();
         return false;
     }
@@ -40,16 +44,15 @@ public final class NullIterator<E>
      * @see java.util.Iterator#next()
      * @throws IllegalStateException when called
      */
-    public E next() throws IllegalStateException {
-        reportInvalidIterator();
-        return null;
+    public E next() {
+        throw new NoSuchElementException();
     }
 
     /**
      * @see java.util.Iterator#remove()
      * @throws IllegalStateException when called
      */
-    public void remove() throws IllegalStateException {
+    public void remove() {
         reportInvalidIterator();
     }
 
@@ -58,7 +61,7 @@ public final class NullIterator<E>
      * @see codebase.iterators.ManipulatableIterator#peek()
      * @throws IllegalStateException when called
      */
-    public E peek() throws IllegalStateException {
+    public E peek() {
         reportInvalidIterator();
         return null;
     }
@@ -98,7 +101,7 @@ public final class NullIterator<E>
      * @see codebase.iterators.ManipulatableIterator#update(java.lang.Object)
      * @throws IllegalStateException when called
      */
-    public void update(final Object replacement) throws IllegalStateException {
+    public void update(final Object replacement) {
         reportInvalidIterator();
     }
 
@@ -106,7 +109,7 @@ public final class NullIterator<E>
      * 
      * @throws IllegalStateException when called
      */
-    public void reset() throws IllegalStateException {
+    public void reset() {
         reportInvalidIterator();
     }
 

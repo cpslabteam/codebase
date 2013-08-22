@@ -9,6 +9,7 @@ import java.util.Iterator;
  * set artificial limits on possible unbounded iterators. It re-implements the method
  * {@link Iterator#next()} adding limit checking. It can be used decorator
  * 
+ * @param <E> the type of all the objects to be treated.
  * @author Paulo Carreira
  */
 public class BoundedIterator<E> extends

@@ -11,6 +11,7 @@ import java.util.Iterator;
  * This class decorates an object implementing the {@link Iterator} interface such that
  * all method calls on the decorator are passed to its decorated object.
  * 
+ * @param <E> the type of all the objects to be treated.
  * @see java.util.Iterator
  */
 public abstract class DecoratorIterator<E>
@@ -53,7 +54,7 @@ public abstract class DecoratorIterator<E>
      * @throws IllegalStateException if the iterator is already closed when this method is
      *             called.
      */
-    public boolean hasNext() throws IllegalStateException {
+    public boolean hasNext() {
         return decoratedInstance.hasNext();
     }
 
@@ -64,7 +65,7 @@ public abstract class DecoratorIterator<E>
      * @throws IllegalStateException if the iterator is already closed when this method is
      *             called.
      */
-    public E next() throws IllegalStateException {
+    public E next() {
         if (decoratedInstance.hasNext()) {
             return decoratedInstance.next();
         } else {

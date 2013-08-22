@@ -10,6 +10,8 @@ import java.util.Iterator;
  * The interface of iterator that can be reset.
  * <p>
  * This interface specifies an iterator that can be reset to the first element.
+ * 
+ * @param <E> the type of all the objects to be treated.
  */
 public interface ResetableIterator<E>
         extends Iterator<E> {
@@ -25,7 +27,7 @@ public interface ResetableIterator<E>
      * @throws IllegalStateException if the operation is supported but called in an
      *             illegal state state of the object
      */
-    void reset() throws UnsupportedOperationException, IllegalStateException;
+    void reset();
 
     /**
      * Checks if the item supports reset or not.

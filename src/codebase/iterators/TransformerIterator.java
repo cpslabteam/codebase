@@ -8,7 +8,9 @@ import java.util.Iterator;
 /**
  * An iterator decorator that applies a function to each element of the input.
  * <p>
- * This cursor is particularly useful for testing purposes
+ * This iterator is particularly useful for testing purposes
+ * 
+ * @param <E> the type of all the objects to be treated.
  */
 public abstract class TransformerIterator<E> extends
         NextObserverDecorator<E> {

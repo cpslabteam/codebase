@@ -7,11 +7,13 @@ package codebase.iterators;
  * Abstract class for iterators over array-like collections.
  * <p>
  * Iterates over the elements of an array-like collection (A collection that allows direct
- * acess to its elements). The descending classes should implement the
+ * access to its elements). The descending classes should implement the
  * {@link #getElement(int)}.
  * <p>
  * Nothing is assumed regarding update operations. A descending class may or may not allow
  * update.
+ * 
+ * @param <E> the type of all the objects to be treated by this iterator.
  */
 public abstract class AbstractArrayIterator<E>
         implements ManipulatableIterator<E> {

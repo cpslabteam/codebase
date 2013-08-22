@@ -9,6 +9,7 @@ package codebase.iterators;
  * This iterator wraps one element as an iterator. The method
  * {@link SingletonIterator#hasNext()} can only be called once.
  * 
+ * @param <E> the type of all the objects to be treated.
  * @see java.util.Iterator
  */
 public final class SingletonIterator<E>
@@ -108,7 +109,7 @@ public final class SingletonIterator<E>
      * @throws IllegalStateException if the last element was already returned or removed
      * @see codebase.iterators.ManipulatableIterator#peek()
      */
-    public E peek() throws IllegalStateException {
+    public E peek() {
         if (wasReturned || wasRemoved) {
             throw new IllegalStateException();
         }

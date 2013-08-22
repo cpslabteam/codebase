@@ -3,8 +3,6 @@
  */
 package codebase.iterators;
 
-import codebase.iterators.ArrayIterator;
-import codebase.iterators.EmptyIterator;
 import codebase.junit.CodeBlock;
 import codebase.junit.EnhancedTestCase;
 

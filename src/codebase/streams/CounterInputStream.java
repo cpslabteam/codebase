@@ -28,7 +28,7 @@ public class CounterInputStream
     }
 
     /**
-     * Increases the count by super.read(b)'s return count
+     * Increases the count by super.read(b)'s return count.
      *
      * @see java.io.InputStream#read(byte[])
      */

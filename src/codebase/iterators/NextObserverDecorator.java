@@ -8,6 +8,8 @@ import java.util.Iterator;
 /**
  * An iterator decorator that add {@link #beforeNext()} e {@link #afterNext(Object)} to
  * intercept the calls to {@link #next()}.
+ * 
+ * @param <E> the type of all the objects to be treated.
  */
 public abstract class NextObserverDecorator<E> extends
         DecoratorIterator<E> {

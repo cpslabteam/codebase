@@ -22,7 +22,7 @@ import java.io.InputStream;
 public class FastBufferedInputStream
         extends FilterInputStream {
 
-    private static int defaultBufferSize = 2048;
+    private static final int DEFAULT_BUFFER_SIZE = 2048;
 
     /**
      * The internal buffer array where the data is stored. When necessary, it
@@ -106,7 +106,7 @@ public class FastBufferedInputStream
      * @param in the underlying input stream.
      */
     public FastBufferedInputStream(InputStream in) {
-        this(in, defaultBufferSize);
+        this(in, DEFAULT_BUFFER_SIZE);
     }
 
     /**

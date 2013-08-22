@@ -13,7 +13,7 @@ public class ByteArrayDataOutput
     byte[] data;
     
     /**
-     * pos of the next byte
+     * pos of the next byte.
      */
     int pos = 0;
     
