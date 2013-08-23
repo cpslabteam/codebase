@@ -16,15 +16,15 @@ public class ConstantInputStream extends
     /**
      * The constant byte buffer.
      */
-    final byte[] buffer;
+    private final byte[] buffer;
 
     /**
      * Pointer to the current byte in the array.
      */
-    int ptr = 0;
+    private int ptr = 0;
 
     /**
-     * Constructs a constant input from an array of bytes
+     * Constructs a constant input from an array of bytes.
      * 
      * @param initializer the array of bytes that will be cycled
      * @throws IllegalArgumentException if the initializer is <code>null</code>
@@ -69,36 +69,28 @@ public class ConstantInputStream extends
         return result;
     }
 
-    /**
-     * @see java.io.InputStream#available()
-     */
+    @Override
     public final int available() throws IOException {
         return super.available();
     }
 
-    /**
-     * @see java.io.InputStream#close()
-     */
+    @Override
     public final void close() throws IOException {
         super.close();
     }
 
-    /**
-     * @see java.io.InputStream#mark(int)
-     */
+    @Override
     public final synchronized void mark(final int readlimit) {
         super.mark(readlimit);
     }
 
-    /**
-     * @see java.io.InputStream#markSupported()
-     */
+    @Override
     public final boolean markSupported() {
         return super.markSupported();
     }
 
     /**
-     * Reads a byte and returns it as an integer
+     * Reads a byte and returns it as an integer.
      * 
      * @see java.io.InputStream#read()
      */
@@ -108,7 +100,7 @@ public class ConstantInputStream extends
     }
 
     /**
-     * Fills a buffer with bytes from the internal buffer
+     * Fills a buffer with bytes from the internal buffer.
      * 
      * @see java.io.InputStream#read(byte[], int, int)
      */
@@ -121,7 +113,7 @@ public class ConstantInputStream extends
     }
 
     /**
-     * Fills a buffer with bytes taken from the internal buffer
+     * Fills a buffer with bytes taken from the internal buffer.
      * 
      * @see java.io.InputStream#read(byte[])
      */
@@ -130,7 +122,7 @@ public class ConstantInputStream extends
     }
 
     /**
-     * Sets the pointer to the first byte
+     * Sets the pointer to the first byte.
      * 
      * @see java.io.InputStream#reset()
      */
@@ -139,7 +131,7 @@ public class ConstantInputStream extends
     }
 
     /**
-     * Skips n bytes from the buffer
+     * Skips n bytes from the buffer.
      * 
      * @see java.io.InputStream#skip(long)
      */

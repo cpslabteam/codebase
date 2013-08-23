@@ -3,15 +3,12 @@
  */
 package codebase.iterators;
 
-import codebase.iterators.BoundedIterator;
-import codebase.iterators.EmptyIterator;
-import codebase.iterators.Enumerator;
 import codebase.junit.EnhancedTestCase;
 
 /**
  * Tests the {@link BoundedIterator} class.
  *  
- * TODO: Test remove 
+ * TODO: Test remove behavior
  * 
  * @author Paulo Carreira
  */
@@ -39,7 +36,7 @@ public class TestBoundedIterator
     }
     
     /**
-     * Tests when the bounded iterator returns multiple element.
+     * Tests when the bounded iterator returns multiple elements.
      */
     public final void testMultiple() {
         assertEquals(new Enumerator(1, 7), new BoundedIterator<Integer>(new Enumerator(

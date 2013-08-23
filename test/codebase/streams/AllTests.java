@@ -3,6 +3,9 @@ package codebase.streams;
 import junit.framework.Test;
 import junit.framework.TestSuite;
 
+/**
+ * Runs all tests of the stream package.
+ */
 public class AllTests {
 
     public static Test suite() {

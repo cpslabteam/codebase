@@ -5,16 +5,16 @@ import java.io.IOException;
 import java.io.OutputStream;
 
 /**
- * An output stream that waits for a predefined interval before writing <b>each byte</b> into
- * another stream.
+ * An output stream that waits for a predefined interval before writing <b>each byte</b>
+ * into another stream.
  * <p>
- * Used primarily for testing purposes.
+ * Used primarily for testing the timeout behavior of other classes.
  */
 public class DelayedOutputStream extends
         FilterOutputStream {
 
     /**
-     * The the number of bytes per second
+     * The the number of bytes per second.
      */
     private final int intervalMillis;
 
@@ -35,9 +35,12 @@ public class DelayedOutputStream extends
     }
 
     /**
-     * Waits for a predefined amount of time before writing each byte.
+     * Writes a byte waiting for a predefined amount of time writting.
      * 
      * @param b the byte to be written.
+     * @throws IOException when if writing on the decorated stream fails or if the the
+     *             stream was not allowed to wait the specified amount of milliseconds
+     *             before writting the byte
      */
     @Override
     public void write(int b) throws IOException {

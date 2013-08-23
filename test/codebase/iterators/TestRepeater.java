@@ -5,41 +5,39 @@ package codebase.iterators;
 
 import java.util.Iterator;
 
-import codebase.iterators.ArrayIterator;
-import codebase.iterators.EmptyIterator;
-import codebase.iterators.Repeater;
 import codebase.junit.CodeBlock;
 import codebase.junit.EnhancedTestCase;
 
 
-
-public class TestRepeater
-        extends EnhancedTestCase {
+/**
+ * Tests the {@link Repeater} iterator class.
+ */
+public class TestRepeater extends
+        EnhancedTestCase {
 
     /**
-     * Tests a repeater with zero repetitions
+     * Tests a repeater with zero repetitions.
      */
     public final void testZero() {
         assertEquals(new EmptyIterator<Object>(), new Repeater<Object>(new Object(), 0));
     }
 
     /**
-     * Tests a repeater with one repetitions
+     * Tests a repeater with one repetitions.
      */
     public final void testOne() {
         final Object o = new Object();
-        final Iterator<Object> input = new ArrayIterator<Object>(new Object[] {o});
+        final Iterator<Object> input = new ArrayIterator<Object>(new Object[] { o });
 
         assertEquals(input, new Repeater<Object>(o, 1));
     }
 
     /**
-     * Tests the reset of a repeater with two repetitions
+     * Tests the reset of a repeater with two repetitions.
      */
     public final void testReset() {
         final Object o = new Object();
-        final Iterator<Object> input = new ArrayIterator<Object>(new Object[] {
-                o, o});
+        final Iterator<Object> input = new ArrayIterator<Object>(new Object[] { o, o });
         final Repeater<Object> r = new Repeater<Object>(o, 2);
 
         assertEquals(r.next(), o);
@@ -49,7 +47,7 @@ public class TestRepeater
     }
 
     /**
-     * Tests that peek work correctly
+     * Tests that peek work correctly.
      */
     public final void testPeek() {
         final Object o = new Object();
@@ -70,7 +68,7 @@ public class TestRepeater
     }
 
     /**
-     * Tests that remove removes elements
+     * Tests that remove removes elements.
      */
     public final void testRemove() {
         final Object o = new Object();
@@ -87,19 +85,20 @@ public class TestRepeater
             }
         }, new IllegalStateException());
     }
+
     /**
-     * Tests a repeater with many repetitions
+     * Tests a repeater with many repetitions.
      */
     public final void testMany() {
         final Object o = new Object();
-        final Iterator<Object> input = new ArrayIterator<Object>(new Object[] {
-                o, o, o, o, o, o, o});
+        final Iterator<Object> input = new ArrayIterator<Object>(
+                new Object[] { o, o, o, o, o, o, o });
 
         assertEquals(input, new Repeater<Object>(o, 7));
     }
 
     /**
-     * Tests an unlimited repeater
+     * Tests an unlimited repeater.
      */
     public final void testUnlimited() {
         final Object o = new Object();

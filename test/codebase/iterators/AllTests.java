@@ -3,6 +3,9 @@ package codebase.iterators;
 import junit.framework.Test;
 import junit.framework.TestSuite;
 
+/**
+ * Runs all tests of the iterators package.
+ */
 public class AllTests {
 
     public static Test suite() {

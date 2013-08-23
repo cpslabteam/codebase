@@ -3,6 +3,9 @@ package codebase.junit;
 import junit.framework.Test;
 import junit.framework.TestSuite;
 
+/**
+ * Runs all tests of the junit package.
+ */
 public class AllTests {
 
     public static Test suite() {

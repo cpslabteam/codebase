@@ -6,24 +6,20 @@ package codebase.streams;
 
 import java.io.IOException;
 
-import codebase.streams.ConstantInputStream;
-
-
 import junit.framework.TestCase;
 
 /**
  * Tests the constant stream.
  */
-public class TestConstantStream
-        extends TestCase {
+public class TestConstantStream extends
+        TestCase {
 
     /**
-     * Tests that reading form the one element stream always returns the same
-     * element.
+     * Tests that reading form the one element stream always returns the same element.
      */
     public final void testReadOneElement() throws IOException {
         ConstantInputStream s = new ConstantInputStream("X");
-        
+
         try {
             // basic
             assertEquals(s.read(), 'X');
@@ -37,13 +33,12 @@ public class TestConstantStream
         } catch (IOException e) {
             fail("Stream read error");
         }
-        
+
         s.close();
     }
 
     /**
-     * Tests that reading multiple elements correctly returns the buffer
-     * elements.
+     * Tests that reading multiple elements correctly returns the buffer elements.
      */
     public void testReadMultipleElement() throws IOException {
         ConstantInputStream s = new ConstantInputStream("XYZ");
@@ -64,24 +59,23 @@ public class TestConstantStream
         } catch (IOException e) {
             fail("Stream read error");
         }
-        
+
         s.close();
     }
 
     /**
-     * Tests that skipping elements form the buffer correctly cycles through the
-     * buffer.
+     * Tests that skipping elements form the buffer correctly cycles through the buffer.
      */
     public void testSkipMultipleElement() throws IOException {
         ConstantInputStream s = new ConstantInputStream("XYZ");
         try {
             assertEquals(s.read(), 'X');
-            s.skip(2);
+            assertEquals(2, s.skip(2));
             assertEquals(s.read(), 'X');
         } catch (IOException e) {
             fail("Stream read error");
         }
-        
+
         s.close();
     }
 }

@@ -14,15 +14,17 @@ import codebase.binary.Binary;
  */
 public class ByteArrayDataInput
         implements DataInput {
+    /**
+     * The data buffer
+     */
     byte[] data;
 
     /**
-     * the next byte to return.
+     * The next byte to return.
      */
     int pos = 0;
 
     public ByteArrayDataInput() {
-
     }
 
     public ByteArrayDataInput(byte[] data) {

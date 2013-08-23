@@ -4,13 +4,12 @@
 package codebase.binary;
 
 import codebase.Arrays;
-import codebase.binary.Binary;
 import codebase.iterators.ArrayIterator;
 import codebase.iterators.EmptyIterator;
 import codebase.junit.EnhancedTestCase;
 
 /**
- * Tests the binary utility functions
+ * Tests the {@link Binary} utility functions.
  */
 public class TestBinary extends
         EnhancedTestCase {
@@ -155,20 +154,24 @@ public class TestBinary extends
     public void testDecodeIntegersToBytes() {
         // Emtpty
         final int[] input1 = new int[] {};
-        assertEquals(EMPTY_ITERATOR,
+        assertEquals(
+                EMPTY_ITERATOR,
                 new ArrayIterator<Byte>(Arrays.toByteArray(Binary.decodeIntegersToBytes(input1, 0))));
 
         // with one integer
         final int[] input2 = new int[] { 7 };
-        assertEquals(new ArrayIterator<Byte>(new Byte[] { new Byte((byte) 7), new Byte((byte) 0),
-                new Byte((byte) 0), new Byte((byte) 0) }),
+        assertEquals(
+                new ArrayIterator<Byte>(new Byte[] { Byte.valueOf((byte) 7),
+                        Byte.valueOf((byte) 0), Byte.valueOf((byte) 0), Byte.valueOf((byte) 0) }),
                 new ArrayIterator<Byte>(Arrays.toByteArray(Binary.decodeIntegersToBytes(input2, 4))));
 
         // with two integers
         final int[] input3 = new int[] { 7, 0x12345678 };
-        assertEquals(new ArrayIterator<Byte>(new Byte[] { new Byte((byte) 7), new Byte((byte) 0),
-                new Byte((byte) 0), new Byte((byte) 0), new Byte((byte) 0x78),
-                new Byte((byte) 0x56), new Byte((byte) 0x34), new Byte((byte) 0x12) }),
+        assertEquals(
+                new ArrayIterator<Byte>(new Byte[] { Byte.valueOf((byte) 7),
+                        Byte.valueOf((byte) 0), Byte.valueOf((byte) 0), Byte.valueOf((byte) 0),
+                        Byte.valueOf((byte) 0x78), Byte.valueOf((byte) 0x56),
+                        Byte.valueOf((byte) 0x34), Byte.valueOf((byte) 0x12) }),
                 new ArrayIterator<Byte>(Arrays.toByteArray(Binary.decodeIntegersToBytes(input3, 8))));
     }
 
@@ -190,7 +193,7 @@ public class TestBinary extends
         // with one integer
         final byte[] input2 = new byte[] { (byte) 7, (byte) 0, (byte) 0, (byte) 0 };
         assertEquals(
-                new ArrayIterator<Integer>(new Integer[] { new Integer(7) }),
+                new ArrayIterator<Integer>(new Integer[] { Integer.valueOf(7) }),
                 new ArrayIterator<Integer>(Arrays.toIntegerArray(Binary.encodeBytesToIntegers(
                         input2, 0, 4))));
 
@@ -199,8 +202,8 @@ public class TestBinary extends
                 (byte) 0x56, (byte) 0x34, (byte) 0x12 };
 
         assertEquals(
-                new ArrayIterator<Integer>(
-                        new Integer[] { new Integer(7), new Integer(0x12345678) }),
+                new ArrayIterator<Integer>(new Integer[] { Integer.valueOf(7),
+                        Integer.valueOf(0x12345678) }),
                 new ArrayIterator<Integer>(Arrays.toIntegerArray(Binary.encodeBytesToIntegers(
                         input3, 0, 8))));
     }

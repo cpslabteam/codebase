@@ -5,7 +5,8 @@ import java.io.IOException;
 import java.io.InputStream;
 
 /**
- * An input stream that waits for a fixed time each time before reading form another stream.
+ * An input stream that waits for a fixed time each time before reading form another
+ * stream.
  * <p>
  * Used primarily for testing purposes.
  */
@@ -13,7 +14,7 @@ public class DelayedInputStream extends
         FilterInputStream {
 
     /**
-     * The the number of bytes per second
+     * The the number of bytes per second.
      */
     private final int intervalMillis;
 
@@ -35,7 +36,7 @@ public class DelayedInputStream extends
 
 
     /**
-     * Reads a byte from the wrapped stream and waits for the given interval
+     * Reads a byte from the wrapped stream and waits for the given interval.
      * 
      * @return the character read from the underlying stream
      * @throws IOException if the read operation of the wrapped buffer fails
@@ -59,7 +60,7 @@ public class DelayedInputStream extends
      * Skips a specified amount of bytes.
      * <p>
      * Overrides {@link FilterInputStream#skip(long)} to update the progress monitor after
-     * the read. Waits a specified amount fo time in order to converge to the required
+     * the read. Waits a specified amount of time in order to converge to the required
      * bandwidth.
      * 
      * @param n {@inheritDoc}
