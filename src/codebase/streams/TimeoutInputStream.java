@@ -6,7 +6,12 @@ import java.io.InputStream;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
 
-
+/**
+ * An input stream decorator that times out (instead of blocking) on read operations.
+ * <p>
+ * This stream decorator is especially useful to add timeout behavior to an existing
+ * stream.
+ */
 public class TimeoutInputStream extends
         FilterInputStream {
 
@@ -67,7 +72,7 @@ public class TimeoutInputStream extends
         }
     };
 
-    DataReader dataReader = new DataReader();
+    private final DataReader dataReader = new DataReader();
 
     /**
      * Instantiates a new timeout stream decorator with default timeout.
@@ -96,18 +101,13 @@ public class TimeoutInputStream extends
     }
 
     @Override
-    public void finalize() {
-        dataReader.interrupt();
-    }
-
-    @Override
     public void close() throws IOException {
         dataReader.interrupt();
         super.close();
     }
 
     @Override
-    public synchronized int read() throws IOException {
+    public int read() throws IOException {
         dataFromDecorated.release();
         Thread.yield();
 

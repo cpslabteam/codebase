@@ -4,14 +4,14 @@ package codebase.streams;
 import java.io.IOException;
 import java.io.InputStream;
 
-import codebase.streams.DelayedInputStream;
-import codebase.streams.StringInputStream;
-import codebase.streams.TimeoutException;
-import codebase.streams.TimeoutInputStream;
-
 import junit.framework.TestCase;
 
-
+/**
+ * Unit tests for the {@link TimeoutInputStreamStream} class.
+ * <p>
+ * Uses a {@link DelayedOutputStream} simulate delays and test the correct handling
+ * timeout conditions.
+ */
 public class TestTimeoutInputStream extends
         TestCase {
     /**
@@ -75,7 +75,7 @@ public class TestTimeoutInputStream extends
     public void testSkipMultipleElement() throws IOException {
         InputStream s = new TimeoutInputStream(new StringInputStream("XYZW"));
         assertEquals(s.read(), 'X');
-        s.skip(2);
+        assertEquals(2, s.skip(2));
         assertEquals(s.read(), 'W');
 
         // Sanity check
@@ -96,7 +96,7 @@ public class TestTimeoutInputStream extends
         assertEquals(b[0], 'X');
         assertEquals(b[1], 'Y');
 
-        s.skip(1);
+        assertEquals(1, s.skip(1));
         assertEquals(s.read(), 'W');
 
         // Sanity check
@@ -107,7 +107,7 @@ public class TestTimeoutInputStream extends
     }
 
     /**
-     * Tests that with a delay of 2 secs, it times out
+     * Tests that with a delay of 2 secs, it times out.
      */
     public void testElementTimeout() throws IOException {
         InputStream s = new TimeoutInputStream(new DelayedInputStream(new StringInputStream("XYZ"),
@@ -119,7 +119,7 @@ public class TestTimeoutInputStream extends
 
             return;
         }
-        
+
         s.close();
         fail("Should have timed out!");
     }

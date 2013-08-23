@@ -2,16 +2,21 @@ package codebase.streams;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-
-import codebase.streams.DelayedOutputStream;
-import codebase.streams.TimeoutException;
-import codebase.streams.TimeoutOutputStream;
+import java.util.concurrent.TimeUnit;
 
 import junit.framework.TestCase;
 
 
+/**
+ * Unit tests for the {@link TimeoutOutputStream} class.
+ * <p>
+ * Uses a {@link DelayedOutputStream} simulate delays and test the correct handling
+ * timeout conditions.
+ */
 public class TestTimeoutOutputStream extends
         TestCase {
+
+    private static final String UTF8 = "UTF-8";
 
     /**
      * Tests that writing form the one element stream returns the element.
@@ -19,9 +24,11 @@ public class TestTimeoutOutputStream extends
     public final void testBasicWriteOneElement() throws IOException {
         ByteArrayOutputStream os = new ByteArrayOutputStream();
         TimeoutOutputStream s = new TimeoutOutputStream(os);
+        s.open();
+
         // Basic
         s.write('X');
-        assertEquals(os.toString(), "X");
+        assertEquals(os.toString(UTF8), "X");
 
         // Sanity checks for close
         assertFalse(s.isClosed());
@@ -32,14 +39,16 @@ public class TestTimeoutOutputStream extends
     /**
      * Tests that writing multiple elements correctly returns the elements in sequence.
      */
-    public void TestWriteMultipleElement() throws IOException {
+    public void testWriteMultipleElement() throws IOException {
         ByteArrayOutputStream os = new ByteArrayOutputStream();
         TimeoutOutputStream s = new TimeoutOutputStream(os);
+        s.open();
+
         // Basic
         s.write('X');
         s.write('Y');
         s.write('Z');
-        assertEquals(os.toString(), "XYZ");
+        assertEquals(os.toString(UTF8), "XYZ");
 
         //Sanity checks for close
         assertFalse(s.isClosed());
@@ -53,12 +62,14 @@ public class TestTimeoutOutputStream extends
     public void testBasicWriteMultipleElement() throws IOException {
         ByteArrayOutputStream os = new ByteArrayOutputStream();
         TimeoutOutputStream s = new TimeoutOutputStream(os);
+        s.open();
+
         // Basic
         s.write(new byte[] { 'X', 'Y', 'Z' });
         s.write(new byte[] { 'W', 'U' });
 
-        assertEquals(os.toString(), "XYZWU");
-        
+        assertEquals(os.toString(UTF8), "XYZWU");
+
         //Sanity checks for close
         assertFalse(s.isClosed());
         s.close();
@@ -70,12 +81,15 @@ public class TestTimeoutOutputStream extends
      */
     public void testSlowElementBuffer() throws IOException {
         ByteArrayOutputStream os = new ByteArrayOutputStream();
-        TimeoutOutputStream s = new TimeoutOutputStream(new DelayedOutputStream(os, 1000), 3000);
+        TimeoutOutputStream s = new TimeoutOutputStream(new DelayedOutputStream(os, 1000),
+                3000 + 500, TimeUnit.MILLISECONDS);
+        s.open();
+
         s.write(new byte[] { 'X', 'Y', 'Z' });
         s.write(new byte[] { 'W', 'U' });
 
-        assertEquals(os.toString(), "XYZWU");
-        
+        assertEquals(os.toString(UTF8), "XYZWU");
+
         //Sanity checks for close
         assertFalse(s.isClosed());
         s.close();
@@ -87,20 +101,18 @@ public class TestTimeoutOutputStream extends
      */
     public void testTimeoutElementBuffer() throws IOException {
         ByteArrayOutputStream os = new ByteArrayOutputStream();
-        TimeoutOutputStream s = new TimeoutOutputStream(new DelayedOutputStream(os, 2010));
+        TimeoutOutputStream s = new TimeoutOutputStream(new DelayedOutputStream(os, 2100), 2000,
+                TimeUnit.MILLISECONDS);
+        s.open();
 
         try {
             s.write(new byte[] { 'X' });
+            fail("Should have timed out!");
         } catch (TimeoutException e) {
-            s.close();
-            return;
+            super.assertTrue(true);
         }
-        fail("Should have timed out!");
-        
-        //Sanity checks for close
-        assertFalse(s.isClosed());
+
         s.close();
-        assertTrue(s.isClosed());
     }
 
 }
