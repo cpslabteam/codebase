@@ -3,6 +3,8 @@
  */
 package codebase.iterators;
 
+import java.util.NoSuchElementException;
+
 /**
  * Iterator iterates over the same element a given number of times.
  * <p>
@@ -93,6 +95,10 @@ public final class Repeater<E>
      */
     public E next() {
         if (!unlimited) {
+            if (left == 0) {
+                throw new NoSuchElementException("All elements exhausted from the repeater");
+            }
+
             left -= 1;
         }
 

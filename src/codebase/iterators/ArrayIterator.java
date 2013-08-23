@@ -31,7 +31,7 @@ public final class ArrayIterator<E> extends
     public ArrayIterator(final E[] sourceArray) {
         super(checkNotNull(sourceArray).length);
 
-        array = sourceArray;
+        array = sourceArray.clone();
     }
 
     /**
@@ -77,7 +77,7 @@ public final class ArrayIterator<E> extends
      * @see codebase.iterators.ManipulatableIterator#update(java.lang.Object)
      * @throws IllegalStateException if the current offset for update is not valid
      */
-    public void update(final E replacement) throws IllegalStateException {
+    public void update(final E replacement) {
         if (isValid()) {
             array[offset] = replacement;
         } else {
