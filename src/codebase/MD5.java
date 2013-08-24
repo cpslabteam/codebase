@@ -133,7 +133,7 @@ public final class MD5 {
         // CHECKSTYLE:ON
 
         private static int rotateLeft(int x, int n) {
-            return ((x << n) | (x >>> (Binary.BITS_FOR_FOUR_BYTES - n)));
+            return ((x << n) | (x >>> (Binary.BIT_SIZE_OF_INTEGER - n)));
         }
 
         /**
@@ -248,7 +248,7 @@ public final class MD5 {
          * Number of positions in the array of integers that correspond to the size of 16
          * bytes
          */
-        private static final int NUM_POSITIONS = 16 / Binary.INT_LENGTH_BYTES;
+        private static final int NUM_POSITIONS = 16 / Binary.SIZE_OF_INT;
 
         /**
          * The 4 integer array used to encode that status.
@@ -273,16 +273,16 @@ public final class MD5 {
         }
 
         private byte[] end() {
-            byte[] bits = new byte[Binary.BITS_PER_BYTE];
-            for (int i = 0; i < Binary.BITS_PER_BYTE; i++) {
-                final int displacement = (i * Binary.BITS_PER_BYTE);
+            byte[] bits = new byte[Binary.BIT_SIZE_OF_BYTE];
+            for (int i = 0; i < Binary.BIT_SIZE_OF_BYTE; i++) {
+                final int displacement = (i * Binary.BIT_SIZE_OF_BYTE);
                 bits[i] = (byte) ((count >>> displacement) & Binary.INT_LOW_BYTE_MASK);
             }
             int index = ((int) (count >> 3)) & 0x3f;
             int padlen = (index < 56) ? (56 - index) : (120 - index);
             update(MD5Funcs.PADDING, padlen);
-            update(bits, Binary.BITS_PER_BYTE);
-            return Binary.decodeIntegersToBytes(digest, 2 * Binary.BITS_PER_BYTE);
+            update(bits, Binary.BIT_SIZE_OF_BYTE);
+            return Binary.decodeIntegersToBytes(digest, 2 * Binary.BIT_SIZE_OF_BYTE);
         }
 
         /**
@@ -331,7 +331,7 @@ public final class MD5 {
     /**
      * Size in bytes of the treatment unit. We perform the treatment in block of 64 bytes.
      */
-    private static final int BLOCK_TREATMENT_SIZE = DIGEST_SIZE * Binary.INT_LENGTH_BYTES;
+    private static final int BLOCK_TREATMENT_SIZE = DIGEST_SIZE * Binary.SIZE_OF_INT;
 
     /**
      * Size of the blocks to be read from the stream.

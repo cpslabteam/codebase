@@ -39,6 +39,11 @@ public final class BitVector {
     private int cachedCount = -1;
 
     /**
+     * Number of rights shifts that are equivalent to an integer division by 8.
+     */
+    public static final int DIV_8_SHIFTS = 3;
+
+    /**
      * Constructs a vector capable of holding n bits.
      * 
      * @param n size of the array in bits
@@ -49,7 +54,7 @@ public final class BitVector {
             throw new IllegalArgumentException("The size must be positive");
         }
         size = n;
-        bits = new byte[(size >> Binary.DIV_8_SHIFTS) + 1];
+        bits = new byte[(size >> BitVector.DIV_8_SHIFTS) + 1];
     }
 
     /**
@@ -58,7 +63,7 @@ public final class BitVector {
      * @param bitIndex the index of the bit to set
      */
     public void clear(final int bitIndex) {
-        bits[bitIndex >> Binary.DIV_8_SHIFTS] &= ~(1 << (bitIndex & BIT_IDX_MASK));
+        bits[bitIndex >> BitVector.DIV_8_SHIFTS] &= ~(1 << (bitIndex & BIT_IDX_MASK));
         cachedCount = -1;
     }
 
@@ -94,7 +99,7 @@ public final class BitVector {
      * @return the value of <code>bits[bitIndex]</code>
      */
     public boolean get(final int bitIndex) {
-        return (bits[bitIndex >> Binary.DIV_8_SHIFTS] & (1 << (bitIndex & BIT_IDX_MASK))) != 0;
+        return (bits[bitIndex >> BitVector.DIV_8_SHIFTS] & (1 << (bitIndex & BIT_IDX_MASK))) != 0;
     }
 
     /**
@@ -106,7 +111,7 @@ public final class BitVector {
     public void read(final DataInput input) throws IOException {
         size = input.readInt(); // read size
         cachedCount = input.readInt(); // read cachedCount
-        bits = new byte[(size >> Binary.DIV_8_SHIFTS) + 1]; // allocate bits
+        bits = new byte[(size >> BitVector.DIV_8_SHIFTS) + 1]; // allocate bits
         input.readFully(bits, 0, bits.length); // read bits
     }
 
@@ -116,7 +121,7 @@ public final class BitVector {
      * @param bitIndex the index of the bit to set
      */
     public void set(final int bitIndex) {
-        bits[bitIndex >> Binary.DIV_8_SHIFTS] |= (1 << (bitIndex & BIT_IDX_MASK));
+        bits[bitIndex >> BitVector.DIV_8_SHIFTS] |= (1 << (bitIndex & BIT_IDX_MASK));
         cachedCount = -1;
     }
 

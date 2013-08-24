@@ -125,10 +125,10 @@ public final class Math {
 
         // CHECKSTYLE:ON
 
-        int lg2 = LOG2_PER_BYTE[(int) ((l >>> log) & Binary.LONG_BYTE_MASK)];
+        int lg2 = LOG2_PER_BYTE[(int) ((l >>> log) & Binary.LONG_LOW_BYTE_MASK)];
         while (lg2 == 0 && log > 0) {
-            log -= Binary.BITS_PER_BYTE;
-            lg2 = LOG2_PER_BYTE[(int) ((l >>> log) & Binary.LONG_BYTE_MASK)];
+            log -= Binary.BIT_SIZE_OF_BYTE;
+            lg2 = LOG2_PER_BYTE[(int) ((l >>> log) & Binary.LONG_LOW_BYTE_MASK)];
         }
         return log + lg2;
     }
@@ -153,7 +153,7 @@ public final class Math {
 
         int lg2 = LOG2_PER_BYTE[(i >>> log) & Binary.INT_LOW_BYTE_MASK];
         while (lg2 == 0 && log > 0) {
-            log -= Binary.BITS_PER_BYTE;
+            log -= Binary.BIT_SIZE_OF_BYTE;
             lg2 = LOG2_PER_BYTE[(i >>> log) & Binary.INT_LOW_BYTE_MASK];
         }
         return log + lg2;
@@ -167,7 +167,7 @@ public final class Math {
      */
     public static int hash(final double value) {
         final long bits = Double.doubleToLongBits(value);
-        return (int) (bits ^ (bits >>> Binary.INT_LENGTH_BITS));
+        return (int) (bits ^ (bits >>> Binary.BIT_SIZE_OF_INTEGER));
     }
 
     /**
