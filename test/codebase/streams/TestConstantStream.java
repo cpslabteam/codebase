@@ -20,19 +20,15 @@ public class TestConstantStream extends
     public final void testReadOneElement() throws IOException {
         ConstantInputStream s = new ConstantInputStream("X");
 
-        try {
-            // basic
-            assertEquals(s.read(), 'X');
-            assertEquals(s.read(), 'X');
+        // basic
+        assertEquals(s.read(), 'X');
+        assertEquals(s.read(), 'X');
 
-            // with an array
-            byte[] b = new byte[2];
-            assertEquals(s.read(b), 2);
-            assertEquals(b[0], 'X');
-            assertEquals(b[1], 'X');
-        } catch (IOException e) {
-            fail("Stream read error");
-        }
+        // with an array
+        byte[] b = new byte[2];
+        assertEquals(s.read(b), 2);
+        assertEquals(b[0], 'X');
+        assertEquals(b[1], 'X');
 
         s.close();
     }
@@ -40,25 +36,22 @@ public class TestConstantStream extends
     /**
      * Tests that reading multiple elements correctly returns the buffer elements.
      */
-    public void testReadMultipleElement() throws IOException {
+    public void testReadMultipleElement() {
         ConstantInputStream s = new ConstantInputStream("XYZ");
-        try {
-            // Basic
-            assertEquals(s.read(), 'X');
-            assertEquals(s.read(), 'Y');
-            assertEquals(s.read(), 'Z');
-            assertEquals(s.read(), 'X');
 
-            // with an array
-            byte[] b = new byte[2];
-            assertEquals(s.read(b), 2);
-            assertEquals(b[0], 'Y');
-            assertEquals(b[1], 'Z');
+        // Basic
+        assertEquals(s.read(), 'X');
+        assertEquals(s.read(), 'Y');
+        assertEquals(s.read(), 'Z');
+        assertEquals(s.read(), 'X');
 
-            assertEquals(s.read(), 'X');
-        } catch (IOException e) {
-            fail("Stream read error");
-        }
+        // with an array
+        byte[] b = new byte[2];
+        assertEquals(s.read(b), 2);
+        assertEquals(b[0], 'Y');
+        assertEquals(b[1], 'Z');
+
+        assertEquals(s.read(), 'X');
 
         s.close();
     }

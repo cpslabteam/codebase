@@ -100,7 +100,7 @@ public class TestBinary extends
     }
 
     public void testToByteArray() {
-        byte[] decoding = new byte[Binary.INT_LENGTH_BYTES];
+        byte[] decoding = new byte[Binary.SIZE_OF_INT];
         Binary.toByteArray(0, decoding, 0);
 
         assertEquals(0, decoding[0]);

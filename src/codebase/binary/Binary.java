@@ -18,7 +18,12 @@ public final class Binary {
     /**
      * Number of bits in two bytes.
      */
-    public static final int BIT_SIZE_OF_SHORT = 2 * BIT_SIZE_OF_BYTE;
+    public static final int BIT_SIZE_OF_TWO_BYTES = 2 * BIT_SIZE_OF_BYTE;
+
+    /**
+     * Number of bits in a short.
+     */
+    public static final int BIT_SIZE_OF_SHORT = BIT_SIZE_OF_TWO_BYTES;
 
     /**
      * Number of bits in three bytes.

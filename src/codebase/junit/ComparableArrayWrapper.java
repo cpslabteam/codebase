@@ -5,7 +5,6 @@ package codebase.junit;
 
 import codebase.Arrays;
 
-
 /**
  * A wrapper object for arrays that makes them comparable.
  * <p>
@@ -24,12 +23,12 @@ public class ComparableArrayWrapper {
     private final Object[] wrapped;
 
     /**
-     * Contructs a wrapper for a given object array.
+     * Constructs a wrapper for a given object array.
      * 
      * @param array the array to be wrapped
      */
     public ComparableArrayWrapper(final Object[] array) {
-        wrapped = array;
+        wrapped = array.clone();
     }
 
     /**
@@ -42,19 +41,19 @@ public class ComparableArrayWrapper {
      * @see java.lang.Object#hashCode()
      */
     public final int hashCode() {
-        return wrapped.hashCode();
+        return java.util.Arrays.hashCode(wrapped);
     }
 
     /**
      * Compares the wrapped array with another array.
      * 
-     * @param another the object to compra to, can be an <code>Object[]</code> or a
+     * @param another the object to compare to, can be an <code>Object[]</code> or a
      *            {@link ComparableArrayWrapper}
      * @return <code>true</code> if the array being wrapped and the array passed as
-     *         argument are both <code>null</code> or are equal element by elelment
+     *         argument are both <code>null</code> or are equal element by element
      * @see Arrays#equals(Object[], Object[])
      * @see java.lang.Object#equals(java.lang.Object)
-     * @throws IllegalArgumentException if the object being passed as argumen is neither
+     * @throws IllegalArgumentException if the object being passed as argument is neither
      *             an object array nor a {@link ComparableArrayWrapper}
      */
     public final boolean equals(final Object another) {
@@ -62,15 +61,28 @@ public class ComparableArrayWrapper {
         if (another instanceof ComparableArrayWrapper) {
             final ComparableArrayWrapper otherWrapper = (ComparableArrayWrapper) another;
             anotherArray = otherWrapper.getArray();
-        } else {
-            if (another instanceof Object[]) {
-                anotherArray = (Object[]) another;
-            } else {
+        } else
+            try {
+                /*
+                 * FindBugs complains that we cannot convert to Object[] 
+                 * because Object[] is not an ascendent or descendant of 
+                 * ComparableArrayWrapper. However, to simplify the client 
+                 * code we should allow comparing with Object[].
+                 */
+                anotherArray = coerce(another);
+            } catch (ClassCastException e) {
                 throw new IllegalArgumentException("Expecting an object array");
             }
-        }
+
         final boolean isEqual = Arrays.equals(wrapped, anotherArray);
         return isEqual;
+    }
+
+    /*
+     * This method is used only to avoid FidBugs from complaining.
+     */
+    private static Object[] coerce(Object o) {
+        return (Object[]) o;
     }
 
     /**
@@ -79,7 +91,7 @@ public class ComparableArrayWrapper {
      * @return the reference to the array being wrapped
      */
     public final Object[] getArray() {
-        return wrapped;
+        return wrapped.clone();
     }
 
 }

@@ -7,134 +7,120 @@ import java.io.IOException;
 import codebase.binary.Binary;
 
 /**
- * A ByteArrayDataInput.
+ * A {@link DataInput} that reads data from a byte[].
+ * <p>
+ * Calls to <tt>read</tt> methods will be translated to array byte[] accesses.
  * <p>
  * For performance (yes!) this class assumes that the caller will not go past EOF (or end
  * of bytes)
+ * 
+ * @see ByteArrayDataOutput
  */
 public class ByteArrayDataInput
         implements DataInput {
+    private static final int LINE_BUFFER_INCREMENT_SIZE = 128;
+
     /**
-     * The data buffer
+     * The internal input data buffer.
      */
-    byte[] data;
+    private byte[] inputBuffer;
 
     /**
      * The next byte to return.
      */
-    int pos = 0;
+    private int pos = 0;
+
+    /**
+     * Buffer used to hold the bytes read for a line in subsequent calls to
+     * {@link #readLine()}.
+     */
+    private char[] lineBuffer;
+
 
     public ByteArrayDataInput() {
     }
 
     public ByteArrayDataInput(byte[] data) {
-        this.data = data;
+        this.inputBuffer = data.clone();
     }
 
-    public byte[] getBytes() {
-        return data;
+    private int read() {
+        return ((int) inputBuffer[pos++]) & Binary.INT_LOW_BYTE_MASK;
     }
 
-    public void setBytes(byte[] d) {
-        this.data = d;
-        pos = 0;
-    }
-
-    /***************************************************************************
-     * DataInputStream methods
+    /**
+     * Gets a copy of the internal input buffer.
+     * 
+     * @return the internal input buffer
      */
-
-    public void readFully(byte b[]) throws IOException {
-        readFully(b, 0, b.length);
+    public byte[] getBytes() {
+        return inputBuffer.clone();
     }
 
-    public void readFully(byte b[], int off, int len) throws IOException {
-        System.arraycopy(data, pos, b, off, len);
-        pos += len;
-    }
-
-    public int skipBytes(int n) throws IOException {
-        pos += n;
-        return n;
-    }
-
-    public int read() {
-        return ((int) data[pos++]) & Binary.INT_LOW_BYTE_MASK;
-    }
-
+    @Override
     public final boolean readBoolean() throws IOException {
         final int b = read();
         return (b != 0);
     }
 
+    @Override
     public final byte readByte() throws IOException {
         final int b = read();
         return (byte) (b);
     }
 
-    public final int readUnsignedByte() throws IOException {
-        final int b = read();
-        return b;
-    }
-
-    public final short readShort() throws IOException {
-        final int b1 = read();
-        final int b2 = read();
-        return (short) ((b1 << 8) + (b2 << 0));
-    }
-
-    public final int readUnsignedShort() throws IOException {
-        final int b1 = read();
-        final int b2 = read();
-        return (b1 << 8) + (b2 << 0);
-    }
-
+    @Override
     public final char readChar() throws IOException {
         final int b1 = read();
         final int b2 = read();
-        return (char) ((b1 << 8) + (b2 << 0));
+        return (char) ((b1 << Binary.BIT_SIZE_OF_BYTE) + (b2 << 0));
     }
 
+    @Override
+    public final double readDouble() throws IOException {
+        return Double.longBitsToDouble(readLong());
+    }
+
+    @Override
+    public final float readFloat() throws IOException {
+        return Float.intBitsToFloat(readInt());
+    }
+
+    @Override
+    public void readFully(byte[] b) throws IOException {
+        readFully(b, 0, b.length);
+    }
+
+    @Override
+    public void readFully(byte[] b, int off, int len) throws IOException {
+        System.arraycopy(inputBuffer, pos, b, off, len);
+        pos += len;
+    }
+
+    @Override
     public final int readInt() throws IOException {
         final int b1 = read();
         final int b2 = read();
         final int b3 = read();
         final int b4 = read();
-        return ((b1 << 24) + (b2 << 16) + (b3 << 8) + (b4 << 0));
+        return ((b1 << Binary.BIT_SIZE_OF_THREE_BYTES) + (b2 << Binary.BIT_SIZE_OF_TWO_BYTES)
+                + (b3 << Binary.BIT_SIZE_OF_BYTE) + (b4 << 0));
     }
 
-    public final long readLong() throws IOException {
-        final byte[] readBuffer = new byte[8];
-        readFully(readBuffer, 0, 8);
-        return (((long) readBuffer[0] << 56) + ((long) (readBuffer[1] & 255) << 48)
-                + ((long) (readBuffer[2] & 255) << 40) + ((long) (readBuffer[3] & 255) << 32)
-                + ((long) (readBuffer[4] & 255) << 24) + ((readBuffer[5] & 255) << 16)
-                + ((readBuffer[6] & 255) << 8) + ((readBuffer[7] & 255) << 0));
-    }
-
-    public final float readFloat() throws IOException {
-        return Float.intBitsToFloat(readInt());
-    }
-
-    public final double readDouble() throws IOException {
-        return Double.longBitsToDouble(readLong());
-    }
-
-    private char lineBuffer[];
-
+    @Override
     public final String readLine() throws IOException {
-        char buf[] = lineBuffer;
-
-        if (buf == null) {
-            buf = lineBuffer = new char[128];
+        if (lineBuffer == null) {
+            lineBuffer = new char[LINE_BUFFER_INCREMENT_SIZE];
         }
 
+        char[] buf = lineBuffer;
         int room = buf.length;
         int offset = 0;
         int c;
 
         loop: while (true) {
-            switch (c = read()) {
+            c = read();
+            switch (c) {
                 case -1:
                 case '\n':
                     break loop;
@@ -145,7 +131,7 @@ public class ByteArrayDataInput
 
                 default:
                     if (--room < 0) {
-                        buf = new char[offset + 128];
+                        buf = new char[offset + LINE_BUFFER_INCREMENT_SIZE];
                         room = buf.length - offset - 1;
                         System.arraycopy(lineBuffer, 0, buf, 0, offset);
                         lineBuffer = buf;
@@ -160,7 +146,60 @@ public class ByteArrayDataInput
         return String.copyValueOf(buf, 0, offset);
     }
 
+    @Override
+    public final long readLong() throws IOException {
+        final byte[] readBuffer = new byte[Binary.SIZE_OF_LONG];
+        readFully(readBuffer, 0, Binary.SIZE_OF_LONG);
+        //CHECKSTYLE:OFF - uses byte position and number of bit rotations
+        return (((long) readBuffer[0] << 56)
+                + ((long) (readBuffer[1] & Binary.INT_LOW_BYTE_MASK) << 48)
+                + ((long) (readBuffer[2] & Binary.INT_LOW_BYTE_MASK) << 40)
+                + ((long) (readBuffer[3] & Binary.INT_LOW_BYTE_MASK) << 32)
+                + ((long) (readBuffer[4] & Binary.INT_LOW_BYTE_MASK) << 24)
+                + ((long) (readBuffer[5] & Binary.INT_LOW_BYTE_MASK) << 16)
+                + ((long) (readBuffer[6] & Binary.INT_LOW_BYTE_MASK) << 8) + ((long) (readBuffer[7] & Binary.INT_LOW_BYTE_MASK) << 0));
+        //CHECKSTYLE:ON
+    }
+
+    @Override
+    public final short readShort() throws IOException {
+        final int b1 = read();
+        final int b2 = read();
+        return (short) ((b1 << Binary.BIT_SIZE_OF_BYTE) + (b2 << 0));
+    }
+
+    @Override
+    public final int readUnsignedByte() throws IOException {
+        final int b = read();
+        return b;
+    }
+
+    @Override
+    public final int readUnsignedShort() throws IOException {
+        final int b1 = read();
+        final int b2 = read();
+        return (b1 << Binary.BIT_SIZE_OF_BYTE) + (b2 << 0);
+    }
+
+    @Override
     public final String readUTF() throws IOException {
         return DataInputStream.readUTF(this);
+    }
+
+    /**
+     * Resets the internal input buffer.
+     * 
+     * @param b the new byte[] buffer
+     */
+    public void setBytes(byte[] b) {
+        this.inputBuffer = b.clone();
+        pos = 0;
+        lineBuffer = null;
+    }
+
+    @Override
+    public int skipBytes(int n) throws IOException {
+        pos += n;
+        return n;
     }
 }

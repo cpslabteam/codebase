@@ -3,12 +3,9 @@ package codebase;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
 import java.io.Reader;
-import java.io.Writer;
 import java.util.Arrays;
 
-import junit.framework.AssertionFailedError;
 import junit.framework.TestCase;
 
 /**
@@ -27,25 +24,25 @@ public abstract class FileBasedTestCase extends
     }
 
 
-    protected void checkFile(File file, File referenceFile) throws Exception {
-        assertTrue("Check existence of output file", file.exists());
-        assertEqualContent(referenceFile, file);
-    }
-
-    /** Assert that the content of two files is the same. */
-    private void assertEqualContent(File f0, File f1) throws IOException {
+    /**
+     * Assert that the content of two files is the same.
+     * 
+     * @param f0 a file to compare
+     * @param f1 another file to compare
+     */
+    protected void assertEqualContent(File f0, File f1) throws IOException {
         /*
          * This doesn't work because the filesize isn't updated until the file
          * is closed. assertTrue( "The files " + f0 + " and " + f1 + " have
          * differing file sizes (" + f0.length() + " vs " + f1.length() + ")", (
          * f0.length() == f1.length() ) );
          */
-        InputStream is0 = new java.io.FileInputStream(f0);
+        final InputStream is0 = new java.io.FileInputStream(f0);
         try {
-            InputStream is1 = new java.io.FileInputStream(f1);
+            final InputStream is1 = new java.io.FileInputStream(f1);
             try {
-                byte[] buf0 = new byte[1024];
-                byte[] buf1 = new byte[1024];
+                final byte[] buf0 = new byte[1024];
+                final byte[] buf1 = new byte[1024];
                 int n0 = 0;
                 int n1 = 0;
 
@@ -69,16 +66,19 @@ public abstract class FileBasedTestCase extends
 
     /**
      * Assert that the content of a file is equal to that in a byte[].
+     * 
+     * @param file the file to verify
+     * @param b0 a byte array to check for
      */
-    protected void assertEqualContent(byte[] b0, File file) throws IOException {
+    protected void assertEqualContent(File file, byte[] b0) throws IOException {
         InputStream is = new java.io.FileInputStream(file);
         try {
-            byte[] b1 = new byte[b0.length];
-            int numRead = is.read(b1);
+            final byte[] b1 = new byte[b0.length];
+            final int numRead = is.read(b1);
             assertTrue("Different number of bytes", numRead == b0.length && is.available() == 0);
-            for (int i = 0; i < numRead; assertTrue("Byte " + i + " differs (" + b0[i] + " != "
-                    + b1[i] + ")", b0[i] == b1[i]), i++) {
-                // skip
+            for (int i = 0; i < numRead; i++) {
+                assertTrue("Byte " + i + " differs (" + b0[i] + " != " + b1[i] + ")",
+                        b0[i] == b1[i]);
             }
         } finally {
             is.close();
@@ -87,6 +87,9 @@ public abstract class FileBasedTestCase extends
 
     /**
      * Assert that the content of a file is equal to that in a char[].
+     * 
+     * @param c0 a char array to check for
+     * @param file the file to verify
      */
     protected void assertEqualContent(char[] c0, File file) throws IOException {
         Reader ir = new java.io.FileReader(file);
@@ -94,37 +97,25 @@ public abstract class FileBasedTestCase extends
             char[] c1 = new char[c0.length];
             int numRead = ir.read(c1);
             assertTrue("Different number of bytes", numRead == c0.length);
-            for (int i = 0; i < numRead; assertTrue("Byte " + i + " differs (" + c0[i] + " != "
-                    + c1[i] + ")", c0[i] == c1[i]), i++) {
-                // skip
+            for (int i = 0; i < numRead; i++) {
+                assertTrue("Byte " + i + " differs (" + c0[i] + " != " + c1[i] + ")",
+                        c0[i] == c1[i]);
             }
         } finally {
             ir.close();
         }
     }
 
-    protected void checkWrite(OutputStream output) throws Exception {
-        try {
-            new java.io.PrintStream(output).write(0);
-        } catch (Throwable t) {
-            throw new AssertionFailedError("The copy() method closed the stream "
-                    + "when it shouldn't have. " + t.getMessage());
-        }
-    }
 
-    protected void checkWrite(Writer output) throws Exception {
-        try {
-            new java.io.PrintWriter(output).write('a');
-        } catch (Throwable t) {
-            throw new AssertionFailedError("The copy() method closed the stream "
-                    + "when it shouldn't have. " + t.getMessage());
-        }
-    }
-
-    protected void deleteFile(File file) throws Exception {
+    /**
+     * Verifies if a file can be deleted.
+     * 
+     * @param file the file to be checked and deleted
+     * @throws Exception if the file cannot be deleted
+     */
+    protected void checkDelete(final File file) throws Exception {
         if (file.exists()) {
             assertTrue("Couldn't delete file: " + file, file.delete());
         }
     }
-
 }
