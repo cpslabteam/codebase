@@ -76,42 +76,43 @@
 		<dependency>
 			<groupId>middleware.transportlib.libs</groupId>
 			<artifactId>RXTXcomm</artifactId>
-			<version>2.2-20081207</version>
+			<version>1.0</version>
 		</dependency>
 	</dependencies>
 
 	<repositories>
-		<repository>
-			<id>it4energy</id>
-			<url> http://it4energy.tagus.ist.utl.pt:8081/artifactory/libs-release </url>
-			<snapshots>
-				<enabled>false</enabled>
-			</snapshots>
-		</repository>
-		<repository>
-			<id>snapshots</id>
-			<url> http://it4energy.tagus.ist.utl.pt:8081/artifactory/libs-snapshot </url>
-			<releases>
-				<enabled>false</enabled>
-			</releases>
-		</repository>
-	</repositories>
-	<pluginRepositories>
-		<pluginRepository>
-			<id>it4energy</id>
-			<url> http://it4energy.tagus.ist.utl.pt:8081/artifactory/plugins-release </url>
-			<snapshots>
-				<enabled>false</enabled>
-			</snapshots>
-		</pluginRepository>
-		<pluginRepository>
-			<id>snapshots</id>
-			<url> http://it4energy.tagus.ist.utl.pt:8081/artifactory/plugins-snapshot </url>
-			<releases>
-				<enabled>false</enabled>
-			</releases>
-		</pluginRepository>
-	</pluginRepositories>
+			<repository>
+				<snapshots>
+					<enabled>false</enabled>
+				</snapshots>
+				<id>nexus</id>
+				<name>p2-metadata/releases</name>
+				<url>http://it4energy.tagus.ist.utl.pt:8081/nexus/content/repositories/p2-releases/</url>
+			</repository>
+        
+			<repository>
+				<snapshots />
+				<id>nexus</id>
+				<name>p2-metadata/snapshots</name>
+				<url>http://it4energy.tagus.ist.utl.pt:8081/nexus/content/repositories/p2-snapshots/</url>
+			</repository>
+		
+			<repository>
+				<snapshots>
+					<enabled>false</enabled>
+				</snapshots>
+				<id>nexus</id>
+				<name>Releases</name>
+				<url>http://it4energy.tagus.ist.utl.pt:8081/nexus/content/repositories/releases/</url>
+			</repository>
+        
+			<repository>
+				<snapshots />
+				<id>nexus</id>
+				<name>Snapshots</name>
+				<url>http://it4energy.tagus.ist.utl.pt:8081/nexus/content/repositories/snapshots/</url>
+			</repository>
+	  </repositories>
 
 
 	<reporting>
