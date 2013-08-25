@@ -40,7 +40,7 @@ public class DelayedOutputStream extends
      * @param b the byte to be written.
      * @throws IOException when if writing on the decorated stream fails or if the the
      *             stream was not allowed to wait the specified amount of milliseconds
-     *             before writting the byte
+     *             before writing the byte
      */
     @Override
     public void write(int b) throws IOException {
