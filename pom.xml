@@ -80,19 +80,19 @@
 		</dependency>
 	</dependencies>
 
-	<repositories>
+<repositories>
 			<repository>
 				<snapshots>
 					<enabled>false</enabled>
 				</snapshots>
-				<id>nexus</id>
+				<id>nexus.p2-releases</id>
 				<name>p2-metadata/releases</name>
 				<url>http://it4energy.tagus.ist.utl.pt:8081/nexus/content/repositories/p2-releases/</url>
 			</repository>
         
 			<repository>
 				<snapshots />
-				<id>nexus</id>
+				<id>nexus.p2-snapshots</id>
 				<name>p2-metadata/snapshots</name>
 				<url>http://it4energy.tagus.ist.utl.pt:8081/nexus/content/repositories/p2-snapshots/</url>
 			</repository>
@@ -101,14 +101,14 @@
 				<snapshots>
 					<enabled>false</enabled>
 				</snapshots>
-				<id>nexus</id>
+				<id>nexus.releases</id>
 				<name>Releases</name>
 				<url>http://it4energy.tagus.ist.utl.pt:8081/nexus/content/repositories/releases/</url>
 			</repository>
         
 			<repository>
 				<snapshots />
-				<id>nexus</id>
+				<id>nexus.snapshots</id>
 				<name>Snapshots</name>
 				<url>http://it4energy.tagus.ist.utl.pt:8081/nexus/content/repositories/snapshots/</url>
 			</repository>
