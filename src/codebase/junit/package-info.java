@@ -1,5 +1,5 @@
 /**
- * JUnit special utility classes.
+ * Utility classes and enhancements to perform  JUnit tests.
  * 
  */
 // todo: add a reamme and license files

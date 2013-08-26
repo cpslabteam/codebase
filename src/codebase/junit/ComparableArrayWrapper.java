@@ -67,7 +67,7 @@ public class ComparableArrayWrapper {
                  * FindBugs complains that we cannot convert to Object[] 
                  * because Object[] is not an ascendent or descendant of 
                  * ComparableArrayWrapper. However, to simplify the client 
-                 * code we should allow comparing with Object[].
+                 * code we need to compare with Object[].
                  */
                 anotherArray = coerce(another);
             } catch (ClassCastException e) {
