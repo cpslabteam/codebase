@@ -4,6 +4,7 @@
 package codebase.binary;
 
 import codebase.Arrays;
+import codebase.Binary;
 import codebase.iterators.ArrayIterator;
 import codebase.iterators.EmptyIterator;
 import codebase.junit.EnhancedTestCase;

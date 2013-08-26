@@ -5,7 +5,7 @@ import java.io.EOFException;
 import java.io.IOException;
 import java.io.UTFDataFormatException;
 
-import codebase.binary.Binary;
+import codebase.Binary;
 
 /**
  * A {@link DataOutput} that writes to a byte array.

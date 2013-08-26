@@ -8,7 +8,6 @@ import java.io.OutputStream;
 import java.io.PrintStream;
 import java.util.Iterator;
 
-import codebase.binary.Binary;
 
 /**
  * Utility class for debugging and logging.
@@ -185,7 +184,7 @@ public final class Debug {
      * @param buffer the object to be dumped
      * @param out the output stream to write the buffer to
      * @throws IOException if an exception occurs while writing on the output stream
-     * @see #toHexString(Object)
+     * @see #toHexStringDump(byte[])
      */
     public static void dumpToHexString(final byte[] buffer, final OutputStream out) throws IOException {
         out.write(toHexStringDump(buffer).getBytes(DEFAULT_STRING_ENCODING));
@@ -203,7 +202,7 @@ public final class Debug {
      * @param out the output stream to write the buffer to
      * @param size the size of each segment (in bytes) to take from the buffer
      * @throws IOException if an exception occurs while writing on the output stream
-     * @see #toHexString(Object)
+     * @see #toHexStringDump(byte[], int)
      */
     public static void dumpToHexString(final byte[] buffer, final OutputStream out, final int size) throws IOException {
         out.write(toHexStringDump(buffer, size).getBytes(DEFAULT_STRING_ENCODING));

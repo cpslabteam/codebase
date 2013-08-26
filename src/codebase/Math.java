@@ -3,7 +3,6 @@
  */
 package codebase;
 
-import codebase.binary.Binary;
 
 /**
  * Mathematical utility functions.

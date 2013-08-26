@@ -7,7 +7,7 @@ import java.io.InputStream;
 import junit.framework.TestCase;
 
 /**
- * Unit tests for the {@link TimeoutInputStreamStream} class.
+ * Unit tests for the {@link TimeoutInputStream} class.
  * <p>
  * Uses a {@link DelayedOutputStream} simulate delays and test the correct handling
  * timeout conditions.

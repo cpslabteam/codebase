@@ -4,7 +4,7 @@ import java.io.DataInput;
 import java.io.DataInputStream;
 import java.io.IOException;
 
-import codebase.binary.Binary;
+import codebase.Binary;
 
 /**
  * A {@link DataInput} that reads data from a byte[].

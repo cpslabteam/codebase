@@ -7,6 +7,8 @@ import java.io.IOException;
 import java.io.DataOutput;
 import java.io.DataInput;
 
+import codebase.Binary;
+
 
 /**
  * Optimized implementation of a vector of bits.

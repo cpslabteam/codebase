@@ -7,7 +7,7 @@ import java.io.FilterInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
-import codebase.binary.Binary;
+import codebase.Binary;
 
 /**
  * A fast buffered input stream that is not thread safe.

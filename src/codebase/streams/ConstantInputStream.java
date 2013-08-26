@@ -3,7 +3,7 @@ package codebase.streams;
 import java.io.IOException;
 import java.io.InputStream;
 
-import codebase.binary.Binary;
+import codebase.Binary;
 
 
 /**
@@ -76,7 +76,7 @@ public class ConstantInputStream extends
      * Determines the number of bytes to be read until the end of the buffer.
      * <p>
      * <b>Note:</b> Since this buffer is unlimited an alternative implementation to this
-     * method would be to always return {@value Integer#MAX_VALUE}. However this
+     * method would be to always return {@value java.lang.util.Integer#MAX_VALUE}. However this
      * information would be of little value. Instead, returning the number of bytes
      * available until the end of the internal buffer is better and does interfere with the
      * correctness of the class.

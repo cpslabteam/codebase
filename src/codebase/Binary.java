@@ -1,7 +1,11 @@
-package codebase.binary;
+package codebase;
 
 /**
  * Utility class for binary operations.
+ * <p>
+ * This class is not part of the <tt>codebase.binary</tt> package because it is a general
+ * purpose library class meant to be used by any code that must deal with binary
+ * operations.
  */
 public final class Binary {
 

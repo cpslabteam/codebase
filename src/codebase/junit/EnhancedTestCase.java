@@ -8,8 +8,8 @@ import java.util.Iterator;
 import java.util.List;
 
 import codebase.Arrays;
+import codebase.Binary;
 import codebase.Debug;
-import codebase.binary.Binary;
 import codebase.iterators.ArrayIterator;
 
 import junit.framework.TestCase;

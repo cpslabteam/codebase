@@ -1,5 +1,5 @@
 /**
- * General utility classes.
+ * General purpose utility classes.
  * 
  */
 // todo: add a reamme and license files
