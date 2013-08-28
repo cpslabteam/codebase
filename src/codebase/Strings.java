@@ -14,7 +14,7 @@ import java.util.StringTokenizer;
  * to avoid that each project/person implements its own version. These functions are also
  * throughly tested.
  * 
- * @author Paulo Carreira, André Gonçalves
+ * @author Paulo Carreira, AndrÃ© GonÃ§alves
  */
 public final class Strings {
 
