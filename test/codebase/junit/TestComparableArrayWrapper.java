@@ -1,13 +1,12 @@
 /*
  * Created on 19/Out/2005
  */
-package codebase;
+package codebase.junit;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import junit.framework.TestCase;
-import codebase.junit.ComparableArrayWrapper;
 
 /**
  * Tests the ComparableArrayWrapper class.

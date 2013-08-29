@@ -1,10 +1,8 @@
 /*
  * Created on 4/Mai/2005
  */
-package codebase.binary;
+package codebase;
 
-import codebase.Arrays;
-import codebase.Binary;
 import codebase.iterators.ArrayIterator;
 import codebase.iterators.EmptyIterator;
 import codebase.junit.EnhancedTestCase;

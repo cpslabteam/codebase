@@ -12,7 +12,6 @@ public class AllTests {
         TestSuite suite = new TestSuite(AllTests.class.getName());
         //$JUnit-BEGIN$
         suite.addTestSuite(TestBitVector.class);
-        suite.addTestSuite(TestBinary.class);
         //$JUnit-END$
         return suite;
     }
