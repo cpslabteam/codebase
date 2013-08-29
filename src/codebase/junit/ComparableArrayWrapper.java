@@ -6,7 +6,7 @@ package codebase.junit;
 import codebase.Arrays;
 
 /**
- * A wrapper object for arrays that makes them comparable.
+ * A wrapper class for arrays to enable comparing them.
  * <p>
  * Object arrays cannot be compared using the
  * {@link java.lang.Object#equals(java.lang.Object)}. In some situations we need to
@@ -15,7 +15,7 @@ import codebase.Arrays;
  * This wrapper allows an object array to be compared to another object array. It
  * implements the {@link java.lang.Object#equals(java.lang.Object)} method. Usage:
  */
-public class ComparableArrayWrapper {
+class ComparableArrayWrapper {
 
     /**
      * Reference to the array being wrapped.

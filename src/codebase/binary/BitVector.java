@@ -13,12 +13,12 @@ import codebase.Binary;
 /**
  * Optimized implementation of a vector of bits.
  * <p>
- * This is more-or-less like java.util.BitSet, but also includes the following: a
- * cachedCount() method, which efficiently computes the number of one bits, optimized read
- * and write operations and a boolean {@link #get(int)} method
+ * This class is similar to {@link java.util.BitSet}, but also includes the a
+ * {@link #cachedCount}achedCount() method, which efficiently computes the number of one
+ * bits, optimized read and write operations, and a boolean {@link #get(int)} method.
  */
 public final class BitVector {
-    
+
     /**
      * The mask of a bit index. We use the tree lower bits of the integer index to get the
      * number of the bit to set.
@@ -142,7 +142,7 @@ public final class BitVector {
      * Writes this vector to a data output.
      * 
      * @param output the data output to write the vector
-     * @throws IOException if an error occours while writting to the stream
+     * @throws IOException if an error occurs while writting to the stream
      */
     public void write(final DataOutput output) throws IOException {
         output.writeInt(size());

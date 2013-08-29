@@ -670,8 +670,8 @@ public final class Arrays {
      * 
      * @param s the set where the element will be searched
      * @param elem the element to be searched
-     * @return a reference to a copy of the s without all the ocurrences of the element if
-     *         elem was found. If elem was not found returns a copy of s.
+     * @return a reference to a copy of the s without all the occurrences of the element
+     *         if elem was found. If elem was not found returns a copy of s.
      */
     public static long[] remove(final long elem, final long[] s) {
         long[] result = new long[] {};

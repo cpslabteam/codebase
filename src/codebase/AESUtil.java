@@ -14,6 +14,19 @@ import javax.crypto.spec.SecretKeySpec;
 
 /**
  * Utility class that simplifies AES cyphering and decyphering operations.
+ * <p>
+ * The first step is to create the cypher key and the IV parameter. This can be created
+ * from a byte[] (with correct size for an AES key in a multiple on 16 bytes) and then
+ * call {@link #getKey(byte[])} and {@link #getIv(byte[])}.
+ * <p>
+ * The main methods are to be called for cyphering and decyphering are, respectively,
+ * {@link #cypherText(Key, IvParameterSpec, String)} and
+ * {@link #decypherText(Key, IvParameterSpec, String)}.
+ * <p>
+ * The number of bytes in the message must be a multiple of 16 bytes. Therefore, the
+ * message will be padded if the message size does not en on a 16-byte boundary.
+ * 
+ * @see javax.crypto.Cipher
  */
 public final class AESUtil {
 
