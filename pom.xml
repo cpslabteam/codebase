@@ -76,7 +76,7 @@
 			<plugin>
 				<groupId>org.apache.felix</groupId>
 				<artifactId>maven-bundle-plugin</artifactId>
-				<version>1.2.1</version>
+				<version>2.4.0</version>
 				<extensions>true</extensions>
 				<!-- the following instructions build a simple set of public/private 
 					classes into an OSGi bundle -->
@@ -88,11 +88,12 @@
 						<!-- assume public classes are in the top package, and private classes 
 							are under ".internal" -->
 						<Export-Package>${bundle.namespace}.*;version="${project.version}"</Export-Package>
-						<!--<Private-Package>${bundle.namespace}.internal.*</Private-Package>
-						 <Bundle-Activator>${bundle.namespace}.internal.ExampleActivator</Bundle-Activator>
-						 embed compile/runtime dependencies using path that matches the 
-							copied dependency folder -->
-						<Embed-Dependency>*;scope=compile|runtime;inline=false</Embed-Dependency>
+						<!--<Private-Package>${bundle.namespace}.internal.*</Private-Package> 
+							<Bundle-Activator>${bundle.namespace}.internal.ExampleActivator</Bundle-Activator> 
+							embed compile/runtime dependencies using path that matches the copied dependency 
+							folder 
+						<Import-Package>!javax.swing.*, *</Import-Package> -->
+						<Embed-Dependency>*;scope=runtime;inline=false</Embed-Dependency>
 						<Embed-Directory>target/dependency</Embed-Directory>
 						<Embed-StripGroup>true</Embed-StripGroup>
 					</instructions>
@@ -115,28 +116,9 @@
 	</build>
 	<dependencies>
 		<dependency>
-			<groupId>org.osgi</groupId>
-			<artifactId>osgi_R4_core</artifactId>
-			<version>1.0</version>
-			<scope>provided</scope>
-			<optional>true</optional>
-		</dependency>
-		<dependency>
-			<groupId>org.osgi</groupId>
-			<artifactId>osgi_R4_compendium</artifactId>
-			<version>1.0</version>
-			<scope>provided</scope>
-			<optional>true</optional>
-		</dependency>
-		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
 			<version>3.8.2</version>
-		</dependency>
-		<dependency>
-			<groupId>middleware.transportlib.libs</groupId>
-			<artifactId>RXTXcomm</artifactId>
-			<version>1.0</version>
 		</dependency>
 	</dependencies>
 
