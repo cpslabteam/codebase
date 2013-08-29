@@ -1,30 +1,19 @@
 Manifest-Version: 1.0
-Export-Package: codebase.binary;version="1.0",codebase.iterators;versi
- on="1.0",codebase.streams;version="1.0",codebase.junit;uses:="codebas
- e.binary,codebase.iterators,codebase";version="1.0",codebase;uses:="c
- odebase.binary,javax.crypto.spec,javax.swing.filechooser,javax.crypto
- ";version="1.0"
-Embed-Directory: target/dependency
-Private-Package: gnu.io,junit.awtui,junit.extensions,junit.framework,j
- unit.runner,junit.swingui,junit.swingui.icons,junit.textui,target.dep
- endency
-Bundle-ClassPath: .,target/dependency/junit-3.8.2.jar,target/dependenc
- y/RXTXcomm-1.0.jar
-Built-By: Gon�alo
-Tool: Bnd-0.0.238
-Bundle-Name: codebase [codebase]
-Created-By: Apache Maven Bundle Plugin
+Bnd-LastModified: 1377778512790
 Build-Jdk: 1.7.0_21
-Bundle-Version: 1.0
-Bnd-LastModified: 1377707505504
-Bundle-ManifestVersion: 2
+Built-By: Gonￃﾧalo
 Bundle-Description: Codebase utility classes
-Embed-StripGroup: true
+Bundle-ManifestVersion: 2
+Bundle-Name: codebase [codebase]
 Bundle-SymbolicName: codebase
-Import-Package: codebase;version="1.0",codebase.binary;version="1.0",c
- odebase.iterators;version="1.0",codebase.junit;version="1.0",codebase
- .streams;version="1.0",javax.crypto,javax.crypto.spec,javax.swing,jav
- ax.swing.border,javax.swing.event,javax.swing.filechooser,javax.swing
- .tree
-Embed-Dependency: *;scope=compile|runtime;inline=false
-
+Bundle-Version: 1.0
+Created-By: Apache Maven Bundle Plugin
+Embed-Dependency: *;scope=runtime;inline=false
+Embed-Directory: target/dependency
+Embed-StripGroup: true
+Export-Package: codebase;version="1.0";uses:="javax.crypto.spec",codebas
+ e.binary;version="1.0",codebase.iterators;version="1.0",codebase.junit;
+ version="1.0";uses:="junit.framework",codebase.streams;version="1.0"
+Import-Package: javax.crypto,javax.crypto.spec,javax.swing.filechooser,j
+ unit.framework
+Tool: Bnd-2.1.0.20130426-122213
