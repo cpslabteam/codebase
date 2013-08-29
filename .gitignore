@@ -1,6 +1,5 @@
-# Compiled source files
-#
 
+# Compiled source files
 ###################
 *.com
 *.class
@@ -8,6 +7,7 @@
 *.exe
 *.o
 *.so
+bin/
 
 # Packages #
 ############
@@ -23,6 +23,10 @@
 *.zip
 *.war
 *.ear
+
+# Target documentation directories #
+#############################
+doc/
 
 # Logs and databases #
 ######################
@@ -42,11 +46,13 @@ ehthumbs.db
 Thumbs.db
 
 # Eclipse
+######################
 .classpath
 .project
 .settings/
 .checkstyle
 
 # Maven
+######################
 log/
 target/
