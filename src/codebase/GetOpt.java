@@ -172,6 +172,7 @@ import java.util.ResourceBundle;
  * }
  * </code>
  * 
+ * @since 2006/05/03
  * @author Original authors: William King (wrking@eng.sun.com), Aaron M. Renn
  *         (arenn@urbanophile.com)
  * @author Ported from the GNU's C++ version of GetOpt and enhanced by Paulo Carreira and
@@ -693,7 +694,7 @@ public class GetOpt {
                     }
                 }
             } // else if (pfound)
-            // CHECKSTYLE:ON
+              // CHECKSTYLE:ON
 
             nextChar = "";
 
@@ -816,7 +817,7 @@ public class GetOpt {
      * @return a char representing the current option that has been parsed from the
      *         command line
      */
- // CHECKSTYLE:OFF
+    // CHECKSTYLE:OFF
     public final char getOpt() {
         /*
          * This method implements a parsing of command line options 
@@ -1120,8 +1121,9 @@ public class GetOpt {
 
         return c;
     }
+
     // CHECKSTYLE:ON
-    
+
     /**
      * Returns the value of the argument of an option.
      * <p>

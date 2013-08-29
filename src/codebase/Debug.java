@@ -1,6 +1,3 @@
-/*
- * Created on 18/Nov/2004
- */
 package codebase;
 
 import java.io.IOException;
@@ -10,7 +7,7 @@ import java.util.Iterator;
 
 
 /**
- * Utility class for debugging and logging.
+ * Utility class for debugging and dumping object to output streams and to the console.
  * <p>
  * Encapsulates utilities to dump the contents of objects for debugging, diagnosis and
  * testing. The utilities include:
@@ -19,6 +16,10 @@ import java.util.Iterator;
  * <li>Dumping the contents of objects or iterators to the output stream</li>
  * <li>Converting arrays of objects to string</li>
  * </ol>
+ * Another interesting functionality the ability to dumping byte[] as hex strings, which
+ * is quite useful to analyze the contents debugging binary buffers.
+ * 
+ * @since Created on 18/Nov/2004
  */
 public final class Debug {
 

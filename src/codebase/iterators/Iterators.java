@@ -1,12 +1,11 @@
-/*
- * Created on 11/Jan/2006
- */
 package codebase.iterators;
 
 import java.util.Iterator;
 
 /**
  * Utility class for iterators.
+ * 
+ * @since Created on 4/Mai/2005
  */
 public final class Iterators {
 

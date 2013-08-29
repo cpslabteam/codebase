@@ -6,11 +6,11 @@ package codebase;
 import junit.framework.TestCase;
 
 /**
- * Tests the math utility class.
+ * Tests the {@link Math} utility class.
  */
-public class TestMath
-        extends TestCase {
-    
+public class TestMath extends
+        TestCase {
+
     /**
      * Tests that the powers of 10 are correctly computed.
      */
@@ -35,7 +35,7 @@ public class TestMath
         assertEquals(100000000000000000L, Math.pow10(17));
         assertEquals(1000000000000000000L, Math.pow10(18));
     }
-    
+
     public void testLog2Int() {
         /*
          * Test exact values
@@ -46,21 +46,21 @@ public class TestMath
         assertEquals(6, Math.log2((int) 64));
         assertEquals(10, Math.log2((int) 1024));
         assertEquals(31, Math.log2((int) 0x80000000));
-        
+
         /*
          * Test approximate int value
          */
         assertEquals(1, Math.log2((int) 3));
         assertEquals(3, Math.log2((int) 10));
-        assertEquals(6, Math.log2((int) 65));        
+        assertEquals(6, Math.log2((int) 65));
         assertEquals(5, Math.log2((int) 63));
-        
+
         /*
          * Test zero behavior
          */
         assertEquals(0, Math.log2((int) 0));
     }
-    
+
     public void testLog2Long() {
         /*
          * Test exact values
@@ -78,66 +78,62 @@ public class TestMath
          */
         assertEquals(1, Math.log2((long) 3));
         assertEquals(3, Math.log2((long) 10));
-        assertEquals(6, Math.log2((long) 65));        
+        assertEquals(6, Math.log2((long) 65));
         assertEquals(5, Math.log2((long) 63));
-        
+
         /*
          * Test zero behavior
          */
         assertEquals(0, Math.log2((long) 0));
     }
+
     public void testSignDouble() {
         double delta = 0.0;
         assertEquals(1.0, Math.sign(2.0), delta);
         assertEquals(-1.0, Math.sign(-2.0), delta);
     }
-    
+
     public void testSignFloat() {
         float delta = 0.0F;
         assertEquals(1.0F, Math.sign(2.0F), delta);
         assertEquals(-1.0F, Math.sign(-2.0F), delta);
     }
-    
+
     public void testSignByte() {
         assertEquals((byte) 1, Math.sign((byte) 2));
         assertEquals((byte) (-1), Math.sign((byte) (-2)));
     }
-    
+
     public void testSignShort() {
         assertEquals((short) 1, Math.sign((short) 2));
         assertEquals((short) (-1), Math.sign((short) (-2)));
     }
-    
+
     public void testSignInt() {
         assertEquals((int) 1, Math.sign((int) (2)));
         assertEquals((int) (-1), Math.sign((int) (-2)));
     }
-    
+
     public void testSignLong() {
         assertEquals(1L, Math.sign(2L));
         assertEquals(-1L, Math.sign(-2L));
     }
-    
+
     /**
      * Tests the hashing of doubles.
      */
     public void testHash() {
-        double[] testArray = { Double.NaN, Double.POSITIVE_INFINITY,
-                Double.NEGATIVE_INFINITY, 1d, 0d, 1E-14, (1 + 1E-14),
-                Double.MIN_VALUE, Double.MAX_VALUE };
-        
+        double[] testArray = { Double.NaN, Double.POSITIVE_INFINITY, Double.NEGATIVE_INFINITY, 1d,
+                0d, 1E-14, (1 + 1E-14), Double.MIN_VALUE, Double.MAX_VALUE };
+
         for (int i = 0; i < testArray.length; i++) {
             for (int j = 0; j < testArray.length; j++) {
                 if (i == j) {
-                    assertEquals(Math.hash(testArray[i]), Math
-                        .hash(testArray[j]));
-                    assertEquals(Math.hash(testArray[j]), Math
-                        .hash(testArray[i]));
+                    assertEquals(Math.hash(testArray[i]), Math.hash(testArray[j]));
+                    assertEquals(Math.hash(testArray[j]), Math.hash(testArray[i]));
                 } else {
-                    assertTrue(Math.hash(testArray[i]) != Math
-                        .hash(testArray[j]));
-                    assertTrue(Math.hash(testArray[j]) != Math
-                        .hash(testArray[i]));
+                    assertTrue(Math.hash(testArray[i]) != Math.hash(testArray[j]));
+                    assertTrue(Math.hash(testArray[j]) != Math.hash(testArray[i]));
                 }
             }
         }

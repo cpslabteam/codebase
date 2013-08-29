@@ -3,30 +3,49 @@ package codebase.iterators;
 import java.util.Iterator;
 
 /**
- * An decorator iterator.
- * <p>
- * This class decorates an object implementing the {@link Iterator} interface such that
- * all method calls on the decorator are passed to its decorated object.
+ * An iterator decorator that applies a function to each element of a decorated iterator
+ * intercept the calls to {@link #next()}.
  * 
- * @param <E> the type of all the objects to be treated.
- * @see java.util.Iterator
- * @since Created on 15/Out/2005
+ * @param <A> the type of the objects of the input iterator.
+ * @param <B> the result type of applying the mapping function.
+ * @since Created on 29/Ago/2013
  */
-public abstract class DecoratorIterator<E>
-        {
+public abstract class MapIterator<A, B>
+        implements Iterator<B> {
+
+    /**
+     * The interface of a function to map each object on an iterator.
+     */
+    public interface MapFunction<A, B> {
+
+        /**
+         * Maps each object.
+         * 
+         * @param input an object taken from the input iterator
+         * @return an object, which can be <code>null</code>
+         */
+        B apply(A input);
+    }
 
     /**
      * The decorated Iterator that is used for passing method calls to.
      */
-    protected Iterator<E> decoratedInstance;
+    protected final Iterator<A> decoratedInstance;
 
     /**
-     * Creates a new decorator iterator.
-     * 
-     * @param iterator the iterator to be decorated.
+     * The function instance.
      */
-    public DecoratorIterator(final Iterator<E> iterator) {
+    private final MapFunction<A, B> mapFunction;
+
+    /**
+     * Creates a cursor that observes method calls.
+     * 
+     * @param iterator the iterator to be decorated
+     * @param f the mapping function to convert the input objects
+     */
+    public MapIterator(final Iterator<A> iterator, MapFunction<A, B> f) {
         decoratedInstance = iterator;
+        mapFunction = f;
     }
 
     /**
@@ -35,7 +54,7 @@ public abstract class DecoratorIterator<E>
      * 
      * @return the iterator decorated by this decorator iterator.
      */
-    public Iterator<E> getDecorated() {
+    public Iterator<A> getDecorated() {
         return decoratedInstance;
     }
 
@@ -63,9 +82,9 @@ public abstract class DecoratorIterator<E>
      * @throws IllegalStateException if the iterator is already closed when this method is
      *             called.
      */
-    public E next() {
+    public B next() {
         if (decoratedInstance.hasNext()) {
-            return decoratedInstance.next();
+            return mapFunction.apply(decoratedInstance.next());
         } else {
             throw new IllegalStateException("Decorated instance is empty");
         }
@@ -81,4 +100,5 @@ public abstract class DecoratorIterator<E>
     public void remove() {
         decoratedInstance.remove();
     }
+
 }

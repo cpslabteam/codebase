@@ -1,6 +1,3 @@
-/*
- * Created on 11/Mai/2005
- */
 package codebase.iterators;
 
 /**
@@ -23,6 +20,7 @@ package codebase.iterators;
  * [<i>start</i>,<i>end</i>) will be returned by the enumerator.
  * 
  * @see java.util.Iterator
+ * @since Created on 4/Mai/2005
  */
 public final class Enumerator
         implements ManipulatableIterator<Integer> {

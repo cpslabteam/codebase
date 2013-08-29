@@ -1,6 +1,3 @@
-/*
- * Created on 3/Jun/2005
- */
 package codebase;
 
 import java.io.File;
@@ -11,7 +8,9 @@ import java.io.RandomAccessFile;
 import javax.swing.filechooser.FileSystemView;
 
 /**
- * Utility operations for files.
+ * Utility class for generic operations on files.
+ * 
+ * @since 3/Jun/2005
  */
 public final class Files {
 

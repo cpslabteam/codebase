@@ -9,9 +9,9 @@ import java.io.IOException;
 import junit.framework.TestCase;
 
 /**
- * Tests the constant stream.
+ * Tests the {@link ConstantInputStream} stream.
  */
-public class TestConstantStream extends
+public class TestConstantInputStream extends
         TestCase {
 
     /**

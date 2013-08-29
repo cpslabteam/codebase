@@ -12,16 +12,6 @@ import codebase.junit.EnhancedTestCase;
 public class TestArrayIterator extends
         EnhancedTestCase {
 
-    /**
-     * Tests an array iterator over a null array.
-     */
-    public final void testNull() {
-        assertThrows(new CodeBlock() {
-            public void execute() {
-                new ArrayIterator<Object>(null);
-            };
-        }, new IllegalArgumentException());
-    }
 
     /**
      * Tests an array iterator over an empty array.

@@ -1,17 +1,14 @@
-/*
- * Created on 2006/05/03
- */
 package codebase;
 
 /**
  * Utility class for information size unit conversion and formating
  * <p>
  * Defines constants and provides several methods for performing information units like
- * e.g. bytes to kilobytes, among other. TODO: upgrade to a Java formatter for better
- * integration.
+ * e.g. bytes to kilobytes, among other.
+ * 
+ * @since 2006/05/03
  */
 public final class InformationUnit {
-
 
     /**
      * Byte unit character.
@@ -27,12 +24,12 @@ public final class InformationUnit {
      * Kilobyte unit abbreviation.
      */
     public static final String KB_UNIT = "KB";
-   
+
     /**
      * One megabyte in bytes.
      */
     public static final int MB = 1024 * KB;
-    
+
     /**
      * Megabyte unit abbreviation.
      */
@@ -159,7 +156,7 @@ public final class InformationUnit {
         return bytes;
     }
 
-    
+
     /**
      * Prevent instantiation.
      */

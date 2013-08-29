@@ -1,6 +1,3 @@
-/*
- * Created on 4/Mai/2005
- */
 package codebase.iterators;
 
 /**
@@ -14,6 +11,8 @@ package codebase.iterators;
  * update.
  * 
  * @param <E> the type of all the objects to be treated by this iterator.
+ * 
+ * @since Created on 4/Mai/2005
  */
 public abstract class AbstractArrayIterator<E>
         implements ManipulatableIterator<E> {
@@ -34,8 +33,12 @@ public abstract class AbstractArrayIterator<E>
      * @param length the size of the array. Can be zero.
      */
     public AbstractArrayIterator(final int length) {
-        // Bug corrected: We were throwing an exception the array length was
-        // zero. When it is zero is behaves as empty iterator.
+        if (length < 0) {
+            // Bug corrected: We were throwing an exception the array length was
+            // zero. When it is zero is behaves as empty iterator.
+            throw new IllegalArgumentException("Length of the iterator cannot be negative");
+        }
+        
         size = length;
     }
 

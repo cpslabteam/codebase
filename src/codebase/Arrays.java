@@ -1,12 +1,9 @@
-/*
- * Created on 28/Fev/2005
- */
 package codebase;
 
 import java.lang.reflect.Array;
 
 /**
- * Utility class for arrays.
+ * Utility class for arrays of primitive types.
  * <p>
  * This class implements various operations for manipulating arrays of primitive types
  * that are not present in {@link java.util.Arrays} as well as some operations with
@@ -15,6 +12,8 @@ import java.lang.reflect.Array;
  * The operations include adding elements, cloning, copying, appending, intersecting and
  * other utilities such as flattening on an array and repeating by replication of a value
  * of by a enumeration of a range of values.
+ * 
+ * @since Created on 18/Nov/2004
  */
 public final class Arrays {
 

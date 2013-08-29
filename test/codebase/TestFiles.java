@@ -8,7 +8,7 @@ import java.io.File;
 import junit.framework.TestCase;
 
 /**
- * Test the file utilities.
+ * Test the {@link Files} utilities class.
  */
 public class TestFiles extends
         TestCase {
@@ -40,6 +40,6 @@ public class TestFiles extends
         assertEquals(Files.getAbsolutePath(ABSOLUTE.getAbsolutePath(), "test1"),
                 Filenames.concat(ABSOLUTE_PATH, "test1"));
     }
-    
-    
+
+
 }

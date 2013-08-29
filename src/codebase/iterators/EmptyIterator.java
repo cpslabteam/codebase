@@ -1,6 +1,3 @@
-/*
- * Created on 4/Mai/2005
- */
 package codebase.iterators;
 
 /**
@@ -17,6 +14,7 @@ package codebase.iterators;
  * 
  * @param <E> the type of all the objects to be treated.
  * @see NullIterator
+ * @since Created on 4/Mai/2005
  */
 public final class EmptyIterator<E>
         implements ManipulatableIterator<E> {

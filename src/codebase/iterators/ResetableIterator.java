@@ -1,17 +1,15 @@
-/*
- * Created on 20/Out/2005
- */
 package codebase.iterators;
 
 import java.util.Iterator;
 
-
 /**
- * The interface of iterator that can be reset.
+ * The interface of an iterator that can be reset.
  * <p>
- * This interface specifies an iterator that can be reset to the first element.
+ * This interface specifies the method {@link #reset()} that brings the iterator to the
+ * first element.
  * 
  * @param <E> the type of all the objects to be treated.
+ * @since 20/Out/2005
  */
 public interface ResetableIterator<E>
         extends Iterator<E> {

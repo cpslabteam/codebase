@@ -1,6 +1,3 @@
-/*
- * Created on 3/Set/2005
- */
 package codebase.iterators;
 
 import java.util.NoSuchElementException;
@@ -14,6 +11,7 @@ import java.util.NoSuchElementException;
  * the caller.
  * 
  * @param <E> the type of all the objects to be treated.
+ * @since 11/Jun/2005
  */
 public final class Repeater<E>
         implements ManipulatableIterator<E> {

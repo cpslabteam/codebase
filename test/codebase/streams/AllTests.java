@@ -11,7 +11,7 @@ public class AllTests {
     public static Test suite() {
         TestSuite suite = new TestSuite(AllTests.class.getName());
         //$JUnit-BEGIN$
-        suite.addTestSuite(TestConstantStream.class);
+        suite.addTestSuite(TestConstantInputStream.class);
         suite.addTestSuite(TestTimeoutInputStream.class);
         suite.addTestSuite(TestTimeoutOutputStream.class);
         //$JUnit-END$

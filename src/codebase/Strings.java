@@ -3,35 +3,15 @@ package codebase;
 import java.util.ArrayList;
 import java.util.StringTokenizer;
 
-/*
- * Created on 7/Out/2004 Needs review
- */
-
 /**
- * String utilities.
+ * String utilities for trimming, padding and parsing strings.
  * <p>
- * The underlying idea is to put here string functions that are commonly used in the code
- * to avoid that each project/person implements its own version. These functions are also
- * throughly tested.
+ * These utility functions are of recurrent use and not provided by JDK.
  * 
+ * @since Created on 7/Out/2004
  * @author Paulo Carreira, André Gonçalves
  */
 public final class Strings {
-
-    /**
-     * Predefined Carriage Return constant.
-     */
-    public static final char CR = '\n';
-
-    /**
-     * Predefined Line Feed constant.
-     */
-    public static final char LF = '\r';
-
-    /**
-     * Predefined Tab constant.
-     */
-    public static final char TAB = '\t';
 
     /**
      * String representation of a double-comma.
@@ -51,7 +31,7 @@ public final class Strings {
     /**
      * A constant string with the name of the utf-8 encoding.
      */
-    public static final String UTF8_ENCODING = "UTF-8";
+    public static final String DEFAULT_STRING_ENCODING = "UTF-8";
 
     /**
      * Short name descriptions of ascii invisible characters.
@@ -76,7 +56,7 @@ public final class Strings {
      * 
      * @param c is the character
      * @return a name like <code>Carriage Return</code> if the character is a special
-     *         charcter. Returns the string representation otherwise.
+     *         character. Returns the string representation otherwise.
      */
     public static String charNameLong(final char c) {
         if (isControl(c)) {
@@ -301,7 +281,7 @@ public final class Strings {
      *         not, returns <code>left.equals(right)</code> is none of them is
      *         <code>null</code>
      */
-    public static boolean safeStrEquals(final String left, final String right) {
+    public static boolean safeEquals(final String left, final String right) {
         if (left == right) {
             return true;
         } else if ((left != null && right == null) || (left == null)) {

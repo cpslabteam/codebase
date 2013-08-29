@@ -1,6 +1,3 @@
-/*
- * Created on 4/Mai/2005
- */
 package codebase.iterators;
 
 /**
@@ -13,6 +10,7 @@ package codebase.iterators;
  * iterator.
  * 
  * @param <E> the type of all the objects to be treated.
+ * @since Created on 4/Mai/2005
  */
 public final class ArrayIterator<E> extends
         AbstractArrayIterator<E>

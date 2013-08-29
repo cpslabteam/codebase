@@ -1,6 +1,3 @@
-/*
- * Created on 22/Out/2005
- */
 package codebase.iterators;
 
 /**
@@ -20,6 +17,7 @@ package codebase.iterators;
  * {@link #supportsUpdate()} and {@link #supportsRemove()}.
  * 
  * @param <E> the type of all the objects to be treated.
+ * @since Created on 4/Mai/2005
  */
 public interface ManipulatableIterator<E>
         extends ResetableIterator<E> {

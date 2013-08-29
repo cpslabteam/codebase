@@ -6,7 +6,7 @@ package codebase;
 import codebase.junit.EnhancedTestCase;
 
 /**
- * Test cases for the Arrays utility class.
+ * Test cases for the {@link Arrays} utility class.
  */
 public class TestArrays extends
         EnhancedTestCase {
@@ -73,22 +73,24 @@ public class TestArrays extends
         assertTrue(Arrays.equals(new Object[] {}, new Object[] {}));
 
         // singleton
-        assertTrue(Arrays.equals(new Object[] { Integer.valueOf(7) }, new Object[] { Integer.valueOf(7) }));
+        assertTrue(Arrays.equals(new Object[] { Integer.valueOf(7) },
+                new Object[] { Integer.valueOf(7) }));
 
         // pairs
-        assertTrue(Arrays.equals(new Object[] { Integer.valueOf(1), Integer.valueOf(7) }, new Object[] {
-                Integer.valueOf(1), Integer.valueOf(7) }));
+        assertTrue(Arrays.equals(new Object[] { Integer.valueOf(1), Integer.valueOf(7) },
+                new Object[] { Integer.valueOf(1), Integer.valueOf(7) }));
 
         // generic
-        assertTrue(Arrays.equals(new Object[] { Integer.valueOf(2), Integer.valueOf(3), Integer.valueOf(7) },
+        assertTrue(Arrays.equals(
+                new Object[] { Integer.valueOf(2), Integer.valueOf(3), Integer.valueOf(7) },
                 new Object[] { Integer.valueOf(2), Integer.valueOf(3), Integer.valueOf(7) }));
 
         // empty with null
         assertTrue(!Arrays.equals(new Object[] {}, null));
 
         // different sizes
-        assertTrue(!Arrays.equals(new Object[] { Integer.valueOf(7), Integer.valueOf(9) }, new Object[] {
-                Integer.valueOf(9), Integer.valueOf(7) }));
+        assertTrue(!Arrays.equals(new Object[] { Integer.valueOf(7), Integer.valueOf(9) },
+                new Object[] { Integer.valueOf(9), Integer.valueOf(7) }));
 
         // Exchanged
         assertTrue(!Arrays.equals(new Object[] { Integer.valueOf(7), Integer.valueOf(7) },

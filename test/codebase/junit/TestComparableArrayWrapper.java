@@ -9,7 +9,7 @@ import java.util.List;
 import junit.framework.TestCase;
 
 /**
- * Tests the ComparableArrayWrapper class.
+ * Tests the {@link ComparableArrayWrapper} class.
  */
 public class TestComparableArrayWrapper extends
         TestCase {

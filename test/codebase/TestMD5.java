@@ -10,7 +10,7 @@ import java.io.UnsupportedEncodingException;
 import junit.framework.TestCase;
 
 /**
- * Implements the MD5 test suite as defined in RFC1321.
+ * Implements the {@link MD5} test suite as defined in RFC1321.
  */
 public class TestMD5 extends
         TestCase {

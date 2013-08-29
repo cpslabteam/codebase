@@ -1,18 +1,19 @@
-/*
- * Created on 11/Jun/2005
- */
 package codebase.iterators;
 
 import java.util.NoSuchElementException;
 
 
 /**
- * An iterator that throws {@link IllegalStateException} when an operation is called.
+ * A special iterator that throws {@link IllegalStateException} when an operation is called.
  * <p>
  * An invalid iterator is used for initializing iterator in situations where
- * <code>null</code> cannot be used.
+ * <code>null</code> cannot be used. Useful to implement Martin Fowler's 'Introduce null
+ * object' refactoring.
  * 
  * @param <E> the type of all the objects to be treated.
+ * @see EmptyIterator
+ * 
+ * @since 11/Jun/2005
  */
 public final class NullIterator<E>
         implements ManipulatableIterator<E> {

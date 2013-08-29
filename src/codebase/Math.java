@@ -1,20 +1,19 @@
-/*
- * Created on 1/Nov/2004
- */
 package codebase;
 
-
 /**
- * Mathematical utility functions.
+ * Fast integer arithmetics and other mathematical utility functions.
  * <p>
- * Contains method for fast integer arithmetic and a few other utility methods whose
- * implementation is not as straightforward as it seems at first sight.
+ * Contains method for fast integer arithmetic and other utility methods to help
+ * arithmetic operations become safe. The implementation of these methods is not as
+ * straightforward as it seems at first sight.
  * <p>
  * For example computing the signal function for doubles is tricky. For this reason we
  * added the function for computing the <a
  * href="http://mathworld.wolfram.com/Sign.html">sgn</a> function for doubles. For
  * consistency the function for computing the signal for other primitive types were added
  * as well.
+ * 
+ * @since 1/Nov/2004
  */
 public final class Math {
 

@@ -3,9 +3,8 @@ package codebase;
 import java.io.File;
 import java.util.Collection;
 
-
 /**
- * General filename and file path manipulation utilities.
+ * Utility class for general filename and file path manipulation.
  * <p>
  * When dealing with filenames you can hit problems when moving from a Windows based
  * development machine to a Unix based production machine. This class aims to help avoid
@@ -17,8 +16,7 @@ import java.util.Collection;
  * <p>
  * Most methods on this class are designed to work the same on both Unix and Windows.
  * Those that don't include 'System', 'Unix' or 'Windows' in their name. Also, most
- * methods recognize both separators (forward and back), and both sets of prefixes. See
- * the javadoc of each method for details.
+ * methods recognize both separators (forward and back), and both sets of prefixes.
  * <p>
  * This class defines six components within a filename (example C:\dev\project\file.txt):
  * <ul>
@@ -55,8 +53,9 @@ import java.util.Collection;
  * Both prefix styles are matched always, irrespective of the machine that you are
  * currently running on.
  * <p>
- * This class was taken from Apache Commons IO and the code improved to match the style
- * and quality requirements of the remainder of the Codebase library.
+ * This code of this class was largely adapted from Apache Commons IO and the code
+ * improved to match the style and quality requirements of the remainder of the Codebase
+ * library.
  * 
  * @author Original authors: <a href="mailto:burton@relativity.yi.org">Kevin A. Burton</A>
  *         <a href="mailto:sanders@apache.org">Scott Sanders</a>, <a

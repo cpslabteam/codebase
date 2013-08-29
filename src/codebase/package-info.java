@@ -11,7 +11,7 @@
  * <ol>
  * <li>Contributing to increasing the overall code quality by offering a library of high
  * quality utility classes (tested and revised)</li>
- * <li>Simplify the dependencies of applications (using <tt>codebase</tt> prevents
+ * <li>Simplifying the dependencies of applications (using <tt>codebase</tt> prevents
  * depending on other libraries)</li>
  * <li>Setting a minimum standard for code quality (the code is available in open source
  * to be analyzed).</li>
@@ -19,16 +19,20 @@
  * <p>
  * The classes included in the main package are general purpose classes used for, among
  * other, parsing command line arguments, file handling, cyphering, string and binary
- * operations.
+ * operations. Utility classes for more <i>specialized functionality</i> are organized
+ * into <i>appropriate sub-packages</i>.
  * <p>
- * Utility classes for more specialized functionality are organized into appropriate
- * sub-packages.
- * <p>
- * Unless otherwise stated, the classes herein are not multithreaded safe without external
+ * Unless otherwise stated, the classes herein are not threaded safe without external
  * synchronization.
  * <p>
- * There are at least two other open source alternatives to <tt>codebase</tt>: Apache
- * Commons and Google xxx.
+ * The underlying idea is to put here string functions that are commonly used in the code
+ * to avoid that each project/person implements its own version. These functions are also
+ * throughly tested.
+ * 
+ * @see
+ * 
+ *  Other open source alternatives to <tt>codebase</tt>: <a href="http://commons.apache.org">Apache
+ * Commons</a> and <a href="">Google xxx</a>.
  */
 
 // todo: add license files

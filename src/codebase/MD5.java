@@ -9,7 +9,7 @@ import java.io.UnsupportedEncodingException;
 
 
 /**
- * Implementation of the MD5 message digest algorithm.
+ * Utility class that implements MD5 summarization algorithm.
  * <p>
  * The MD5 algorithm (RFC1321) developed by Professor Rivest of MIT. In essence, MD5 is a
  * way to verify data integrity, and is much more reliable than checksum and many other
@@ -19,7 +19,6 @@ import java.io.UnsupportedEncodingException;
  * <p>
  * Licensing: Implements RSA Data Security, Inc. MD5 Message-Digest Algorithm and/or its
  * reference implementation.
- * <p>
  */
 public final class MD5 {
 
@@ -358,7 +357,7 @@ public final class MD5 {
      * @return An instance of String, with the MD5 result of a message.
      */
     public static String getDigest(final String s) {
-        final String hexDigest = Binary.toHexString(getDigestRaw(s, Strings.UTF8_ENCODING));
+        final String hexDigest = Binary.toHexString(getDigestRaw(s, Strings.DEFAULT_STRING_ENCODING));
         return hexDigest;
     }
 

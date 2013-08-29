@@ -1,6 +1,3 @@
-/*
- * Created on 11/Fev/2005
- */
 package codebase.binary;
 
 import java.io.IOException;
@@ -16,6 +13,8 @@ import codebase.Binary;
  * This class is similar to {@link java.util.BitSet}, but also includes the a
  * {@link #cachedCount}achedCount() method, which efficiently computes the number of one
  * bits, optimized read and write operations, and a boolean {@link #get(int)} method.
+ * 
+ *@since Created on 11/Fev/200
  */
 public final class BitVector {
 

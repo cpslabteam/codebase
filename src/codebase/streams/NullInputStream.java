@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.io.InputStream;
 
 /**
- * An input stream that returns returns zero bytes.
+ * A special input stream that returns returns zero bytes.
  * <p>
  * Used mainly for testing purposes.
  */

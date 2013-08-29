@@ -1,6 +1,3 @@
-/*
- * Created on 4/Mai/2005
- */
 package codebase.iterators;
 
 /**
@@ -11,6 +8,7 @@ package codebase.iterators;
  * 
  * @param <E> the type of all the objects to be treated.
  * @see java.util.Iterator
+ * @since 4/Mai/2005
  */
 public final class SingletonIterator<E>
         implements ManipulatableIterator<E> {
