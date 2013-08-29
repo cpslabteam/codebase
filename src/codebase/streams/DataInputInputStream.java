@@ -9,7 +9,7 @@ import java.io.InputStream;
 import java.io.IOException;
 
 /**
- * Adapts {@link java.io.DataOutput}into a {@link java.io.OutputStream}.
+ * Adapts {@link java.io.DataOutput} into a {@link java.io.OutputStream}.
  * <p>
  * This class constructs an stream over a random access device that implements
  * data output interface like a raw device or a random access file.

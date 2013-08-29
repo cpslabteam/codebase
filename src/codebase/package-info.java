@@ -5,7 +5,9 @@
  * functionality over and over again. In practice, programmers often need to replicate the
  * code of utility classes and, moreover, have a tendency to regard this code as of lesser
  * importance. An obvious consequence is that these classes don't get as thoroughly tested
- * as they often should, often compromising code quality.
+ * as they often should, often compromising code quality. Therefore, the underlying idea
+ * is to put heref unctionlity that are commonly used in the code to avoid that each
+ * project/developer to implement its own version and have it throughly tested.
  * <p>
  * The main goals of <tt>codebase</tt> are to:
  * <ol>
@@ -25,14 +27,12 @@
  * Unless otherwise stated, the classes herein are not threaded safe without external
  * synchronization.
  * <p>
- * The underlying idea is to put here string functions that are commonly used in the code
- * to avoid that each project/person implements its own version. These functions are also
- * throughly tested.
- * 
- * @see
- * 
- *  Other open source alternatives to <tt>codebase</tt>: <a href="http://commons.apache.org">Apache
- * Commons</a> and <a href="">Google xxx</a>.
+ * <p>
+ * Other open source alternatives to <tt>codebase</tt> are <a
+ * href="http://commons.apache.org">Apache Commons</a> and <a
+ * href="https://code.google.com/p/guava-libraries">Google Guava</a>. Although similar in
+ * spirit, we decided to keep maintaining <tt>codebase</tt> because it has a lower
+ * footprint and better suited to our purposes.
  */
 
 // todo: add license files

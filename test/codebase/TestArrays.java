@@ -6,7 +6,7 @@ package codebase;
 import codebase.junit.EnhancedTestCase;
 
 /**
- * Test cases for the {@link Arrays} utility class.
+ * Tests the {@link Arrays} utility class.
  */
 public class TestArrays extends
         EnhancedTestCase {
