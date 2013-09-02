@@ -30,7 +30,7 @@ public abstract class FileBasedTestCase extends
      * @param f0 a file to compare
      * @param f1 another file to compare
      */
-    protected void assertEqualContent(File f0, File f1) {
+    protected void assertEqualContent(final File f0, final File f1) {
         try {
             /*
              * This doesn't work because the filesize isn't updated until the file
@@ -75,7 +75,7 @@ public abstract class FileBasedTestCase extends
      * @param file the file to verify
      * @param b0 a byte array to check for
      */
-    protected void assertEqualContent(File file, byte[] b0) {
+    protected void assertEqualContent(final File file, final byte[] b0) {
         try {
             InputStream is = new java.io.FileInputStream(file);
 
@@ -104,7 +104,7 @@ public abstract class FileBasedTestCase extends
      * @param c0 a char array to check for
      * @param file the file to verify
      */
-    protected void assertEqualContent(char[] c0, File file) {
+    protected void assertEqualContent(final char[] c0, final File file) {
         try {
             final Reader ir = new java.io.FileReader(file);
             try {

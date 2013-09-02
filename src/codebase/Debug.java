@@ -3,6 +3,7 @@ package codebase;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintStream;
+import java.io.UnsupportedEncodingException;
 import java.util.Iterator;
 
 
@@ -250,9 +251,15 @@ public final class Debug {
      *         character and <code>HH</code> is its corresponding hex code.
      */
     public static String toHexStringDump(final byte[] buffer) {
-        final String result = Strings.visibleAsciiString(new String(buffer), '.') + "  "
-                + Binary.toHexString(buffer);
-        return result;
+        try {
+            final String result = Strings.visibleAsciiString(new String(buffer,
+                    DEFAULT_STRING_ENCODING), '.')
+                    + "  " + Binary.toHexString(buffer);
+            return result;
+        } catch (UnsupportedEncodingException e) {
+            // this is an coding error situation - should never happen
+            throw new RuntimeException(e);
+        }
     }
 
     /**

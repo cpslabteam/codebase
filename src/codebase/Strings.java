@@ -442,12 +442,18 @@ public final class Strings {
      * @return a string where invisible characters are replaced by a predefined character.
      */
     public static String visibleAsciiString(final String string, final char invisible) {
-        final byte[] target = string.getBytes();
-        for (int i = 0; i < target.length; i++) {
-            if (Strings.isControl((char) target[i])) {
-                target[i] = (byte) invisible;
+        try {
+            final byte[] target = string.getBytes(DEFAULT_STRING_ENCODING);
+            for (int i = 0; i < target.length; i++) {
+                if (Strings.isControl((char) target[i])) {
+                    target[i] = (byte) invisible;
+                }
             }
+            return new String(target, DEFAULT_STRING_ENCODING);
+        } catch (java.io.UnsupportedEncodingException e) {
+            // this is an coding error situation - should never happen
+            throw new RuntimeException(e);
         }
-        return new String(target);
+
     }
 }

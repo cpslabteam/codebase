@@ -56,7 +56,7 @@ public class TestBase64 extends
      */
     public void testSimple() throws UnsupportedEncodingException {
         String encoded = Base64.encode(HELLO_WORLD.getBytes("UTF-8"));
-        String decoded = new String(Base64.decode(encoded));
+        String decoded = new String(Base64.decode(encoded), "UTF-8");
         assertEquals(HELLO_WORLD, decoded);
     }
 
@@ -65,7 +65,7 @@ public class TestBase64 extends
      */
     public void testEmpty() throws UnsupportedEncodingException {
         String encoded = Base64.encode("".getBytes("UTF-8"));
-        String decoded = new String(Base64.decode(encoded));
+        String decoded = new String(Base64.decode(encoded), "UTF-8");
         assertEquals("", decoded);
     }
 
@@ -74,7 +74,7 @@ public class TestBase64 extends
      */
     public void testText() throws UnsupportedEncodingException {
         String encoded = Base64.encode(TEXT.getBytes("UTF-8"));
-        String decoded = new String(Base64.decode(encoded));
+        String decoded = new String(Base64.decode(encoded), "UTF-8");
         assertEquals(TEXT, decoded);
     }
 
@@ -218,11 +218,11 @@ public class TestBase64 extends
                 Base64.ENCODE);
 
         encodeOutputStream.write(FLUSH_TEST_BINARY_BUFFER);
-      
+
         // Close
         decodeOutputStream.close();
         encodeOutputStream.close();
-        
+
         // Check that the output is correct
         assertEquals(FLUSH_TEST_BINARY_BUFFER, out.toByteArray());
 

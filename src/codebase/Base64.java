@@ -1026,15 +1026,13 @@ public final class Base64 {
      * @return the decoded data
      */
     public static byte[] decode(String s, int options) {
-        byte[] bytes;
         try {
-            bytes = s.getBytes(PREFERRED_TEXT_ENCODING);
-        } catch (java.io.UnsupportedEncodingException uee) {
-            bytes = s.getBytes();
+            final byte[] bytes = s.getBytes(PREFERRED_TEXT_ENCODING);
+            return decode(bytes, 0, bytes.length, options);
+        } catch (java.io.UnsupportedEncodingException e) {
+            // this is an coding error situation - should never happen
+            throw new RuntimeException(e);
         }
-
-        // Decode
-        return decode(bytes, 0, bytes.length, options);
     }
 
 
@@ -1121,31 +1119,32 @@ public final class Base64 {
 
         final byte[] outBuffer = new byte[outBufferSize];
 
-        int d = 0;
-        int e = 0;
+        int a = 0;
+        int b = 0;
         int lineLength = 0;
-        for (; d < (len - 2); d += 3, e += 4) {
-            encode3to4(source, d + off, 3, outBuffer, e, options);
+        for (; a < (len - 2); a += 3, b += 4) {
+            encode3to4(source, a + off, 3, outBuffer, b, options);
 
             lineLength += 4;
             if (breakLines && lineLength == MAX_LINE_LENGTH) {
-                outBuffer[e + 4] = NEW_LINE;
-                e++;
+                outBuffer[b + 4] = NEW_LINE;
+                b++;
                 lineLength = 0;
             }
         }
 
-        if (d < len) {
-            encode3to4(source, d + off, len - d, outBuffer, e, options);
-            e += 4;
+        if (a < len) {
+            encode3to4(source, a + off, len - a, outBuffer, b, options);
+            b += 4;
         }
         // CHECKSTYLE:ON
 
         // Return value according to relevant encoding.
         try {
-            return new String(outBuffer, 0, e, PREFERRED_TEXT_ENCODING);
-        } catch (java.io.UnsupportedEncodingException uue) {
-            return new String(outBuffer, 0, e);
+            return new String(outBuffer, 0, b, PREFERRED_TEXT_ENCODING);
+        } catch (java.io.UnsupportedEncodingException e) {
+            // this is an coding error situation - should never happen
+            throw new RuntimeException(e);
         }
     }
 

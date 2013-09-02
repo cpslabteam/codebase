@@ -16,6 +16,8 @@ import codebase.Binary;
 public class ConstantInputStream extends
         InputStream {
 
+    private static final String DEFAULT_STRING_ENCODING = "UTF-8";
+
     /**
      * The constant byte buffer.
      */
@@ -58,7 +60,13 @@ public class ConstantInputStream extends
         if (initializer.length() < 1) {
             throw new IllegalArgumentException("Initializer canot be void");
         }
-        buffer = initializer.getBytes();
+        try {
+            buffer = initializer.getBytes(DEFAULT_STRING_ENCODING);
+        } catch (java.io.UnsupportedEncodingException e) {
+            // this is an coding error situation - should never happen
+            throw new RuntimeException(e);
+        }
+
     }
 
     /**
@@ -78,8 +86,8 @@ public class ConstantInputStream extends
      * <b>Note:</b> Since this buffer is unlimited an alternative implementation to this
      * method would be to always return <code>Integer.MAX_VALUE</code>. However this
      * information would be of little value. Instead, returning the number of bytes
-     * available until the end of the internal buffer is better and does interfere with the
-     * correctness of the class.
+     * available until the end of the internal buffer is better and does interfere with
+     * the correctness of the class.
      * 
      * @return the number of bytes still to be read until the end of the buffer.
      */
