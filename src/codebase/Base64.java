@@ -13,7 +13,6 @@ import java.io.IOException;
  */
 public final class Base64 {
 
-
     /**
      * A {@link Base64.InputStream} that reads data from another
      * <tt>java.io.InputStream</tt> and encodes/decodes to/from Base64 notation on the

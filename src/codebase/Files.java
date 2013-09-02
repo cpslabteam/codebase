@@ -23,7 +23,7 @@ public final class Files {
     /**
      * Gets the volume name.
      * 
-     * @param devicePath the path of the de device e.g. <code>C:</code>
+     * @param devicePath the path of the the device e.g. <code>C:</code>
      * @return the volume name associated with the device or null if no name is associated
      *         with the device
      */
@@ -57,7 +57,7 @@ public final class Files {
     }
 
     /**
-     * Checks if a file with a specified size can be created on a specified path
+     * Checks if a file with a specified size can be created on a specified path.
      * <p>
      * This method effectively tries to create a file with the specified size. Then it
      * tries to enlarge the file. In the end the file is removed.
@@ -133,24 +133,27 @@ public final class Files {
     }
 
     /**
-     * Recursively deletes a directory and all its sub-directories.
+     * Convenience function to delete a directory.
      * 
-     * @param dir the directory to be deleted
-     * @throws IllegalStateException if a sub-directory could not be deleted
+     * @param path Path to delete
+     * @throws IOException If the operation fails.
      */
-    public static void delTree(final File dir) {
-        if (dir.exists()) {
-            if (dir.isDirectory()) {
-                final String[] list = dir.list();
-                for (int i = 0; i < list.length; i++) {
-                    delTree(new File(dir, list[i]));
-                }
-            }
-            if (!dir.delete()) {
-                throw new IllegalStateException("Could not delete " + dir);
+    public static void deleteDirectory(File path) throws IOException {
+        if (!path.exists())
+            return;
+
+        for (File file : path.listFiles()) {
+            if (file.isDirectory())
+                deleteDirectory(file);
+            else if (!file.delete()) {
+                throw new IOException(String.format("Unable to delete file '%s'", file));
             }
         }
+
+        if (!path.delete())
+            throw new IOException(String.format("Unable to delete directory '%s'", path));
     }
+
 
     /**
      * Creates absolute path from relative path.
@@ -228,7 +231,7 @@ public final class Files {
         } else {
             relativePath = Filenames.normalize(absoluteFile.getPath());
         }
-        
+
         return relativePath;
     }
 }

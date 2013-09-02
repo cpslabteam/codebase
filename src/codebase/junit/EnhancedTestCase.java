@@ -15,12 +15,10 @@ import codebase.iterators.ArrayIterator;
 import junit.framework.TestCase;
 
 /**
- * New <code>assert</code> primitives for writing test cases.
+ * Base class with new <code>assert</code> primitives for writing test cases.
  * <p>
- * Without this primitives the code for <tt>junit</tt> tests cases becomes much more
- * difficult to write and maintain. When a test fails one needs contextual information
- * about what is failing. This information can only be delivered by using assertion that
- * know the domain.
+ * This class offers primitives to simplify writing <tt>junit</tt> tests cases that deal
+ * with iterators and arrays.
  * <p>
  * Extend this class instead of {@link junit.framework.TestCase}
  */

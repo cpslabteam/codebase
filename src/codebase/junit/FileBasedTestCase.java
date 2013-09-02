@@ -19,7 +19,7 @@ public abstract class FileBasedTestCase extends
 
     public static File getTestDirectory() {
         if (testDir == null) {
-            testDir = (new File("test/io/")).getAbsoluteFile();
+            testDir = (new File("test/io_tmp/")).getAbsoluteFile();
         }
         return testDir;
     }

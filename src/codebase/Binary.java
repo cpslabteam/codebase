@@ -280,6 +280,8 @@ public final class Binary {
     }
 
     /**
+     * Extracts the lower nibble of a byte.
+     * 
      * @param value the a byte value as an int
      * @return the lower nibble of the least significant byte of the integer
      */
@@ -398,7 +400,7 @@ public final class Binary {
      */
     public static short swapShort(final short value) {
         return (short) ((((value >> 0) & INT_LOW_BYTE_MASK) << BIT_SIZE_OF_BYTE) 
-                + (((value >> BIT_SIZE_OF_BYTE) & INT_LOW_BYTE_MASK) << 0));
+                + (((value >> BIT_SIZE_OF_BYTE) & INT_LOW_BYTE_MASK) << 0));        
     }
 
     /**
@@ -444,7 +446,7 @@ public final class Binary {
      *         significant byte.
      */
     public static char toChar(final byte b0, final byte b1) {
-        final char result = (char) (((int) (b0 & Binary.INT_LOW_BYTE_MASK)) 
+        final char result = (char) (((int) (b0 & Binary.INT_LOW_BYTE_MASK))
                 | (((int) (b1 & Binary.INT_LOW_BYTE_MASK)) << BIT_SIZE_OF_BYTE));
         return result;
     }
