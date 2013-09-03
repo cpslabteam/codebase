@@ -71,7 +71,7 @@ import java.util.ResourceBundle;
  * <b>Error handling.</b>To override the default error handling behavior you should
  * override the {@link #reportError(String)} method.
  * <p>
- * <b>Example:</b> <code>
+ * <b>Example:</b><code><pre>
  * public static void main(String[] argv) {
  * 
  *     StringBuffer sbDelete = new StringBuffer();
@@ -170,7 +170,7 @@ import java.util.ResourceBundle;
  *         }
  *     }
  * }
- * </code>
+ * </pre></code>
  * 
  * @since 2006/05/03
  * @author Original authors: William King (wrking@eng.sun.com), Aaron M. Renn
