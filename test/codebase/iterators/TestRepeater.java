@@ -10,7 +10,7 @@ import codebase.junit.EnhancedTestCase;
 
 
 /**
- * Tests the {@link Repeater} iterator class.
+ * Tests the {@link RepeaterIterator} iterator class.
  */
 public class TestRepeater extends
         EnhancedTestCase {
@@ -19,7 +19,7 @@ public class TestRepeater extends
      * Tests a repeater with zero repetitions.
      */
     public final void testZero() {
-        assertEquals(new EmptyIterator<Object>(), new Repeater<Object>(new Object(), 0));
+        assertEquals(new EmptyIterator<Object>(), new RepeaterIterator<Object>(new Object(), 0));
     }
 
     /**
@@ -29,7 +29,7 @@ public class TestRepeater extends
         final Object o = new Object();
         final Iterator<Object> input = new ArrayIterator<Object>(new Object[] { o });
 
-        assertEquals(input, new Repeater<Object>(o, 1));
+        assertEquals(input, new RepeaterIterator<Object>(o, 1));
     }
 
     /**
@@ -38,7 +38,7 @@ public class TestRepeater extends
     public final void testReset() {
         final Object o = new Object();
         final Iterator<Object> input = new ArrayIterator<Object>(new Object[] { o, o });
-        final Repeater<Object> r = new Repeater<Object>(o, 2);
+        final RepeaterIterator<Object> r = new RepeaterIterator<Object>(o, 2);
 
         assertEquals(r.next(), o);
         r.reset();
@@ -51,7 +51,7 @@ public class TestRepeater extends
      */
     public final void testPeek() {
         final Object o = new Object();
-        final Repeater<Object> r = new Repeater<Object>(o, 2);
+        final RepeaterIterator<Object> r = new RepeaterIterator<Object>(o, 2);
 
         assertTrue(r.supportsPeek());
 
@@ -72,7 +72,7 @@ public class TestRepeater extends
      */
     public final void testRemove() {
         final Object o = new Object();
-        final Repeater<Object> r = new Repeater<Object>(o, 3);
+        final RepeaterIterator<Object> r = new RepeaterIterator<Object>(o, 3);
 
         assertEquals(r.next(), o);
         r.remove();
@@ -94,7 +94,7 @@ public class TestRepeater extends
         final Iterator<Object> input = new ArrayIterator<Object>(
                 new Object[] { o, o, o, o, o, o, o });
 
-        assertEquals(input, new Repeater<Object>(o, 7));
+        assertEquals(input, new RepeaterIterator<Object>(o, 7));
     }
 
     /**
@@ -103,7 +103,7 @@ public class TestRepeater extends
     public final void testUnlimited() {
         final Object o = new Object();
 
-        final Iterator<Object> repeater = new Repeater<Object>(o);
+        final Iterator<Object> repeater = new RepeaterIterator<Object>(o);
         for (int i = 0; i < 120; i++) {
             assertSame(o, repeater.next());
         }

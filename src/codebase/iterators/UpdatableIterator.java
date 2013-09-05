@@ -1,7 +1,7 @@
 package codebase.iterators;
 
 /**
- * The interface for iterators that support the manipulation of items.
+ * The interface for iterators that support updating items.
  * <p>
  * This iterator allows:
  * <ol>
@@ -19,7 +19,7 @@ package codebase.iterators;
  * @param <E> the type of all the objects to be treated.
  * @since Created on 4/Mai/2005
  */
-public interface ManipulatableIterator<E>
+public interface UpdatableIterator<E>
         extends ResetableIterator<E> {
     
     /**

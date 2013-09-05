@@ -15,7 +15,7 @@ package codebase.iterators;
  * @since Created on 4/Mai/2005
  */
 public abstract class AbstractArrayIterator<E>
-        implements ManipulatableIterator<E> {
+        implements UpdatableIterator<E> {
 
     /**
      * The number of objects to be consumed.
@@ -108,7 +108,7 @@ public abstract class AbstractArrayIterator<E>
     /**
      * Return the current element.
      * 
-     * @see codebase.iterators.ManipulatableIterator#peek()
+     * @see codebase.iterators.UpdatableIterator#peek()
      * @return the element at the current offset
      * @see AbstractArrayIterator#offset
      */
@@ -125,7 +125,7 @@ public abstract class AbstractArrayIterator<E>
      * Check is an array supports direct access.
      * 
      * @return <code>true</code>
-     * @see codebase.iterators.ManipulatableIterator#supportsPeek()
+     * @see codebase.iterators.UpdatableIterator#supportsPeek()
      */
     public final boolean supportsPeek() {
         return true;
@@ -135,7 +135,7 @@ public abstract class AbstractArrayIterator<E>
      * Checks if an array iterator supports remove.
      * 
      * @return <code>false</code>.
-     * @see codebase.iterators.ManipulatableIterator#supportsRemove()
+     * @see codebase.iterators.UpdatableIterator#supportsRemove()
      */
     public final boolean supportsRemove() {
         return false;

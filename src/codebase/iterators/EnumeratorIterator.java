@@ -22,8 +22,8 @@ package codebase.iterators;
  * @see java.util.Iterator
  * @since Created on 4/Mai/2005
  */
-public final class Enumerator
-        implements ManipulatableIterator<Integer> {
+public final class EnumeratorIterator
+        implements UpdatableIterator<Integer> {
 
     /**
      * The start of the returned integer sequence (inclusive).
@@ -52,7 +52,7 @@ public final class Enumerator
      * @param start start of the returned integer sequence (inclusive).
      * @param limit end of the returned integer sequence (exclusive).
      */
-    public Enumerator(final int start, final int limit) {
+    public EnumeratorIterator(final int start, final int limit) {
         this.from = start;
         this.to = limit;
         this.up = start <= limit;
@@ -67,7 +67,7 @@ public final class Enumerator
      * 
      * @param number the end of the returned integer sequence (exclusive).
      */
-    public Enumerator(final int number) {
+    public EnumeratorIterator(final int number) {
         this(0, number);
     }
 
@@ -77,7 +77,7 @@ public final class Enumerator
      * The returned integer sequence starts with <tt>0</tt> and ends with
      * {@link java.lang.Integer#MAX_VALUE} <tt>-1</tt>.
      */
-    public Enumerator() {
+    public EnumeratorIterator() {
         this(0, Integer.MAX_VALUE);
     }
 
@@ -173,7 +173,7 @@ public final class Enumerator
      * Returns the current integer in the enumerator.
      * 
      * @return the current integer element of the enumerator
-     * @see codebase.iterators.ManipulatableIterator#peek()
+     * @see codebase.iterators.UpdatableIterator#peek()
      * @throws IllegalStateException when peeking an object past the upper bound of the
      *             enumerator
      */
@@ -189,7 +189,7 @@ public final class Enumerator
      * Checks if an enumerator allow direct access.
      * 
      * @return <code>true</code>
-     * @see codebase.iterators.ManipulatableIterator#supportsPeek()
+     * @see codebase.iterators.UpdatableIterator#supportsPeek()
      */
     public boolean supportsPeek() {
         return true;
@@ -199,7 +199,7 @@ public final class Enumerator
      * Checks if an array iterator supports remove.
      * 
      * @return <code>false</code>.
-     * @see codebase.iterators.ManipulatableIterator#supportsRemove()
+     * @see codebase.iterators.UpdatableIterator#supportsRemove()
      */
     public boolean supportsRemove() {
         return false;
@@ -209,7 +209,7 @@ public final class Enumerator
      * Checks if an enumerator supports remove.
      * 
      * @return <code>false</code>. An enumerator is read-only.
-     * @see codebase.iterators.ManipulatableIterator#supportsUpdate()
+     * @see codebase.iterators.UpdatableIterator#supportsUpdate()
      */
     public boolean supportsUpdate() {
         return false;
@@ -220,7 +220,7 @@ public final class Enumerator
      * 
      * @param replacement the replacement for the underlying object.
      * @throws UnsupportedOperationException is read-only
-     * @see codebase.iterators.ManipulatableIterator#update(java.lang.Object)
+     * @see codebase.iterators.UpdatableIterator#update(java.lang.Object)
      */
     public void update(final Integer replacement) {
         throw new UnsupportedOperationException();

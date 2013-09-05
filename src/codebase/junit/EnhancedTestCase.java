@@ -286,7 +286,7 @@ public class EnhancedTestCase extends
      * 
      * @param expected the expected long array
      * @param actual the result against which the expected is to be checked
-     */
+     */    
     public static final void assertEquals(final long[] expected, final long[] actual) {
         performBaseNullChecks(expected, actual);
         performArrayEmptyChecks(Arrays.toLongArray(expected), Arrays.toLongArray(actual));
@@ -321,7 +321,7 @@ public class EnhancedTestCase extends
      * @param actual the iterator with the elements that should be contained in the
      *            iterator of expected elements.
      */
-    public static final void assertIsContained(final Iterator<?> expected, final Iterator<?> actual) {
+    public static final void assertContained(final Iterator<?> expected, final Iterator<?> actual) {
         performBaseNullChecks(expected, actual);
         performIteratorEmptyChecks(expected, actual);
         performIsContainedCheck(expected, actual);

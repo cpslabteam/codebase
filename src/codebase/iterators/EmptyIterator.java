@@ -17,7 +17,7 @@ package codebase.iterators;
  * @since Created on 4/Mai/2005
  */
 public final class EmptyIterator<E>
-        implements ManipulatableIterator<E> {
+        implements UpdatableIterator<E> {
 
     /**
      * Constructs a new empty cursor that contains no elements.
@@ -83,7 +83,7 @@ public final class EmptyIterator<E>
      * @return no obejct is returned.
      * @throws UnsupportedOperationException because an empty iterator does not have any
      *             items to peek
-     * @see codebase.iterators.ManipulatableIterator#peek()
+     * @see codebase.iterators.UpdatableIterator#peek()
      */
     public E peek() {
         throw new UnsupportedOperationException();
@@ -93,7 +93,7 @@ public final class EmptyIterator<E>
      * Checks if peek is supported.
      * 
      * @return <code>false</code>
-     * @see codebase.iterators.ManipulatableIterator#supportsPeek()
+     * @see codebase.iterators.UpdatableIterator#supportsPeek()
      */
     public boolean supportsPeek() {
         return false;
@@ -103,7 +103,7 @@ public final class EmptyIterator<E>
      * Checks if remove is supported.
      * 
      * @return <code>false</code>
-     * @see codebase.iterators.ManipulatableIterator#supportsRemove()
+     * @see codebase.iterators.UpdatableIterator#supportsRemove()
      */
     public boolean supportsRemove() {
         return false;
@@ -113,7 +113,7 @@ public final class EmptyIterator<E>
      * Checks if updates is supported.
      * 
      * @return <code>false</code>
-     * @see codebase.iterators.ManipulatableIterator#supportsUpdate()
+     * @see codebase.iterators.UpdatableIterator#supportsUpdate()
      */
     public boolean supportsUpdate() {
         return false;
@@ -125,7 +125,7 @@ public final class EmptyIterator<E>
      * @param replacement the replacement parameter
      * @throws UnsupportedOperationException because an empty iterator does not have any
      *             items to update
-     * @see codebase.iterators.ManipulatableIterator#update(java.lang.Object)
+     * @see codebase.iterators.UpdatableIterator#update(java.lang.Object)
      */
     public void update(final Object replacement) {
         throw new UnsupportedOperationException();

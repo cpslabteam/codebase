@@ -11,7 +11,7 @@ package codebase.iterators;
  * @since 4/Mai/2005
  */
 public final class SingletonIterator<E>
-        implements ManipulatableIterator<E> {
+        implements UpdatableIterator<E> {
 
     /**
      * Tracks if the element has been returned by a call to
@@ -105,7 +105,7 @@ public final class SingletonIterator<E>
      * 
      * @return a reference to item specified in the constructor.
      * @throws IllegalStateException if the last element was already returned or removed
-     * @see codebase.iterators.ManipulatableIterator#peek()
+     * @see codebase.iterators.UpdatableIterator#peek()
      */
     public E peek() {
         if (wasReturned || wasRemoved) {
@@ -119,7 +119,7 @@ public final class SingletonIterator<E>
      * Checks if we can access the current item.
      * 
      * @return <code>true</code>
-     * @see codebase.iterators.ManipulatableIterator#supportsPeek()
+     * @see codebase.iterators.UpdatableIterator#supportsPeek()
      */
     public boolean supportsPeek() {
         return true;
@@ -129,7 +129,7 @@ public final class SingletonIterator<E>
      * Checks if the repeatable element allows removing an element.
      * 
      * @return <code>true</code>.
-     * @see codebase.iterators.ManipulatableIterator#supportsRemove()
+     * @see codebase.iterators.UpdatableIterator#supportsRemove()
      */
     public boolean supportsRemove() {
         return true;
@@ -139,7 +139,7 @@ public final class SingletonIterator<E>
      * Checks if the repeater supports update.
      * 
      * @return <code>true</code>
-     * @see codebase.iterators.ManipulatableIterator#supportsUpdate()
+     * @see codebase.iterators.UpdatableIterator#supportsUpdate()
      */
     public boolean supportsUpdate() {
         return true;
@@ -150,7 +150,7 @@ public final class SingletonIterator<E>
      * 
      * @param replacement the element to replace the current one
      * @throws IllegalStateException if the last element was already returned or removed
-     * @see codebase.iterators.ManipulatableIterator#update(java.lang.Object)
+     * @see codebase.iterators.UpdatableIterator#update(java.lang.Object)
      */
     public void update(final E replacement) {
         if (wasReturned || wasRemoved) {

@@ -12,8 +12,8 @@ import java.util.Iterator;
  * @see java.util.Iterator
  * @since Created on 15/Out/2005
  */
-public abstract class DecoratorIterator<E>
-        {
+public abstract class AbstractDecoratorIterator<E>
+        implements Iterator<E> {
 
     /**
      * The decorated Iterator that is used for passing method calls to.
@@ -25,7 +25,7 @@ public abstract class DecoratorIterator<E>
      * 
      * @param iterator the iterator to be decorated.
      */
-    public DecoratorIterator(final Iterator<E> iterator) {
+    public AbstractDecoratorIterator(final Iterator<E> iterator) {
         decoratedInstance = iterator;
     }
 

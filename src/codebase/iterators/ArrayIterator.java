@@ -14,7 +14,7 @@ package codebase.iterators;
  */
 public final class ArrayIterator<E> extends
         AbstractArrayIterator<E>
-        implements ManipulatableIterator<E> {
+        implements UpdatableIterator<E> {
     /**
      * The reference to the object array.
      */
@@ -62,7 +62,7 @@ public final class ArrayIterator<E> extends
      * Checks if update is supported.
      * 
      * @return <code>true</code>
-     * @see codebase.iterators.ManipulatableIterator#supportsUpdate()
+     * @see codebase.iterators.UpdatableIterator#supportsUpdate()
      */
     public boolean supportsUpdate() {
         return true;
@@ -72,7 +72,7 @@ public final class ArrayIterator<E> extends
      * Updates the underlying array with the given object at the current position.
      * 
      * @param replacement the object to be replaced
-     * @see codebase.iterators.ManipulatableIterator#update(java.lang.Object)
+     * @see codebase.iterators.UpdatableIterator#update(java.lang.Object)
      * @throws IllegalStateException if the current offset for update is not valid
      */
     public void update(final E replacement) {

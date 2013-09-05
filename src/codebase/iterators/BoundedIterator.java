@@ -13,7 +13,7 @@ import java.util.Iterator;
  * @author Paulo Carreira
  */
 public class BoundedIterator<E> extends
-        DecoratorIterator<E> {
+        AbstractDecoratorIterator<E> {
     /**
      * The maximum number of elements.
      */

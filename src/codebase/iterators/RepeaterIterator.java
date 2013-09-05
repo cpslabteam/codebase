@@ -13,8 +13,8 @@ import java.util.NoSuchElementException;
  * @param <E> the type of all the objects to be treated.
  * @since 11/Jun/2005
  */
-public final class Repeater<E>
-        implements ManipulatableIterator<E> {
+public final class RepeaterIterator<E>
+        implements UpdatableIterator<E> {
 
     /**
      * The repeatable repeatedly returned to the caller.
@@ -43,7 +43,7 @@ public final class Repeater<E>
      * @param object the element that should repeatedly be returned to the caller.
      * @param n the number of times the element should be repeated.
      */
-    public Repeater(final E object, final int n) {
+    public RepeaterIterator(final E object, final int n) {
         repeatable = object;
         initial = n;
         left = initial;
@@ -56,7 +56,7 @@ public final class Repeater<E>
      * 
      * @param object the element that should repeatedly be returned to the caller.
      */
-    public Repeater(final E object) {
+    public RepeaterIterator(final E object) {
         this.repeatable = object;
         this.unlimited = true;
     }
@@ -142,7 +142,7 @@ public final class Repeater<E>
      * 
      * @return a reference to item specified in the constructor.
      * @throws IllegalStateException if the last element was already returned
-     * @see codebase.iterators.ManipulatableIterator#peek()
+     * @see codebase.iterators.UpdatableIterator#peek()
      */
     public E peek() {
         if (!hasEnded()) {
@@ -156,7 +156,7 @@ public final class Repeater<E>
      * Checks if we can access the current item.
      * 
      * @return <code>true</code>
-     * @see codebase.iterators.ManipulatableIterator#supportsPeek()
+     * @see codebase.iterators.UpdatableIterator#supportsPeek()
      */
     public boolean supportsPeek() {
         return true;
@@ -166,7 +166,7 @@ public final class Repeater<E>
      * Checks if the repeatable element allows removing an element.
      * 
      * @return <code>true</code>.
-     * @see codebase.iterators.ManipulatableIterator#supportsRemove()
+     * @see codebase.iterators.UpdatableIterator#supportsRemove()
      */
     public boolean supportsRemove() {
         return true;
@@ -176,7 +176,7 @@ public final class Repeater<E>
      * Checks if the repeater supports update.
      * 
      * @return <code>false</code>
-     * @see codebase.iterators.ManipulatableIterator#supportsUpdate()
+     * @see codebase.iterators.UpdatableIterator#supportsUpdate()
      */
     public boolean supportsUpdate() {
         return false;
@@ -191,7 +191,7 @@ public final class Repeater<E>
      * 
      * @param replacement the object to replace the current one. Ignored.
      * @throws UnsupportedOperationException when called
-     * @see codebase.iterators.ManipulatableIterator#update(java.lang.Object)
+     * @see codebase.iterators.UpdatableIterator#update(java.lang.Object)
      */
     public void update(final Object replacement) {
         throw new UnsupportedOperationException();
