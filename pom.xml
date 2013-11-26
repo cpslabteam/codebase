@@ -4,6 +4,8 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<bundle.symbolicName>codebase</bundle.symbolicName>
 		<bundle.namespace>codebase</bundle.namespace>
+		<tycho.version>0.19.0</tycho.version>
+		<tycho-extras.version>0.19.0</tycho-extras.version>
 	</properties>
 
 	<modelVersion>4.0.0</modelVersion>
@@ -20,11 +22,48 @@
 			<plugin>
 				<groupId>org.eclipse.tycho</groupId>
 				<artifactId>tycho-maven-plugin</artifactId>
-				<version>0.19.0</version>
+				<version>${tycho.version}</version>
 				<extensions>true</extensions>
 			</plugin>
-			<!-- <plugin> <groupId>org.eclipse.tycho</groupId> <artifactId>tycho-surefire-plugin</artifactId> 
-				</plugin> -->
+			<plugin>
+				<groupId>org.eclipse.tycho</groupId>
+				<artifactId>tycho-surefire-plugin</artifactId>
+				<version>${tycho.version}</version>
+			</plugin>
+			<plugin>
+				<groupId>org.eclipse.tycho</groupId>
+				<artifactId>target-platform-configuration</artifactId>
+				<version>${tycho.version}</version>
+				<configuration>
+					<environments>
+						<environment>
+							<os>linux</os>
+							<ws>gtk</ws>
+							<arch>x86</arch>
+						</environment>
+						<environment>
+							<os>linux</os>
+							<ws>gtk</ws>
+							<arch>x86_64</arch>
+						</environment>
+						<environment>
+							<os>win32</os>
+							<ws>win32</ws>
+							<arch>x86</arch>
+						</environment>
+						<environment>
+							<os>win32</os>
+							<ws>win32</ws>
+							<arch>x86_64</arch>
+						</environment>
+						<environment>
+							<os>macosx</os>
+							<ws>cocoa</ws>
+							<arch>x86_64</arch>
+						</environment>
+					</environments>
+				</configuration>
+			</plugin>
 		</plugins>
 	</build>
 
@@ -46,7 +85,7 @@
 			<url>http://it4energy.tagus.ist.utl.pt:8081/nexus/content/repositories/p2-snapshots/</url>
 			<layout>p2</layout>
 		</repository>
-		
+
 		<repository>
 			<snapshots />
 			<id>nexus.p2-repos</id>
@@ -54,7 +93,7 @@
 			<url>http://it4energy.tagus.ist.utl.pt:8081/nexus/content/groups/p2Repos/</url>
 			<layout>p2</layout>
 		</repository>
-		
+
 
 		<repository>
 			<snapshots>
