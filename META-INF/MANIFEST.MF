@@ -22,4 +22,4 @@ Import-Package: javax.crypto,
  junit.framework;version="4.11.0",
  junit.textui;version="4.11.0"
 Tool: Bnd-2.1.0.20130426-122213
-Bundle-RequiredExecutionEnvironment: J2SE-1.5
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
