@@ -11,11 +11,11 @@ Created-By: Apache Maven Bundle Plugin
 Embed-Dependency: *;scope=runtime;inline=false
 Embed-Directory: target/dependency
 Embed-StripGroup: true
-Export-Package: codebase;version="1.0";uses:="codebase.junit,javax.crypt
- o.spec,junit.framework",codebase.binary;version="1.0";uses:="junit.fram
- ework",codebase.iterators;version="1.0";uses:="codebase.junit,junit.fra
- mework",codebase.junit;version="1.0";uses:="junit.framework",codebase.s
- treams;version="1.0";uses:="junit.framework"
+Export-Package: codebase;version="1.0.0";uses:="codebase.junit,javax.crypto.spec,junit.framework",
+ codebase.binary;version="1.0.0";uses:="junit.framework",
+ codebase.iterators;version="1.0.0";uses:="codebase.junit,junit.framework",
+ codebase.junit;version="1.0.0";uses:="junit.framework",
+ codebase.streams;version="1.0.0";uses:="junit.framework"
 Import-Package: javax.crypto,
  javax.crypto.spec,
  javax.swing.filechooser,
