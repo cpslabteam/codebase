@@ -16,9 +16,7 @@ Export-Package: codebase;version="1.0.0";uses:="codebase.junit,javax.crypto.spec
  codebase.iterators;version="1.0.0";uses:="codebase.junit,junit.framework",
  codebase.junit;version="1.0.0";uses:="junit.framework",
  codebase.streams;version="1.0.0";uses:="junit.framework"
-Import-Package: javax.crypto,
- javax.crypto.spec,
- javax.swing.filechooser,
+Import-Package: 
  junit.framework;version="4.11.0",
  junit.textui;version="4.11.0"
 Tool: Bnd-2.1.0.20130426-122213
