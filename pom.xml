@@ -168,23 +168,6 @@
 			<url>http://it4energy.tagus.ist.utl.pt:8081/nexus/content/groups/p2Repos/</url>
 			<layout>p2</layout>
 		</repository>
-
-
-		<repository>
-			<snapshots>
-				<enabled>false</enabled>
-			</snapshots>
-			<id>nexus.releases</id>
-			<name>Releases</name>
-			<url>http://it4energy.tagus.ist.utl.pt:8081/nexus/content/repositories/releases/</url>
-		</repository>
-
-		<repository>
-			<snapshots />
-			<id>nexus.snapshots</id>
-			<name>Snapshots</name>
-			<url>http://it4energy.tagus.ist.utl.pt:8081/nexus/content/repositories/snapshots/</url>
-		</repository>
 	</repositories>
 
 </project>
