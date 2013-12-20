@@ -45,6 +45,13 @@
 				<artifactId>target-platform-configuration</artifactId>
 				<version>${tycho.version}</version>
 				<configuration>
+					<target>
+						<artifact>
+							<groupId>codebase</groupId>
+							<artifactId>codebase</artifactId>
+							<version>${project.version}</version>
+						</artifact>
+					</target>
 					<environments>
 						<environment>
 							<os>linux</os>
@@ -76,48 +83,4 @@
 			</plugin>
 		</plugins>
 	</build>
-	<repositories>
-		<repository>
-			<snapshots>
-				<enabled>false</enabled>
-			</snapshots>
-			<id>nexus.p2-releases</id>
-			<name>p2-releases</name>
-			<url>http://it4energy.tagus.ist.utl.pt:8081/nexus/content/repositories/p2-releases/.meta/p2</url>
-			<layout>p2</layout>
-		</repository>
-
-		<repository>
-			<snapshots />
-			<id>nexus.p2-snapshots</id>
-			<name>p2-snapshots</name>
-			<url>http://it4energy.tagus.ist.utl.pt:8081/nexus/content/repositories/p2-snapshots/.meta/p2</url>
-			<layout>p2</layout>
-		</repository>
-
-		<repository>
-			<snapshots />
-			<id>nexus.p2-repos</id>
-			<name>p2-repos</name>
-			<url>http://it4energy.tagus.ist.utl.pt:8081/nexus/content/groups/p2Repos/</url>
-			<layout>p2</layout>
-		</repository>
-
-
-		<repository>
-			<snapshots>
-				<enabled>false</enabled>
-			</snapshots>
-			<id>nexus.releases</id>
-			<name>Releases</name>
-			<url>http://it4energy.tagus.ist.utl.pt:8081/nexus/content/repositories/releases/</url>
-		</repository>
-
-		<repository>
-			<snapshots />
-			<id>nexus.snapshots</id>
-			<name>Snapshots</name>
-			<url>http://it4energy.tagus.ist.utl.pt:8081/nexus/content/repositories/snapshots/</url>
-		</repository>
-	</repositories>
 </project>

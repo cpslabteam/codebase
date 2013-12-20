@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<?pde version="3.8"?><target name="codebase" sequenceNumber="26">
+<locations>
+
+<location includeAllPlatforms="true" includeConfigurePhase="false" includeMode="slicer" includeSource="true" type="InstallableUnit">
+<unit id="org.junit" version="4.11.0.v201303080030"/>
+<unit id="a.jre.javase" version="1.6.0"/>
+<repository location="http://it4energy.tagus.ist.utl.pt:8081/nexus/content/groups/p2Repos/"/>
+</location>
+
+</locations>
+</target>
