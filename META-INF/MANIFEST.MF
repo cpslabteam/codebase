@@ -1,19 +1,25 @@
 Manifest-Version: 1.0
-Bnd-LastModified: 1377778512790
+Bnd-LastModified: 1385473509252
 Build-Jdk: 1.7.0_21
 Built-By: Gonￃﾧalo
 Bundle-Description: Codebase utility classes
 Bundle-ManifestVersion: 2
 Bundle-Name: codebase [codebase]
 Bundle-SymbolicName: codebase
-Bundle-Version: 1.0
+Bundle-Version: 1.0.0
 Created-By: Apache Maven Bundle Plugin
 Embed-Dependency: *;scope=runtime;inline=false
 Embed-Directory: target/dependency
 Embed-StripGroup: true
-Export-Package: codebase;version="1.0";uses:="javax.crypto.spec",codebas
- e.binary;version="1.0",codebase.iterators;version="1.0",codebase.junit;
- version="1.0";uses:="junit.framework",codebase.streams;version="1.0"
-Import-Package: javax.crypto,javax.crypto.spec,javax.swing.filechooser,j
- unit.framework
+Export-Package: codebase;version="1.0.0";uses:="codebase.junit,javax.crypto.spec,junit.framework",
+ codebase.binary;version="1.0.0";uses:="junit.framework",
+ codebase.iterators;version="1.0.0";uses:="codebase.junit,junit.framework",
+ codebase.junit;version="1.0.0";uses:="junit.framework",
+ codebase.streams;version="1.0.0";uses:="junit.framework"
+Import-Package: javax.crypto,
+ javax.crypto.spec,
+ javax.swing.filechooser,
+ junit.framework;version="4.11.0",
+ junit.textui;version="4.11.0"
 Tool: Bnd-2.1.0.20130426-122213
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
