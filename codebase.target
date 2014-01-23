@@ -7,8 +7,4 @@
 <repository location="http://it4energy.tagus.ist.utl.pt:8081/nexus/content/groups/p2Repos/"/>
 </location>
 </locations>
-<includeBundles>
-<plugin id="org.hamcrest.core"/>
-<plugin id="org.junit"/>
-</includeBundles>
 </target>
