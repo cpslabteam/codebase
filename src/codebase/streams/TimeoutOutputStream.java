@@ -10,7 +10,12 @@ import java.util.concurrent.TimeUnit;
  * An output stream decorator that times out (instead of blocking) on write operations.
  * <p>
  * This stream decorator is especially useful to add timeout behavior to an existing
- * stream.
+ * stream. However, Timeout Output Stream only guarantees that the write operation does
+ * not lock indefinitely. It does not guarantee that the write was successful.
+ * <p>
+ * <b>Note:</b> The Timeout Output Stream assumes that the write() operation on decorated
+ * output stream can block. Otherwise, it is unknown if the decorated output stream does
+ * not block on writing, there's no way the write operation can timeout.
  */
 public class TimeoutOutputStream extends
         FilterOutputStream {
