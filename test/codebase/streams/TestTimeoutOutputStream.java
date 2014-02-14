@@ -1,5 +1,7 @@
 package codebase.streams;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
@@ -113,6 +115,30 @@ public class TestTimeoutOutputStream extends
         }
 
         s.close();
+    }
+    
+
+    /**
+     * Tests that writing to a TimeoutOutputStream that is closed fails regardless of the
+     * base stream's state.
+     * <p>
+     * 
+     */
+    public final void testWithTimeoutStreamClosed() throws IOException {
+        ByteArrayOutputStream base = new ByteArrayOutputStream();
+        TimeoutOutputStream tos = new TimeoutOutputStream(base);
+        tos.open();
+        tos.close();
+
+        boolean passed = false;
+        // Basic
+        try {
+            tos.write('X');
+        } catch (Exception e) {
+            passed = true;
+        }
+        assertTrue(passed);
+        assertTrue(tos.isClosed());
     }
 
 }

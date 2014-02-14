@@ -9,7 +9,8 @@ import java.util.concurrent.TimeUnit;
 /**
  * An output stream decorator that times out (instead of blocking) on write operations.
  * <p>
- * This stream decorator is especially useful to add timeout behavior to an existing stream.
+ * This stream decorator is especially useful to add timeout behavior to an existing
+ * stream.
  */
 public class TimeoutOutputStream extends
         FilterOutputStream {
@@ -81,10 +82,10 @@ public class TimeoutOutputStream extends
                         //System.out.println("Took " + (System.currentTimeMillis() - millis)
                         //        + " millis");
                         ioexception = null;
+                        dataToDecorated.release();
                     } catch (IOException e) {
                         ioexception = e;
                     }
-                    dataToDecorated.release();
                 }
             } catch (InterruptedException ex) {
                 /*
@@ -148,6 +149,11 @@ public class TimeoutOutputStream extends
         return isClosed;
     }
 
+    /**
+     * Closes the timeout output stream and the decorated output stream.
+     * 
+     * @see java.io.FilterOutputStream#close()
+     */
     @Override
     public synchronized void close() throws IOException {
         isClosed = false;
@@ -164,12 +170,31 @@ public class TimeoutOutputStream extends
     }
 
 
+    /**
+     * Writes a byte into the decorated stream.
+     * <p>
+     * Note: Does not check if the decorated stream is closed. This behavior is consistent
+     * with the behavior of {@link FilterOutputStream}.
+     * 
+     * @param b the byte to be written
+     * @throws IOException if, after the period specified in the constructor the message
+     *             has not been sent.
+     */
     @Override
     public void write(int b) throws IOException {
         this.write(new byte[] { (byte) b });
     }
 
-
+    /**
+     * Writes a segment of a message buffer into the decorated stream.
+     * <p>
+     * Note: Does not check if the decorated stream is closed. This behavior is consistent
+     * with the behavior of {@link FilterOutputStream}.
+     * 
+     * @param b the byte[] message to be written
+     * @throws IOException if, after the period specified in the constructor the message
+     *             has not been sent.
+     */
     @Override
     public void write(byte[] b, int off, int len) throws IOException {
         final byte[] segment = new byte[len];
@@ -179,6 +204,9 @@ public class TimeoutOutputStream extends
 
     /**
      * Writes a message into the decorated stream.
+     * <p>
+     * Note: Does not check if the decorated stream is closed. This behavior is consistent
+     * with the behavior of {@link FilterOutputStream}.
      * 
      * @param b the byte[] message to be written
      * @throws IOException if, after the period specified in the constructor the message
@@ -204,7 +232,6 @@ public class TimeoutOutputStream extends
              */
             message = b.clone();
 
-            b.clone();
             dataFromClient.release();
             Thread.yield();
 
