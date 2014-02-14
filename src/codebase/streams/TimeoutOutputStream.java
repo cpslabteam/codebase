@@ -157,15 +157,18 @@ public class TimeoutOutputStream extends
     @Override
     public synchronized void close() throws IOException {
         isClosed = false;
-        dataWritter.interrupt();
-        try {
-            dataWritter.join(TimeoutOutputStream.this.streamTimeout);
-            if (!dataWritter.isAlive()) {
-                isClosed = true;
-                super.close();
+
+        if (dataWritter != null) {
+            dataWritter.interrupt();
+            try {
+                dataWritter.join(TimeoutOutputStream.this.streamTimeout);
+                if (!dataWritter.isAlive()) {
+                    isClosed = true;
+                    super.close();
+                }
+            } catch (InterruptedException e) {
+                isClosed = false;
             }
-        } catch (InterruptedException e) {
-            isClosed = false;
         }
     }
 
