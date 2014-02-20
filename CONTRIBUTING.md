@@ -4,14 +4,11 @@ Contributing to the CODEBASE library
 Before you submit your pull request, please consider:
 * Preserving the consistency with the style of the existing code
 * Running Checstyle and Findbugs plugins with the appropriate configurations 
-as described in our [Eclipse configuration reference document](https://github.com/pjcarreira/software-engineerin/eclipse-configuration/Eclipse Configuration Reference Guide.md).
+as described in our [Eclipse configuration reference document](https://github.com/pjcarreira/software-engineering/blob/master/eclipse-configuration/Eclipse%20Configuration%20Reference%20Guide.md).
 
-If you have been using the CODEBASE and are happy 
-with the origanization and simplicity, we would be 
-happy to discuss any contribution you may find appropriate.
+Please provide us also with context in the pull request description and why you think that CODEBASE should be extended to solve a new problem.
 
-weupnp was designed to be minimal, so do not introduce dependencies to new libraries unless there is some strong reason to do so,
-provide us with context in the pull request description: each device behaves slightly different and we do not have access to all of them, so it would help us to know what exactly was the problem you were trying to solve.
-Other than that, we would be happy to get your help!
+If you have been using the CODEBASE and are happy with the origanization and simplicity of the code we would be 
+happy to discuss any contribution you may find appropriate and would be happy to get your help.
 
-Thank you
+Thank you for using Codebase.
