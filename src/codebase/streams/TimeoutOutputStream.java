@@ -158,6 +158,7 @@ public class TimeoutOutputStream extends
      * Closes the timeout output stream and the decorated output stream.
      * 
      * @see java.io.FilterOutputStream#close()
+     * @throws IOException if the decorated if the decorated stream throws one 
      */
     @Override
     public synchronized void close() throws IOException {
@@ -198,8 +199,10 @@ public class TimeoutOutputStream extends
      * <p>
      * Note: Does not check if the decorated stream is closed. This behavior is consistent
      * with the behavior of {@link FilterOutputStream}.
-     * 
+     *
      * @param b the byte[] message to be written
+     * @param off the offset to write on. Must be smaller that b.lenght
+     * @param len the length the number of bytes to write in the buffer
      * @throws IOException if, after the period specified in the constructor the message
      *             has not been sent.
      */

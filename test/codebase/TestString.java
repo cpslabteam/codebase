@@ -1,6 +1,5 @@
 package codebase;
 
-import junit.framework.Assert;
 import codebase.iterators.ArrayIterator;
 import codebase.iterators.EmptyIterator;
 import codebase.junit.EnhancedTestCase;
@@ -96,8 +95,8 @@ public class TestString extends
 
     public void testStripPrefix() {
         assertEquals(Strings.stripPrefix("", ""), "");
-        Assert.assertEquals(Strings.stripPrefix("something", ""), "something");
-        Assert.assertEquals(Strings.stripPrefix("something", "something"), "");
+        assertEquals(Strings.stripPrefix("something", ""), "something");
+        assertEquals(Strings.stripPrefix("something", "something"), "");
         assertEquals(Strings.stripPrefix("theres'something", "theres'"), "something");
         assertEquals(Strings.stripPrefix("", "something"), "");
     }
@@ -126,7 +125,7 @@ public class TestString extends
         assertEquals(Strings.compactFormat("xxx", 5), "xxx");
         assertEquals(Strings.compactFormat("yxxz", 5), "yxxz");
         assertEquals(Strings.compactFormat("yxxxxz", 5), "y...z");
-        Assert.assertEquals(Strings.compactFormat("Dear Friends", 5), "D...s");
+        assertEquals(Strings.compactFormat("Dear Friends", 5), "D...s");
         assertEquals(Strings.compactFormat("Dear Friends", 10), "Dear...nds");
     }
 
