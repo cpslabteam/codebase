@@ -4,7 +4,7 @@ Contributing to the CODEBASE library
 Before you submit your pull request, please consider:
 * Preserving the consistency with the style of the existing code
 * Running Checstyle and Findbugs plugins with the appropriate configurations 
-as described in our [Eclipse configuration reference document](eclipse-configuration/Eclipse Configuration Reference Guide.md).
+as described in our [Eclipse configuration reference document](https://github.com/pjcarreira/software-engineerin/eclipse-configuration/Eclipse Configuration Reference Guide.md).
 
 If you have been using the CODEBASE and are happy 
 with the origanization and simplicity, we would be 
