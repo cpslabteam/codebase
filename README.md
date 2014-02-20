@@ -30,9 +30,11 @@ Please make sure you read the [contribution guide](./CONTRIBUTING.md) and have y
 Thank you for considering contributing to Codebase.
 
 ## Licensing
-The codebase library is licensed under the [LGPL license](http://www.gnu.org/copyleft/lesser.html). 
+The codebase library is licensed under the [LGPL license](http://www.gnu.org/copyleft/lesser.html).
 
 In simple terms this means that the authors of the files and documentation of the documentation contained in the is repository grant you permission to use it on your own projects regardless both for open source and commercial purposes as long as they are credited.
+
+A copy of the license file is included in the root of the project.
 
 ## Alternatives to Codebase
 Other good open source alternatives to codebase are:
