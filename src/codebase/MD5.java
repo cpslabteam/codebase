@@ -15,7 +15,7 @@ import java.io.UnsupportedEncodingException;
  * way to verify data integrity, and is much more reliable than checksum and many other
  * commonly used methods.
  * <p>
- * Note that for security critical applications MD5 should not be used. Instead use SHA1.
+ * <b>Note</b> that for security critical applications MD5 should not be used. Instead use SHA1.
  * <p>
  * Licensing: Implements RSA Data Security, Inc. MD5 Message-Digest Algorithm and/or its
  * reference implementation.
