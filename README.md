@@ -7,11 +7,11 @@ The fundamental idea of the Codebase library is to avoid replicating basic utili
 
 In practice, programmers often need to replicate the code of utility classes and, moreover, have a tendency to regard this code as of lesser importance. An obvious consequence is that these classes don't get as thoroughly tested as they often should, often compromising code quality. Therefore, the underlying idea is to put here functionality that are commonly used in the code to avoid that each project/developer to implement its own version and have it throughly tested. 
 
-The main goals of codebase are to: 
+The main goals of codebase are: 
 
 * Contributing to increasing the overall code quality by offering a library of high quality utility classes (tested and revised) 
 * Simplifying the dependencies of applications (using codebase prevents depending on other libraries) 
-* Setting a standard for code quality (the code is available in open source to be analyzed) by helping the users of the library to immitate it.
+* Setting a standard for code quality (the code is available in open source to be analyzed) by helping the users of the library to imitate it.
 
 ## Design and development of codebase
 * The classes included in the main package are general purpose classes used for, among other, parsing command line arguments, file handling, cyphering, string and binary operations. Utility classes for more specialized functionality are organized into appropriate sub-packages. 
@@ -23,11 +23,11 @@ The main goals of codebase are to:
 * Codebase is a manifest-first Maven project meaning that and that dependencies are declared in the `META-INF/MANIFEST` file instead of in `pom.xml`.
 
 ## How to contribute
-If you have suggestions for enhancement or have identified a bug in Codebase are happy to receive your contributions nad give you credit.
+If you have suggestions for enhancements or have identified a bug in Codebase are happy to receive your contributions and give you credit. 
 
-Please make sure you read the [contribution guide](./CONTRIBUTING.md) and have your Eclise Environment properly installed as we explain in the [Environment Setup Kit](https://github.com/it4energy/environment-setup-kit).
+Simplicity of the code we would be happy to discuss any contribution you may find appropriate and would be happy to get your help.
 
-Thank you for considering contributing to Codebase.
+Please make sure you read the [CONTRIBUTING.md](./CONTRIBUTING.md) guide.
 
 ## Licensing
 The codebase library is licensed under the [LGPL license](http://www.gnu.org/copyleft/lesser.html).
