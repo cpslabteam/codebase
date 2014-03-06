@@ -25,8 +25,6 @@ The main goals of codebase are:
 ## How to contribute
 If you have suggestions for enhancements or have identified a bug in Codebase are happy to receive your contributions and give you credit. 
 
-Simplicity of the code we would be happy to discuss any contribution you may find appropriate and would be happy to get your help.
-
 Please make sure you read the [CONTRIBUTING.md](./CONTRIBUTING.md) guide.
 
 ## Licensing
