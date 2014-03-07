@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Bnd-LastModified: 1385473509252
 Build-Jdk: 1.7.0_21
-Built-By: Gonￃﾧalo
+Built-By: Goncalo
 Bundle-Description: Codebase utility classes
 Bundle-ManifestVersion: 2
 Bundle-Name: codebase [codebase]
@@ -17,7 +17,7 @@ Export-Package: codebase;version="1.0.0";uses:="codebase.junit,javax.crypto.spec
  codebase.junit;version="1.0.0";uses:="junit.framework",
  codebase.streams;version="1.0.0";uses:="junit.framework"
 Import-Package: 
- junit.framework;version="4.11.0",
- junit.textui;version="4.11.0"
+ junit.framework;version="0.0.0",
+ junit.textui;version="0.0.0"
 Tool: Bnd-2.1.0.20130426-122213
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
