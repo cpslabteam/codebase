@@ -7,7 +7,7 @@ import codebase.junit.EnhancedTestCase;
 /**
  * Tests the {@link Strings} utility class.
  */
-public class TestString extends
+public class TestStrings extends
         EnhancedTestCase {
 
     public void testCharNameShort() {

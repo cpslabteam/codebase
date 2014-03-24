@@ -20,7 +20,7 @@ public class AllTests {
         suite.addTestSuite(TestInformationUnit.class);
         suite.addTestSuite(TestMath.class);
         suite.addTestSuite(TestMD5.class);
-        suite.addTestSuite(TestString.class);
+        suite.addTestSuite(TestStrings.class);
         //$JUnit-END$
         return suite;
     }
