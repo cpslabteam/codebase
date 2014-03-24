@@ -90,7 +90,22 @@ public class TestStrings extends
 
     public void testStringify() {
         assertEquals(Strings.stringify(""), "\"\"");
+        assertEquals(Strings.stringify("X"), "\"X\"");
+        assertEquals(Strings.stringify("\""), "\"\\\"\"");
         assertEquals(Strings.stringify("something"), "\"something\"");
+    }
+
+    public void testUnstringify() {
+        assertEquals(Strings.unstringify(""), "");
+        assertEquals(Strings.unstringify("\""), "");
+        assertEquals(Strings.unstringify("\"\""), "");
+        assertEquals(Strings.unstringify("\"\"\""), "");
+        
+        assertEquals(Strings.unstringify("\\\""), "\"");
+        assertEquals(Strings.unstringify("\"\\\"\""), "\"");
+        
+        assertEquals(Strings.unstringify("\"X\""), "X");
+        assertEquals(Strings.unstringify("\"something\""), "something");
     }
 
     public void testStripPrefix() {
@@ -117,6 +132,8 @@ public class TestStrings extends
         assertEquals(Strings.trimChar("somethingggggg", 'g'), "somethin");
         assertEquals(Strings.trimChar("gggggggsomethingggggg", 'g'), "somethin");
     }
+
+
 
     // TODO: Finish compact string tests
 

@@ -16,7 +16,7 @@ public final class Strings {
     /**
      * String representation of a double-comma.
      */
-    public static final String DOUBLE_QUOTE = "\"";
+    public static final char DOUBLE_QUOTE = '"';
 
     /**
      * The byte that represents the ascii space character.
@@ -292,7 +292,7 @@ public final class Strings {
     }
 
     /**
-     * Converts a string to an array of strings sepeared by a token.
+     * Converts a string to an array of strings separated by a token.
      * <p>
      * Can be used to convert comma-separated tokens into an array. Used as a replacement
      * for <code>String.split(String)</code> which has a bug with DBCS.
@@ -306,8 +306,8 @@ public final class Strings {
             return new String[0];
         }
 
-        ArrayList<String> list = new ArrayList<String>();
-        StringTokenizer tokens = new StringTokenizer(string, separator);
+        final ArrayList<String> list = new ArrayList<String>();
+        final StringTokenizer tokens = new StringTokenizer(string, separator);
         while (tokens.hasMoreTokens()) {
             String token = tokens.nextToken().trim();
             if (!token.isEmpty()) {
@@ -323,13 +323,55 @@ public final class Strings {
     }
 
     /**
-     * Puts " before and after the string.
+     * Puts double quotes before and after the string.
+     * <p>
+     * Existing double quotes are escaped.
      * 
      * @param str the string to stringify
      * @return a new string with " before and after
      */
     public static String stringify(final String str) {
-        return DOUBLE_QUOTE + str + DOUBLE_QUOTE;
+        final StringBuilder buffer = new StringBuilder();
+        buffer.append(DOUBLE_QUOTE);
+        for (char c : str.toCharArray()) {
+            if (c == DOUBLE_QUOTE) {
+                buffer.append('\\');
+                buffer.append('"');
+            } else {
+                buffer.append(c);
+            }
+        }
+        buffer.append(DOUBLE_QUOTE);
+        return buffer.toString();
+    }
+
+
+    /**
+     * Strips a string from double quotes.
+     * <p>
+     * Escaped doubles quotes in the middle of the string are converted appropriately.
+     * 
+     * @param str a string that may have leading and trailing double quotes
+     * @return a string without leading and trailing double quotes.
+     */
+    public static String unstringify(final String str) {
+        final StringBuilder buffer = new StringBuilder();
+        final char[] chars = str.toCharArray();
+
+        for (int i = 0; i < chars.length; i++) {
+            if (chars[i] == DOUBLE_QUOTE)
+                continue;
+
+            final boolean isEscapedQuote = chars[i] == '\\' && (i + 1 < chars.length)
+                    && (chars[i + 1] == DOUBLE_QUOTE);
+
+            if (isEscapedQuote) {
+                buffer.append(DOUBLE_QUOTE);
+            } else {
+                buffer.append(chars[i]);
+            }
+        }
+        return buffer.toString();
     }
 
     /**
@@ -371,7 +413,7 @@ public final class Strings {
     }
 
     /**
-     * Skips all occourences of ch from a string.
+     * Skips all occurences of ch from a string.
      * 
      * @param str the string to skip white spaces from
      * @param ch is the char to be trimmed
@@ -391,8 +433,8 @@ public final class Strings {
      * Trims characters right from the string.
      * 
      * @param str the string to skip white spaces from
-     * @param ch is the character to be trimed
-     * @return the pointer to a buffer with the string trimmed from all occourences of ch
+     * @param ch is the character to be trimmed
+     * @return the pointer to a buffer with the string trimmed from all occurences of ch
      *         on the right. If ch is not found returns the original string.
      */
     public static String trimCharRight(final java.lang.String str, final char ch) {

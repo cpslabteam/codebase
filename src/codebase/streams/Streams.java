@@ -12,7 +12,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 
 /**
- * Utility functions for managing streams.
+ * Utilities for managing streams.
  */
 public final class Streams {
 
@@ -28,7 +28,7 @@ public final class Streams {
      * @param fileName the name and path of the file to be created
      * @param bufferSize the size in bytes of the output buffer
      * @return a new buffered file output stream based with the specified size
-     * @throws IOException if an error occours while creating the file output stream
+     * @throws IOException if an error occurs while creating the file output stream
      */
     public static OutputStream createFileOutputStream(final String fileName, final int bufferSize) throws java.io.IOException {
         final FileOutputStream fileWriteStream = new FileOutputStream(fileName);
@@ -43,7 +43,7 @@ public final class Streams {
      * @param fileName the name and path of the file to be read
      * @param bufferSize the size in bytes of the input buffer
      * @return a new buffered file input stream based with the specified size
-     * @throws IOException if an error occours while opening the file output stream
+     * @throws IOException if an error ocours while opening the file output stream
      */
     public static InputStream createFileInputStream(final String fileName, final int bufferSize) throws IOException {
         final FileInputStream fileInputStream = new FileInputStream(fileName);

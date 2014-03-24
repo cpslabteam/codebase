@@ -173,7 +173,6 @@ public final class Arrays {
 
     /**
      * Copies an array of integers into another.
-     * 
      * @param source the source array
      * @param target the target array
      * @param from the source start position
