@@ -19,12 +19,12 @@
 		<repository>
 			<id>deployment</id>
 			<name>Internal Releases</name>
-			<url>http://193.136.166.115:8082/nexus/content/repositories/p2-releases/</url>
+			<url>http://sb-buildmaster.tagus.ist.utl.pt:8082/nexus/content/repositories/p2-releases/</url>
 		</repository>
 		<snapshotRepository>
 			<id>deployment</id>
 			<name>Internal Releases</name>
-			<url>http://193.136.166.115:8082/nexus/content/repositories/p2-releases/</url>
+			<url>http://sb-buildmaster.tagus.ist.utl.pt:8082/nexus/content/repositories/p2-releases/</url>
 		</snapshotRepository>
 	</distributionManagement>
 
@@ -113,7 +113,7 @@
 				<version>2.11</version>
 				<configuration>
 					<includeTestSourceDirectory>true</includeTestSourceDirectory>
-					<configLocation>../devsettings/eclipse/eclipse-checkstyle-config-src.xml</configLocation>
+					<configLocation>${project.basedir}/../dev-settings/maven/eclipse-checkstyle-config-src.xml</configLocation>
 					<suppressionsLocation>${project.basedir}/../dev-settings/maven/checkstyle-test-exclusions.xml</suppressionsLocation>
 					<suppressionsFileExpression>checkstyle.suppressions.file</suppressionsFileExpression>
 				</configuration>
