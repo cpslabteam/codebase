@@ -114,7 +114,7 @@
 				<configuration>
 					<includeTestSourceDirectory>true</includeTestSourceDirectory>
 					<configLocation>../devsettings/eclipse/eclipse-checkstyle-config-src.xml</configLocation>
-					<suppressionsLocation>${project.basedir}/../devsettings/maven/checkstyle-test-exclusions.xml</suppressionsLocation>
+					<suppressionsLocation>${project.basedir}/../dev-settings/maven/checkstyle-test-exclusions.xml</suppressionsLocation>
 					<suppressionsFileExpression>checkstyle.suppressions.file</suppressionsFileExpression>
 				</configuration>
 			</plugin>
