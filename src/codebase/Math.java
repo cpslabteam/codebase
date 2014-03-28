@@ -56,16 +56,32 @@ public final class Math {
     }
 
     /**
-     * Computes that maximum of a list of integers.
+     * Finds that maximum of a list of integers.
      * 
      * @param values the list of integer values
-     * @return the greates of all integers
+     * @return the greatest of all integers
      */
     public static int max(final int[] values) {
         int m = Integer.MIN_VALUE;
-        for (int i : values) {
-            if (i > m) {
-                m = i;
+        for (int v : values) {
+            if (v > m) {
+                m = v;
+            }
+        }
+        return m;
+    }
+
+    /**
+     * Finds the minimum value from a set of integers.
+     * 
+     * @param values the set of values values
+     * @return the int lowest value
+     */
+    public static int min(final int[] values) {
+        int m = Integer.MAX_VALUE;
+        for (int v : values) {
+            if (v < m) {
+                m = v;
             }
         }
         return m;

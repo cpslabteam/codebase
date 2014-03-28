@@ -1,6 +1,7 @@
 package codebase;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.StringTokenizer;
 
 /**
@@ -498,4 +499,78 @@ public final class Strings {
         }
 
     }
+
+    /**
+     * Trims a portion of a string based on a begin and end index.
+     * 
+     * @param s
+     *            the string
+     * @param start
+     *            the start index of the trim operation
+     * @param end
+     *            the end of the trim operation
+     * @return the trimmed string
+     */
+    // XXX: move this to stringutil and then run unit tests on it!
+    public static String trim(final String s, final int start, final int end) {
+    	final String trimedFirst = s.substring(0, start);
+    	final String trimedSecond;
+    	if (end < s.length()) {
+    		trimedSecond = s.substring(end, s.length() - 1);
+    	} else {
+    		trimedSecond = "";
+    	}
+    	return trimedFirst + trimedSecond;
+    }
+
+    public static String rpad(String text, char filler, int size) {
+    	StringBuffer result = new StringBuffer(text);
+    	while (result.length() < size) {
+    		result.append(filler);
+    	}
+    	return result.toString();
+    }
+
+    public static String join(Collection<?> objs, String delimiter) {
+    	if (objs == null || objs.size() == 0)
+    		return "";
+    
+    	StringBuffer buffer = new StringBuffer();
+    	for (Object obj : objs) {
+    		if (buffer.length() > 0) {
+    			buffer.append(delimiter);
+    		}
+    		buffer.append(obj);
+    	}
+    	return buffer.toString();
+    }
+
+    public static String join(int[] objs, String delimiter) {
+    	if (objs == null || objs.length == 0)
+    		return "";
+    
+    	StringBuffer buffer = new StringBuffer();
+    	for (int obj : objs) {
+    		if (buffer.length() > 0) {
+    			buffer.append(delimiter);
+    		}
+    		buffer.append(Integer.toString(obj));
+    	}
+    	return buffer.toString();
+    }
+
+    public static String join(short[] objs, String delimiter) {
+    	if (objs == null || objs.length == 0)
+    		return "";
+    
+    	StringBuffer buffer = new StringBuffer();
+    	for (int obj : objs) {
+    		if (buffer.length() > 0) {
+    			buffer.append(delimiter);
+    		}
+    		buffer.append(Integer.toString(obj));
+    	}
+    	return buffer.toString();
+    }
+
 }

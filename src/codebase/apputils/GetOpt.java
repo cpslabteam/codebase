@@ -1,7 +1,7 @@
 /*
  * Created on 9/Fev/2006
  */
-package codebase;
+package codebase.apputils;
 
 import java.text.MessageFormat;
 import java.util.PropertyResourceBundle;

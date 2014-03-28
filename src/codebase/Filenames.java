@@ -1058,4 +1058,20 @@ public final class Filenames {
     private Filenames() {
     }
 
+    /**
+     * Converts a file URL if the format <tt>file:///</tt> to a path.
+     * 
+     * @param url
+     *            the url
+     * @return a string with the disk path
+     */
+    public static String urlToPath(java.net.URL url) {
+    	if (!url.getProtocol().equalsIgnoreCase("file")) {
+    		throw new IllegalArgumentException(
+    				"Argument must be a valid file URL");
+    	}
+    
+    	return url.getPath();
+    }
+
 }
