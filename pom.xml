@@ -19,12 +19,12 @@
 		<repository>
 			<id>deployment</id>
 			<name>Internal Releases</name>
-			<url>http://193.136.166.115:8082/nexus/content/repositories/p2-releases/</url>
+			<url>http://sb-buildmaster.tagus.ist.utl.pt:8082/nexus/content/repositories/p2-releases/</url>
 		</repository>
 		<snapshotRepository>
 			<id>deployment</id>
 			<name>Internal Releases</name>
-			<url>http://193.136.166.115:8082/nexus/content/repositories/p2-releases/</url>
+			<url>http://sb-buildmaster.tagus.ist.utl.pt:8082/nexus/content/repositories/p2-releases/</url>
 		</snapshotRepository>
 	</distributionManagement>
 
