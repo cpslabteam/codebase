@@ -5,10 +5,10 @@ import java.io.DataOutput;
 import java.io.EOFException;
 import java.io.IOException;
 
-import codebase.io.converters.VariableSizeConverter;
+import codebase.io.converters.Converter;
 
-public class StringLiteralConverter extends
-        VariableSizeConverter {
+public class StringLiteralConverter
+        implements Converter {
     private static final int DEFAULT_MAX_READ_LENGTH = 1024;
 
     private final int maxReadSize = DEFAULT_MAX_READ_LENGTH;
@@ -43,15 +43,15 @@ public class StringLiteralConverter extends
         do {
             try {
                 ch = dataInput.readByte();
-            } catch(EOFException e) {
+            } catch (EOFException e) {
                 /*
                  * We treat EOF as the end of buffer
                  */
                 break;
-            } catch(IOException e) {
+            } catch (IOException e) {
                 throw e;
             }
-            
+
             if (sawBackslash) {
                 if (ch == '\"') {
                     sb.append((char) ch);

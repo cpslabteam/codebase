@@ -5,7 +5,7 @@ package codebase.io.converters;
  * Interface of converters that have a fixed size.
  * <p>
  * Each object must be serialized to the same number of bytes. In other words it
- * is expected that read and write operations allways trabsfer the same amount
+ * is expected that read and write operations allways transfer the same amount
  * of bytes.
  * <p>
  * The {@link #getSize()} method is implemented returning a predefined size

@@ -5,14 +5,14 @@ import java.io.DataOutput;
 import java.io.EOFException;
 import java.io.IOException;
 
-import codebase.io.converters.VariableSizeConverter;
+import codebase.io.converters.Converter;
 
 /**
  * Consumes the input until the first character that is not a digit. This character will
  * be used as delimiter and is consumed.
  */
-public class IntegerDisplayConverter extends
-        VariableSizeConverter {
+public class IntegerDisplayConverter
+        implements Converter {
 
     /**
      * The maximum amount of digits that held by a Integer.

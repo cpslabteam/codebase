@@ -4,7 +4,6 @@ import java.io.DataInput;
 import java.io.IOException;
 
 import junit.framework.TestCase;
-import codebase.Strings;
 import codebase.streams.ByteArrayDataInput;
 
 public class TestStringLitteralConverter extends

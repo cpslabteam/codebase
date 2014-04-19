@@ -1,6 +1,5 @@
 /*
  * Created on 6/Mai/2005
- *  
  */
 package codebase.io.converters.binary;
 
@@ -16,26 +15,26 @@ import codebase.io.converters.AbstractFixedSizeConverter;
 /**
  * A converter for that skips a predefined number of bytes when reading.
  * <p>
- * This converter is usefull for reading an writing records with fixed size. It
- * returns <code>null</code> when reading.
+ * This converter is useful for reading an writing records with fixed size. It returns
+ * <code>null</code> when reading.
  * <p>
  * The write operation will write out a predefined byte array specified in the
  * constructor.
  */
-public class ByteSkipConverter
-        extends AbstractFixedSizeConverter {
-    
+public class ByteSkipConverter extends
+        AbstractFixedSizeConverter {
+
     /**
-     * Caches the number of ascii characters to read for optimization purposes.
-     * Thus is avoids to call <code>getSerializedSize</code> repeatedly.
+     * Caches the number of ASCII characters to read for optimization purposes. Thus is
+     * avoids to call <code>getSerializedSize</code> repeatedly.
      */
     private final int length;
-    
+
     /**
      * The array of bytes to be written.
      */
     private final byte[] writeBytes;
-    
+
     /**
      * Creates a new skip converter of a predefined size.
      * 
@@ -43,8 +42,8 @@ public class ByteSkipConverter
      * @param bytes the bytes to write out
      * @throws IllegalArgumentException if the size is not positive
      * @throws IllegalArgumentException if the bytes array is not assigned
-     * @throws IllegalArgumentException if the lenght of the bytes buffer does
-     *             not match the size
+     * @throws IllegalArgumentException if the length of the bytes buffer does not match
+     *             the size
      */
     public ByteSkipConverter(final int size, final byte[] bytes) {
         super(size);
@@ -52,20 +51,18 @@ public class ByteSkipConverter
             throw new IllegalArgumentException("The size must be positive");
         }
         length = size;
-        
+
         if (bytes == null) {
-            throw new IllegalArgumentException(
-                "The array of bytes must be assigned");
+            throw new IllegalArgumentException("The array of bytes must be assigned");
         }
-        
+
         if (size != bytes.length) {
-            throw new IllegalArgumentException(
-                "The size must match the number of bytes");
+            throw new IllegalArgumentException("The size must match the number of bytes");
         }
-        
+
         writeBytes = bytes;
     }
-    
+
     /**
      * Builds a new fixed size skiper converter that writes out spaces.
      * 
@@ -75,20 +72,19 @@ public class ByteSkipConverter
     public ByteSkipConverter(final int size) {
         this(size, Arrays.replicate(Strings.ASCII_SPACE_BYTE, size));
     }
-    
+
     /**
-     * Returns a new string object from the bytes read.
+     * Skips the specified number of bytes.
      * <p>
-     * If the input reader is unable to provide the adequate number of ASCII
-     * characters, the string object will not be read
      * 
+     * @return <code>null</code>
      * @see BaseConverter#read(DataInput)
      */
     public final Object read(final DataInput dataInput) throws IOException {
         dataInput.skipBytes(length);
         return null;
     }
-    
+
     /**
      * Writes out the byte array.
      * 
@@ -96,8 +92,7 @@ public class ByteSkipConverter
      * @param object ignored
      * @see BaseConverter#write(DataOutput, Object)
      */
-    public final void write(final DataOutput dataOutput, final Object object)
-            throws IOException {
+    public final void write(final DataOutput dataOutput, final Object object) throws IOException {
         dataOutput.write(writeBytes);
-    }      
+    }
 }
