@@ -27,7 +27,8 @@ import codebase.io.converters.AbstractFixedSizeConverter;
  *     ByteArrayInputStream input = new ByteArrayInputStream(output.toByteArray());
  * 
  *     // read a boolean value and a Boolean from the input stream
- *     boolean b = (Boolean) new BooleanConverter.readBoolean(new DataInputStream(input));
+ *     boolean b = (Boolean) new BooleanConverter.readBoolean(new DataInputStream(
+ *             input));
  * 
  *     // print the value and the object
  *     System.out.println(b2);
@@ -69,8 +70,6 @@ public class BooleanConverter extends
      * 
      * @param dataInput the stream to read the <tt>boolean</tt> value from in order to
      *            return a <tt>Boolean</tt> object.
-     * @param object the (<tt>Boolean</tt>) object to be restored. In this implementation
-     *            it is ignored.
      * @return the read <tt>Boolean</tt> object.
      * @throws IOException if I/O errors occur.
      */

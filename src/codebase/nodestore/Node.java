@@ -1,8 +1,11 @@
 package codebase.nodestore;
 
+/**
+ * The base class for nodes.
+ */
 public class Node {
     private final int nodeNumber;
-    
+
     public Node(int num) {
         this.nodeNumber = num;
     }
@@ -12,7 +15,7 @@ public class Node {
     }
 
     @Override
-    public int  hashCode() {
+    public int hashCode() {
         return nodeNumber;
     }
 
@@ -28,5 +31,5 @@ public class Node {
         if (nodeNumber != other.nodeNumber)
             return false;
         return true;
-    }    
+    }
 }

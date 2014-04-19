@@ -7,12 +7,31 @@ import java.io.IOException;
 
 import codebase.io.converters.Converter;
 
+/**
+ * A converter for strings with variable size.
+ * <p>
+ * Strings are encoded using double commas.
+ */
 public class StringLiteralConverter
         implements Converter {
-    private static final int DEFAULT_MAX_READ_LENGTH = 1024;
+    /**
+     * Maximum read length to avoid reading forever.
+     */
+    private static final int DEFAULT_MAX_READ_LENGTH = 16 * 1024;
 
-    private final int maxReadSize = DEFAULT_MAX_READ_LENGTH;
-
+    /**
+     * Parses a string object.
+     * <p>
+     * Skips all bytes until the first commas and then reads the a string between commas.
+     * A corner occurs when an {@link EOFException} occurs before a second comma is found.
+     * In this case the string is read until EOF is returned.
+     * <p>
+     * The maximum size of a string is {@value #DEFAULT_MAX_READ_LENGTH}.
+     * 
+     * @param dataInput the data input to read the data input from
+     * @throws IOException if an exception occurs while reading the string
+     * @return a string read from the data input
+     */
     @Override
     public Object read(DataInput dataInput) throws IOException {
         assert dataInput != null;
@@ -25,10 +44,11 @@ public class StringLiteralConverter
         do {
             ch = dataInput.readByte();
             len++;
-        } while (ch != '\"' && len <= maxReadSize);
+        } while (ch != '\"' && len <= DEFAULT_MAX_READ_LENGTH);
 
-        if (len >= maxReadSize) {
-            throw new IOException("Max read length for a string literal exceeded");
+        if (len >= DEFAULT_MAX_READ_LENGTH) {
+            throw new IOException(
+                    "Max read length for a string literal exceeded");
         }
 
         assert ch == '\"' : "String litteral initiator found";
@@ -72,15 +92,23 @@ public class StringLiteralConverter
             }
 
             len++;
-        } while (len <= maxReadSize);
+        } while (len <= DEFAULT_MAX_READ_LENGTH);
 
-        if (len >= maxReadSize) {
-            throw new IOException("Max read length for a string literal exceeded.");
+        if (len >= DEFAULT_MAX_READ_LENGTH) {
+            throw new IOException(
+                    "Max read length for a string literal exceeded.");
         }
 
         return codebase.Strings.unstringify(sb.toString());
     }
 
+    /**
+     * Writes a string to the output surrounded by double commas.
+     * 
+     * @param dataOutput the data output object to write to
+     * @param object the string object to write
+     * @throws IOException if an exception occurs while reading the string
+     */
     @Override
     public void write(DataOutput dataOutput, Object object) throws IOException {
         assert dataOutput != null;

@@ -10,6 +10,9 @@ import codebase.io.converters.display.IntegerDisplayConverter;
 import codebase.io.converters.display.StringLiteralConverter;
 
 /**
+ * A display {@link Converter} for {@link Node} objects.
+ * <p>
+ * Objects are written in the following format.
  * <ol>
  * <li>#node_num = I(node_type)</li>
  * <li>#node_num = R(rel_type, node_num, node_num)</li>
@@ -22,25 +25,27 @@ public class NodeDisplayConverter
     private final IntegerDisplayConverter intConverter = new IntegerDisplayConverter();
     private final StringLiteralConverter stringConverter = new StringLiteralConverter();
 
-    private final void checkAndSkip(DataInput input, char expected) throws IOException {
+    private void checkAndSkip(DataInput input, char expected) throws IOException {
         final char ch = (char) input.readByte();
         if (ch != expected) {
-            throw new IOException("Malformed line: found '" + ch + "' while expecting '" + expected
-                    + "'");
+            throw new IOException("Malformed line: found '" + ch
+                                  + "' while expecting '" + expected + "'");
         }
     }
 
-    private final void checkAndSkip(DataInput input, String expected) throws IOException {
+    private void checkAndSkip(DataInput input, String expected) throws IOException {
         for (int i = 0; i < expected.length(); i++) {
             final char ch = (char) input.readByte();
 
             if (ch != expected.charAt(i)) {
-                throw new IOException("Malformed line: found '" + ch + "' while expecting of '"
-                        + expected + "'");
+                throw new IOException("Malformed line: found '" + ch
+                                      + "' while expecting of '" + expected
+                                      + "'");
             }
         }
     }
 
+    @Override
     public Object read(DataInput input) throws IOException {
         skipUntilChar(input, '#');
         final int nodeNumber = (Integer) intConverter.read(input);
@@ -54,18 +59,23 @@ public class NodeDisplayConverter
             final int instanceNode = (Integer) intConverter.read(input);
             final String attrName = (String) stringConverter.read(input);
             final String attrValue = (String) stringConverter.read(input);
-            node = new AttributeNode(nodeNumber, instanceNode, attrName, attrValue);
+            node = new AttributeNode(nodeNumber, instanceNode, attrName,
+                    attrValue);
         } else if (nodeType == 'I') {
-            final String instanceTypeName = (String) stringConverter.read(input);
+            final String instanceTypeName = (String) stringConverter
+                    .read(input);
             node = new InstanceNode(nodeNumber, instanceTypeName);
         } else if (nodeType == 'R') {
-            final String instanceTypeName = (String) stringConverter.read(input);
+            final String instanceTypeName = (String) stringConverter
+                    .read(input);
             final int sourceNode = (Integer) intConverter.read(input);
             final int targetNode = (Integer) intConverter.read(input);
-            node = new RelationNode(nodeNumber, instanceTypeName, sourceNode, targetNode);
+            node = new RelationNode(nodeNumber, instanceTypeName, sourceNode,
+                    targetNode);
         } else {
-            throw new IOException("Malformed line for node #" + nodeNumber + ": found '" + nodeType
-                    + "' while expecting one of 'A', 'I' or 'R'");
+            throw new IOException("Malformed line for node #" + nodeNumber
+                                  + ": found '" + nodeType
+                                  + "' while expecting one of 'A', 'I' or 'R'");
         }
         /*
          * ')' should was consumed in the process.
@@ -83,11 +93,13 @@ public class NodeDisplayConverter
      * @throws IOException if an error occurs while reading the stream
      */
     private void skipUntilChar(DataInput input, char testChar) throws IOException {
-        while (input.readByte() != testChar) {
+        while (true) {
             /*
              * Either the char is found or the 
              * loop is interrupted with an EOFException
              */
+            if (input.readByte() == testChar)
+                break;
         }
     }
 
@@ -99,18 +111,28 @@ public class NodeDisplayConverter
         final String nodeRepresentation;
         if (object instanceof AttributeNode) {
             final AttributeNode node = (AttributeNode) object;
-            nodeRepresentation = "#" + node.getNumber() + " = A(" + node.getInstanceNode() + ", "
-                    + codebase.Strings.stringify(node.getName()) + ", "
-                    + codebase.Strings.stringify(node.getValue()) + ")";
+            nodeRepresentation = "#" + node.getNumber() + " = A("
+                                 + node.getInstanceNode() + ", "
+                                 + codebase.Strings.stringify(node.getName())
+                                 + ", "
+                                 + codebase.Strings.stringify(node.getValue())
+                                 + ")";
         } else if (object instanceof InstanceNode) {
             final InstanceNode node = (InstanceNode) object;
-            nodeRepresentation = "#" + node.getNumber() + " = I("
-                    + codebase.Strings.stringify(node.getTypeName()) + ")";
+            nodeRepresentation = "#"
+                                 + node.getNumber()
+                                 + " = I("
+                                 + codebase.Strings.stringify(node
+                                         .getTypeName()) + ")";
         } else if (object instanceof RelationNode) {
             final RelationNode node = (RelationNode) object;
-            nodeRepresentation = "#" + node.getNumber() + " = R("
-                    + codebase.Strings.stringify(node.getTypeName()) + ", " + node.getSource()
-                    + ", " + node.getTarget() + ")";
+            nodeRepresentation = "#"
+                                 + node.getNumber()
+                                 + " = R("
+                                 + codebase.Strings.stringify(node
+                                         .getTypeName()) + ", "
+                                 + node.getSource() + ", " + node.getTarget()
+                                 + ")";
         } else {
             throw new IllegalArgumentException(
                     "The supplied node object cannot be written because it is of an unknow type");

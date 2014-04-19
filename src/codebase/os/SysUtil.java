@@ -114,16 +114,18 @@ public final class SysUtil {
     }
 
     /**
-     * Returns the application install path. WARNING: This information is obtained
-     * indirectly by finding the location of the the .class file for this class, and
-     * working back from there. This means that the function is not generic, and may need
-     * to be changed if the directory structure used by the application changes.
+     * Returns the application install path.
+     * <p>
+     * WARNING: This information is obtained indirectly by finding the location of the the
+     * .class file for this class, and working back from there. This means that the
+     * function is not generic, and may need to be changed if the directory structure used
+     * by the application changes.
      * 
      * @return Path to the application install directory.
      */
     public static String getApplicationPath() {
-        File path = new File(SysUtil.class.getProtectionDomain().getCodeSource().getLocation()
-                .getPath());
+        File path = new File(SysUtil.class.getProtectionDomain()
+                .getCodeSource().getLocation().getPath());
 
         if (path.getName().endsWith(".jar")) {
             // when running from the install, strip out the jar file and
@@ -152,8 +154,9 @@ public final class SysUtil {
         StringBuilder result = new StringBuilder();
 
         for (String component : components) {
-            if (result.length() > 0 && result.charAt(result.length() - 1) != sep
-                    && component.charAt(0) != sep) {
+            if (result.length() > 0
+                && result.charAt(result.length() - 1) != sep
+                && component.charAt(0) != sep) {
                 result.append(sep);
             }
             result.append(component);

@@ -53,11 +53,13 @@ public class ByteSkipConverter extends
         length = size;
 
         if (bytes == null) {
-            throw new IllegalArgumentException("The array of bytes must be assigned");
+            throw new IllegalArgumentException(
+                    "The array of bytes must be assigned");
         }
 
         if (size != bytes.length) {
-            throw new IllegalArgumentException("The size must match the number of bytes");
+            throw new IllegalArgumentException(
+                    "The size must match the number of bytes");
         }
 
         writeBytes = bytes;
@@ -77,7 +79,10 @@ public class ByteSkipConverter extends
      * Skips the specified number of bytes.
      * <p>
      * 
+     * @param dataInput the stream to skype the <tt>byte</tt> value from.
      * @return <code>null</code>
+     * @throws IOException if an exception occurs while skipping the bytes form the data
+     *             input
      * @see BaseConverter#read(DataInput)
      */
     public final Object read(final DataInput dataInput) throws IOException {
@@ -90,6 +95,8 @@ public class ByteSkipConverter extends
      * 
      * @param dataOutput where to rite the data
      * @param object ignored
+     * @throws IOException if an exception occurs while skipping the bytes form the data
+     *             input
      * @see BaseConverter#write(DataOutput, Object)
      */
     public final void write(final DataOutput dataOutput, final Object object) throws IOException {

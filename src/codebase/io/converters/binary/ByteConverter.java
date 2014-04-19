@@ -69,8 +69,6 @@ public class ByteConverter extends
      * 
      * @param dataInput the stream to read the <tt>byte</tt> value from in order to return
      *            a <tt>Byte</tt> object.
-     * @param object the (<tt>Byte</tt>) object to be restored. In this implementation it
-     *            is ignored.
      * @return the read <tt>Byte</tt> object.
      * @throws IOException if I/O errors occur.
      */
@@ -105,56 +103,5 @@ public class ByteConverter extends
      */
     public void write(DataOutput dataOutput, Object object) throws IOException {
         dataOutput.write(((Byte) object).byteValue());
-    }
-
-    /**
-     * Writes the specified <tt>byte</tt> value to the specified data output. <br>
-     * This implementation calls the write method with a <tt>Byte</tt> object wrapping the
-     * specified <tt>byte</tt> value.
-     * 
-     * @param dataOutput the stream to write the specified <tt>byte</tt> value to.
-     * @param b the <tt>byte</tt> value that should be written to the data output.
-     * @throws IOException includes any I/O exceptions that may occur.
-     */
-    public void writeByte(DataOutput dataOutput, byte b) throws IOException {
-        write(dataOutput, new Byte(b));
-    }
-
-    /**
-     * The main method contains some examples how to use a ByteConverter. It can also be
-     * used to test the functionality of a ByteConverter.
-     * 
-     * @param args array of <tt>String</tt> arguments. It can be used to submit parameters
-     *            when the main method is called.
-     */
-    public static void main(String[] args) {
-
-        // ////////////////////////////////////////////////////////////////
-        // Usage example (1). //
-        // ////////////////////////////////////////////////////////////////
-
-        // catch IOExceptions
-        try {
-            // create a byte array output stream
-            java.io.ByteArrayOutputStream output = new java.io.ByteArrayOutputStream();
-            // write a Byte and a byte value to the output stream
-            new ByteConverter().write(new java.io.DataOutputStream(output), new Byte((byte) -1));
-            new ByteConverter().writeByte(new java.io.DataOutputStream(output), (byte) 27);
-            // create a byte array input stream on the output stream
-            java.io.ByteArrayInputStream input = new java.io.ByteArrayInputStream(
-                    output.toByteArray());
-            // read a byte value and a Byte from the input stream
-            byte b1 = new ByteConverter().readByte(new java.io.DataInputStream(input));
-            Byte b2 = (Byte) new ByteConverter().read(new java.io.DataInputStream(input));
-            // print the value and the object
-            System.out.println(b1);
-            System.out.println(b2);
-            // close the streams after use
-            input.close();
-            output.close();
-        } catch (IOException ioe) {
-            System.out.println("An I/O error occured.");
-        }
-        System.out.println();
     }
 }

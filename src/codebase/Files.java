@@ -42,7 +42,8 @@ public final class Files {
      */
     public static String getVolumeName(final String devicePath) {
         if (devicePath == null) {
-            throw new IllegalArgumentException("The volume name should be assigned");
+            throw new IllegalArgumentException(
+                    "The volume name should be assigned");
         }
         final FileSystemView view = FileSystemView.getFileSystemView();
         final File dir = new File(devicePath);
@@ -81,7 +82,8 @@ public final class Files {
      *         file already exists or if the file creation fails, for example, because the
      *         file specified is a directory.
      */
-    public static boolean verifyCanCreateFile(final String path, final long length) {
+    public static boolean verifyCanCreateFile(final String path,
+                                              final long length) {
         final File file = new File(path);
         if (!file.exists()) {
             final RandomAccessFile access;
@@ -159,12 +161,14 @@ public final class Files {
             if (file.isDirectory())
                 deleteDirectory(file);
             else if (!file.delete()) {
-                throw new IOException(String.format("Unable to delete file '%s'", file));
+                throw new IOException(String.format(
+                        "Unable to delete file '%s'", file));
             }
         }
 
         if (!path.delete())
-            throw new IOException(String.format("Unable to delete directory '%s'", path));
+            throw new IOException(String.format(
+                    "Unable to delete directory '%s'", path));
     }
 
 
@@ -178,7 +182,8 @@ public final class Files {
      * @return absolute path if <code>parentPath</code> is absolute; returns
      *         <code>null</code> if the
      */
-    public static String getAbsolutePath(final String parentPath, final String relativePath) {
+    public static String getAbsolutePath(final String parentPath,
+                                         final String relativePath) {
         if (parentPath == null || relativePath == null)
             return null;
 
@@ -213,9 +218,10 @@ public final class Files {
      * @return relative path if parent directory is included in absolutePath, otherwise
      *         return absolute path.
      */
-    public static String getRelativePath(final String parentPath, final String absolutePath) {
+    public static String getRelativePath(final String parentPath,
+                                         final String absolutePath) {
         if (parentPath == null || absolutePath == null
-                || (parentPath.length() > absolutePath.length())) {
+            || (parentPath.length() > absolutePath.length())) {
             return null;
         }
 
@@ -226,12 +232,15 @@ public final class Files {
 
             // parentFile must be absolute
             if (parentFile.isAbsolute()) {
-                final String dirPath = Filenames.normalize(parentFile.getAbsolutePath());
+                final String dirPath = Filenames.normalize(parentFile
+                        .getAbsolutePath());
 
-                final String normalizedAbsolutePath = Filenames.normalize(absolutePath);
+                final String normalizedAbsolutePath = Filenames
+                        .normalize(absolutePath);
                 int dirLength = dirPath.length();
 
-                if (normalizedAbsolutePath.substring(0, dirLength).equalsIgnoreCase(dirPath)) {
+                if (normalizedAbsolutePath.substring(0, dirLength)
+                        .equalsIgnoreCase(dirPath)) {
                     // Cut parent path
                     relativePath = normalizedAbsolutePath.substring(dirLength);
                     if (relativePath.startsWith("/")) {
@@ -278,7 +287,8 @@ public final class Files {
      */
     public static void deleteFile(String path) throws IOException {
         if (!new File(path).delete())
-            throw new IOException(String.format("Unable to delete file '%s'", path));
+            throw new IOException(String.format("Unable to delete file '%s'",
+                    path));
     }
 
     /**
@@ -288,10 +298,10 @@ public final class Files {
      * 
      * @param origPath Original path
      * @param destPath Destination path
-     * @throws FileNotFoundException if either file exists but is a directory rather than
-     *             a regular file, does not exist but cannot be read/created, or cannot be
-     *             opened for any other reason.
-     * @throws IOException If the operation fails during the data copy phase.
+     * @throws IOException If the operation fails during the data copy phase or,
+     *             {@link FileNotFoundException} if either file exists but is a directory
+     *             rather than a regular file, does not exist but cannot be read/created,
+     *             or cannot be opened for any other reason.
      */
     public static void copyFile(String origPath, String destPath) throws IOException {
         FileChannel in = null;
@@ -439,7 +449,8 @@ public final class Files {
             dest.delete();
 
         if (!orig.renameTo(dest))
-            throw new IOException(String.format("Unable to rename file from '%1$s' to '%2$s'",
+            throw new IOException(String.format(
+                    "Unable to rename file from '%1$s' to '%2$s'",
                     orig.toString(), dest.toString()));
     }
 

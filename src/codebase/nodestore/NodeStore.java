@@ -5,12 +5,16 @@ import java.io.InvalidObjectException;
 import java.io.ObjectInput;
 import java.util.HashMap;
 
+/**
+ * A node store.
+ */
 public class NodeStore {
 
     /**
      * Maintains the nodes by number.
      */
-    public final HashMap<Integer, Node> nodesByNumber = new HashMap<Integer, Node>(1024);
+    private final HashMap<Integer, Node> nodesByNumber = new HashMap<Integer, Node>(
+            1024);
 
     public int read(final ObjectInput input, final int numObjects) throws IOException,
             InvalidObjectException {
@@ -20,8 +24,9 @@ public class NodeStore {
             try {
                 o = input.readObject();
                 if (!(o instanceof Node)) {
-                    throw new InvalidObjectException("Object " + o.getClass().getCanonicalName()
-                            + " is not a node.");
+                    throw new InvalidObjectException(
+                            "Object " + o.getClass().getCanonicalName()
+                                    + " is not a node.");
                 }
                 insert((Node) o);
             } catch (ClassNotFoundException e) {
@@ -31,8 +36,8 @@ public class NodeStore {
         }
         return i;
     }
-    
-    
+
+
 
     public void insert(final Node node) {
         nodesByNumber.put(node.getNumber(), node);

@@ -254,10 +254,11 @@ public class GetOpt {
                           final char valueChar) {
 
             if ((argKind != NO_ARGUMENT) && (argKind != REQUIRED_ARGUMENT)
-                    && (argKind != OPTIONAL_ARGUMENT)) {
+                && (argKind != OPTIONAL_ARGUMENT)) {
                 final Object[] msgArgs = { Integer.valueOf(argKind).toString() };
                 throw new IllegalArgumentException(MessageFormat.format(
-                        MESSAGES_RESOURCE_BUNDLE.getString("GetOpt.invalidValue"), msgArgs));
+                        MESSAGES_RESOURCE_BUNDLE
+                                .getString("GetOpt.invalidValue"), msgArgs));
             }
 
             this.optionName = name;
@@ -459,7 +460,9 @@ public class GetOpt {
      * @param optstring A String containing a description of the valid args for this
      *            program
      */
-    public GetOpt(final String progname, final String[] argv, final String optstring) {
+    public GetOpt(final String progname,
+                  final String[] argv,
+                  final String optstring) {
         this(progname, argv, optstring, new LongOption[] {}, false);
     }
 
@@ -597,8 +600,10 @@ public class GetOpt {
         }
         // Test all lnog options for either exact match or abbreviated matches
         for (int i = 0; i < longOptions.length; i++) {
-            if (longOptions[i].getOptionName().startsWith(nextChar.substring(0, nameend))) {
-                if (longOptions[i].getOptionName().equals(nextChar.substring(0, nameend))) {
+            if (longOptions[i].getOptionName().startsWith(
+                    nextChar.substring(0, nameend))) {
+                if (longOptions[i].getOptionName().equals(
+                        nextChar.substring(0, nameend))) {
                     // Exact match found
                     pfound = longOptions[i];
                     longIndex = i;
@@ -620,7 +625,8 @@ public class GetOpt {
             if (optErr) {
                 final Object[] msgArgs = { programName, argv[optInd] };
                 reportError(MessageFormat.format(
-                        MESSAGES_RESOURCE_BUNDLE.getString("GetOpt.ambigious"), msgArgs));
+                        MESSAGES_RESOURCE_BUNDLE.getString("GetOpt.ambigious"),
+                        msgArgs));
             }
 
             nextChar = "";
@@ -651,20 +657,25 @@ public class GetOpt {
                     if (optErr) {
                         // -- option
                         if (argv[optInd - 1].startsWith("--")) {
-                            final Object[] msgArgs = { programName, pfound.optionName };
+                            final Object[] msgArgs = { programName,
+                                    pfound.optionName };
                             reportError(MessageFormat.format(
-                                    MESSAGES_RESOURCE_BUNDLE.getString("GetOpt.arguments1"),
+                                    MESSAGES_RESOURCE_BUNDLE
+                                            .getString("GetOpt.arguments1"),
                                     msgArgs));
                         } else {
                             /*
                              * +option or -option
                              */
-                            Object[] msgArgs = { programName,
-                                    Character.valueOf(argv[optInd - 1].charAt(0)).toString(),
-                                    pfound.optionName };
+                            Object[] msgArgs = {
+                                    programName,
+                                    Character.valueOf(
+                                            argv[optInd - 1].charAt(0))
+                                            .toString(), pfound.optionName };
 
                             reportError(MessageFormat.format(
-                                    MESSAGES_RESOURCE_BUNDLE.getString("GetOpt.arguments2"),
+                                    MESSAGES_RESOURCE_BUNDLE
+                                            .getString("GetOpt.arguments2"),
                                     msgArgs));
                         }
                     }
@@ -682,7 +693,8 @@ public class GetOpt {
                     if (optErr) {
                         Object[] msgArgs = { programName, argv[optInd - 1] };
                         reportError(MessageFormat.format(
-                                MESSAGES_RESOURCE_BUNDLE.getString("GetOpt.requires"), msgArgs));
+                                MESSAGES_RESOURCE_BUNDLE
+                                        .getString("GetOpt.requires"), msgArgs));
                     }
 
                     nextChar = "";
@@ -858,8 +870,9 @@ public class GetOpt {
                 // Skip any additional non-options
                 // and extend the range of non-options previously skipped.
                 while ((optInd < argv.length)
-                        && (argv[optInd].isEmpty() || (argv[optInd].charAt(0) != '-') || "-"
-                                .equals(argv[optInd]))) {
+                       && (argv[optInd].isEmpty()
+                           || (argv[optInd].charAt(0) != '-') || "-"
+                               .equals(argv[optInd]))) {
                     optInd++;
                 }
 
@@ -899,7 +912,7 @@ public class GetOpt {
             // either stop the scan or describe it to the caller and pass it
             // by.
             if (argv[optInd].isEmpty() || (argv[optInd].charAt(0) != '-')
-                    || "-".equals(argv[optInd])) {
+                || "-".equals(argv[optInd])) {
                 if (ordering == REQUIRE_ORDER) {
                     return EOF;
                 }
@@ -929,8 +942,9 @@ public class GetOpt {
          * seems to be the most useful approach.
          */
         if ((longOptions != null)
-                && (argv[optInd].startsWith("--") || (isLongOnly && ((argv[optInd].length() > 2) || (optString
-                        .indexOf(argv[optInd].charAt(1)) == -1))))) {
+            && (argv[optInd].startsWith("--") || (isLongOnly && ((argv[optInd]
+                    .length() > 2) || (optString
+                    .indexOf(argv[optInd].charAt(1)) == -1))))) {
             char c = checkLongOption();
 
             if (longOptHandled) {
@@ -942,18 +956,23 @@ public class GetOpt {
             // option, then it's an error.
             // Otherwise interpret it as a short option.
             if (!isLongOnly || argv[optInd].startsWith("--")
-                    || (optString.indexOf(nextChar.charAt(0)) == -1)) {
+                || (optString.indexOf(nextChar.charAt(0)) == -1)) {
                 if (optErr) {
                     if (argv[optInd].startsWith("--")) {
                         final Object[] msgArgs = { programName, nextChar };
                         reportError(MessageFormat.format(
-                                MESSAGES_RESOURCE_BUNDLE.getString("GetOpt.unrecognized"), msgArgs));
+                                MESSAGES_RESOURCE_BUNDLE
+                                        .getString("GetOpt.unrecognized"),
+                                msgArgs));
                     } else {
-                        final Object[] msgArgs = { programName,
-                                Character.valueOf(argv[optInd].charAt(0)).toString(), nextChar };
-                        reportError(MessageFormat
-                                .format(MESSAGES_RESOURCE_BUNDLE.getString("GetOpt.unrecognized2"),
-                                        msgArgs));
+                        final Object[] msgArgs = {
+                                programName,
+                                Character.valueOf(argv[optInd].charAt(0))
+                                        .toString(), nextChar };
+                        reportError(MessageFormat.format(
+                                MESSAGES_RESOURCE_BUNDLE
+                                        .getString("GetOpt.unrecognized2"),
+                                msgArgs));
                     }
                 }
 
@@ -985,13 +1004,15 @@ public class GetOpt {
             if (optErr) {
                 if (posixlyCorrect) {
                     // 1003.2 specifies the format of this message
-                    Object[] msgArgs = { programName, Character.valueOf((char) c).toString() };
-                    reportError(MessageFormat.format(
-                            MESSAGES_RESOURCE_BUNDLE.getString("GetOpt.illegal"), msgArgs));
+                    Object[] msgArgs = { programName,
+                            Character.valueOf((char) c).toString() };
+                    reportError(MessageFormat.format(MESSAGES_RESOURCE_BUNDLE
+                            .getString("GetOpt.illegal"), msgArgs));
                 } else {
-                    Object[] msgArgs = { programName, Character.valueOf((char) c).toString() };
-                    reportError(MessageFormat.format(
-                            MESSAGES_RESOURCE_BUNDLE.getString("GetOpt.invalid"), msgArgs));
+                    Object[] msgArgs = { programName,
+                            Character.valueOf((char) c).toString() };
+                    reportError(MessageFormat.format(MESSAGES_RESOURCE_BUNDLE
+                            .getString("GetOpt.invalid"), msgArgs));
                 }
             }
 
@@ -1001,7 +1022,8 @@ public class GetOpt {
         }
 
         // Convenience. Treat POSIX -W foo same as long option --foo
-        if ((temp.charAt(0) == 'W') && (temp.length() > 1) && (temp.charAt(1) == ';')) {
+        if ((temp.charAt(0) == 'W') && (temp.length() > 1)
+            && (temp.charAt(1) == ';')) {
             if (!nextChar.isEmpty()) {
                 optArg = nextChar;
             } else if (optInd == argv.length) {
@@ -1011,9 +1033,10 @@ public class GetOpt {
                  */
                 if (optErr) {
                     // 1003.2 specifies the format of this message.
-                    Object[] msgArgs = { programName, Character.valueOf((char) c).toString() };
-                    reportError(MessageFormat.format(
-                            MESSAGES_RESOURCE_BUNDLE.getString("GetOpt.requires2"), msgArgs));
+                    Object[] msgArgs = { programName,
+                            Character.valueOf((char) c).toString() };
+                    reportError(MessageFormat.format(MESSAGES_RESOURCE_BUNDLE
+                            .getString("GetOpt.requires2"), msgArgs));
                 }
 
                 optOpt = c;
@@ -1063,9 +1086,11 @@ public class GetOpt {
                 } else if (optInd == argv.length) {
                     if (optErr) {
                         // 1003.2 specifies the format of this message
-                        Object[] msgArgs = { programName, Character.valueOf((char) c).toString() };
-                        reportError(MessageFormat.format(
-                                MESSAGES_RESOURCE_BUNDLE.getString("GetOpt.requires2"), msgArgs));
+                        Object[] msgArgs = { programName,
+                                Character.valueOf((char) c).toString() };
+                        reportError(MessageFormat
+                                .format(MESSAGES_RESOURCE_BUNDLE
+                                        .getString("GetOpt.requires2"), msgArgs));
                     }
 
                     optOpt = c;
@@ -1091,7 +1116,8 @@ public class GetOpt {
                                 Object[] msgArgs = { programName,
                                         Character.valueOf((char) c).toString() };
                                 reportError(MessageFormat.format(
-                                        MESSAGES_RESOURCE_BUNDLE.getString("GetOpt.requires2"),
+                                        MESSAGES_RESOURCE_BUNDLE
+                                                .getString("GetOpt.requires2"),
                                         msgArgs));
                             }
 

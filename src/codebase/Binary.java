@@ -98,8 +98,8 @@ public final class Binary {
     /**
      * Table of Hex digits.
      */
-    private static final char[] HEX_DIGITS = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
-            'a', 'b', 'c', 'd', 'e', 'f' };
+    private static final char[] HEX_DIGITS = { '0', '1', '2', '3', '4', '5',
+            '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f' };
 
     /**
      * A table that converts ASCII codes of characters to the corresponding hex values.
@@ -144,16 +144,19 @@ public final class Binary {
     /**
      * Number of set bits per byte '1' bits per byte.
      */
-    private static final byte[] SET_BITS_PER_BYTE = { 0, 1, 1, 2, 1, 2, 2, 3, 1, 2, 2, 3, 2, 3, 3,
-            4, 1, 2, 2, 3, 2, 3, 3, 4, 2, 3, 3, 4, 3, 4, 4, 5, 1, 2, 2, 3, 2, 3, 3, 4, 2, 3, 3, 4,
-            3, 4, 4, 5, 2, 3, 3, 4, 3, 4, 4, 5, 3, 4, 4, 5, 4, 5, 5, 6, 1, 2, 2, 3, 2, 3, 3, 4, 2,
-            3, 3, 4, 3, 4, 4, 5, 2, 3, 3, 4, 3, 4, 4, 5, 3, 4, 4, 5, 4, 5, 5, 6, 2, 3, 3, 4, 3, 4,
-            4, 5, 3, 4, 4, 5, 4, 5, 5, 6, 3, 4, 4, 5, 4, 5, 5, 6, 4, 5, 5, 6, 5, 6, 6, 7, 1, 2, 2,
-            3, 2, 3, 3, 4, 2, 3, 3, 4, 3, 4, 4, 5, 2, 3, 3, 4, 3, 4, 4, 5, 3, 4, 4, 5, 4, 5, 5, 6,
-            2, 3, 3, 4, 3, 4, 4, 5, 3, 4, 4, 5, 4, 5, 5, 6, 3, 4, 4, 5, 4, 5, 5, 6, 4, 5, 5, 6, 5,
-            6, 6, 7, 2, 3, 3, 4, 3, 4, 4, 5, 3, 4, 4, 5, 4, 5, 5, 6, 3, 4, 4, 5, 4, 5, 5, 6, 4, 5,
-            5, 6, 5, 6, 6, 7, 3, 4, 4, 5, 4, 5, 5, 6, 4, 5, 5, 6, 5, 6, 6, 7, 4, 5, 5, 6, 5, 6, 6,
-            7, 5, 6, 6, 7, 6, 7, 7, 8 };
+    private static final byte[] SET_BITS_PER_BYTE = { 0, 1, 1, 2, 1, 2, 2, 3,
+            1, 2, 2, 3, 2, 3, 3, 4, 1, 2, 2, 3, 2, 3, 3, 4, 2, 3, 3, 4, 3, 4,
+            4, 5, 1, 2, 2, 3, 2, 3, 3, 4, 2, 3, 3, 4, 3, 4, 4, 5, 2, 3, 3, 4,
+            3, 4, 4, 5, 3, 4, 4, 5, 4, 5, 5, 6, 1, 2, 2, 3, 2, 3, 3, 4, 2, 3,
+            3, 4, 3, 4, 4, 5, 2, 3, 3, 4, 3, 4, 4, 5, 3, 4, 4, 5, 4, 5, 5, 6,
+            2, 3, 3, 4, 3, 4, 4, 5, 3, 4, 4, 5, 4, 5, 5, 6, 3, 4, 4, 5, 4, 5,
+            5, 6, 4, 5, 5, 6, 5, 6, 6, 7, 1, 2, 2, 3, 2, 3, 3, 4, 2, 3, 3, 4,
+            3, 4, 4, 5, 2, 3, 3, 4, 3, 4, 4, 5, 3, 4, 4, 5, 4, 5, 5, 6, 2, 3,
+            3, 4, 3, 4, 4, 5, 3, 4, 4, 5, 4, 5, 5, 6, 3, 4, 4, 5, 4, 5, 5, 6,
+            4, 5, 5, 6, 5, 6, 6, 7, 2, 3, 3, 4, 3, 4, 4, 5, 3, 4, 4, 5, 4, 5,
+            5, 6, 3, 4, 4, 5, 4, 5, 5, 6, 4, 5, 5, 6, 5, 6, 6, 7, 3, 4, 4, 5,
+            4, 5, 5, 6, 4, 5, 5, 6, 5, 6, 6, 7, 4, 5, 5, 6, 5, 6, 6, 7, 5, 6,
+            6, 7, 6, 7, 7, 8 };
 
     /**
      * Decodes an array of integers into an array of bytes.
@@ -162,7 +165,8 @@ public final class Binary {
      * @param length the number of bytes to decode
      * @return an array of bytes with the decoding
      */
-    public static byte[] decodeIntegersToBytes(final int[] input, final int length) {
+    public static byte[] decodeIntegersToBytes(final int[] input,
+                                               final int length) {
         final int remByteCount = length % SIZE_OF_INT;
         final int correctedLength;
         if (remByteCount != 0) {
@@ -190,7 +194,9 @@ public final class Binary {
      * @param length the number integers to encode
      * @return a byte array containg the inbteger encoding of the given bytes
      */
-    public static int[] encodeBytesToIntegers(final byte[] input, final int offset, final int length) {
+    public static int[] encodeBytesToIntegers(final byte[] input,
+                                              final int offset,
+                                              final int length) {
         // Byte displacement constants 
         final int firstByteOffset = 0;
         final int secondByteOffset = 1;
@@ -319,7 +325,7 @@ public final class Binary {
      */
     public static int setHighNibble(final int value, final int nibble) {
         return (value & ~INT_BYTE_HIGH_NIBBLE_MASK)
-                | ((nibble & INT_BYTE_LOW_NIBBLE_MASK) << BITS_SIZE_OF_NIBBLE);
+               | ((nibble & INT_BYTE_LOW_NIBBLE_MASK) << BITS_SIZE_OF_NIBBLE);
     }
 
     /**
@@ -332,7 +338,8 @@ public final class Binary {
      * @return the lower nibble of the least significant byte of the integer
      */
     public static int setLowNibble(final int value, final int nibble) {
-        return (value & ~INT_BYTE_LOW_NIBBLE_MASK) | (nibble & INT_BYTE_LOW_NIBBLE_MASK);
+        return (value & ~INT_BYTE_LOW_NIBBLE_MASK)
+               | (nibble & INT_BYTE_LOW_NIBBLE_MASK);
     }
 
     /**
@@ -342,7 +349,8 @@ public final class Binary {
      * @return the converted value
      */
     public static double swapDouble(final double value) {
-        return Double.longBitsToDouble(swapLong(Double.doubleToLongBits(value)));
+        return Double
+                .longBitsToDouble(swapLong(Double.doubleToLongBits(value)));
     }
 
     /**
@@ -363,9 +371,9 @@ public final class Binary {
      */
     public static int swapInteger(final int value) {
         return (((value >> 0) & INT_LOW_BYTE_MASK) << BIT_SIZE_OF_THREE_BYTES)
-                + (((value >> BIT_SIZE_OF_BYTE) & INT_LOW_BYTE_MASK) << BIT_SIZE_OF_SHORT)
-                + (((value >> BIT_SIZE_OF_SHORT) & INT_LOW_BYTE_MASK) << BIT_SIZE_OF_BYTE)
-                + (((value >> BIT_SIZE_OF_THREE_BYTES) & INT_LOW_BYTE_MASK) << 0);
+               + (((value >> BIT_SIZE_OF_BYTE) & INT_LOW_BYTE_MASK) << BIT_SIZE_OF_SHORT)
+               + (((value >> BIT_SIZE_OF_SHORT) & INT_LOW_BYTE_MASK) << BIT_SIZE_OF_BYTE)
+               + (((value >> BIT_SIZE_OF_THREE_BYTES) & INT_LOW_BYTE_MASK) << 0);
     }
 
     /**
@@ -381,13 +389,13 @@ public final class Binary {
          *  The values below are the bit positions of each byte on a long.
          */
         return (((value >> 0) & INT_LOW_BYTE_MASK) << 56)
-                + (((value >> BIT_SIZE_OF_BYTE) & INT_LOW_BYTE_MASK) << 48)
-                + (((value >> BIT_SIZE_OF_SHORT) & INT_LOW_BYTE_MASK) << 40)
-                + (((value >> BIT_SIZE_OF_THREE_BYTES) & INT_LOW_BYTE_MASK) << BIT_SIZE_OF_INTEGER)
-                + (((value >> BIT_SIZE_OF_INTEGER) & INT_LOW_BYTE_MASK) << BIT_SIZE_OF_THREE_BYTES)
-                + (((value >> 40) & INT_LOW_BYTE_MASK) << BIT_SIZE_OF_SHORT)
-                + (((value >> 48) & INT_LOW_BYTE_MASK) << BIT_SIZE_OF_BYTE)
-                + (((value >> 56) & INT_LOW_BYTE_MASK) << 0);
+               + (((value >> BIT_SIZE_OF_BYTE) & INT_LOW_BYTE_MASK) << 48)
+               + (((value >> BIT_SIZE_OF_SHORT) & INT_LOW_BYTE_MASK) << 40)
+               + (((value >> BIT_SIZE_OF_THREE_BYTES) & INT_LOW_BYTE_MASK) << BIT_SIZE_OF_INTEGER)
+               + (((value >> BIT_SIZE_OF_INTEGER) & INT_LOW_BYTE_MASK) << BIT_SIZE_OF_THREE_BYTES)
+               + (((value >> 40) & INT_LOW_BYTE_MASK) << BIT_SIZE_OF_SHORT)
+               + (((value >> 48) & INT_LOW_BYTE_MASK) << BIT_SIZE_OF_BYTE)
+               + (((value >> 56) & INT_LOW_BYTE_MASK) << 0);
         // CHECKSTYLE:ON
     }
 
@@ -399,7 +407,7 @@ public final class Binary {
      */
     public static int swapNibbles(final int value) {
         return ((value >> BITS_SIZE_OF_NIBBLE) & INT_BYTE_LOW_NIBBLE_MASK)
-                | ((value << BITS_SIZE_OF_NIBBLE) & INT_BYTE_HIGH_NIBBLE_MASK);
+               | ((value << BITS_SIZE_OF_NIBBLE) & INT_BYTE_HIGH_NIBBLE_MASK);
     }
 
     /**
@@ -409,7 +417,9 @@ public final class Binary {
      * @return the converted value
      */
     public static short swapShort(final short value) {
-        return (short) ((((value >> 0) & INT_LOW_BYTE_MASK) << BIT_SIZE_OF_BYTE) + (((value >> BIT_SIZE_OF_BYTE) & INT_LOW_BYTE_MASK) << 0));
+        final int result = (((value >> 0) & INT_LOW_BYTE_MASK) << BIT_SIZE_OF_BYTE)
+                           + (((value >> BIT_SIZE_OF_BYTE) & INT_LOW_BYTE_MASK) << 0);
+        return (short) result;
     }
 
     /**
@@ -421,7 +431,7 @@ public final class Binary {
      */
     public static byte toByte(final int highNibble, final int lowNibble) {
         final int result = ((highNibble & INT_BYTE_LOW_NIBBLE_MASK) << BITS_SIZE_OF_NIBBLE)
-                | (lowNibble & INT_BYTE_LOW_NIBBLE_MASK);
+                           | (lowNibble & INT_BYTE_LOW_NIBBLE_MASK);
 
         return (byte) result;
     }
@@ -435,15 +445,20 @@ public final class Binary {
      * @param output the output buffer
      * @param offset the offset of the first byte to be written
      */
-    public static void toByteArray(final int i, final byte[] output, final int offset) {
+    public static void toByteArray(final int i,
+                                   final byte[] output,
+                                   final int offset) {
         final int firstByteOffset = 0;
         final int secondByteOffset = 1;
         final int thirdByteOffset = 2;
         final int fourthByteOffset = 3;
         output[offset + firstByteOffset] = (byte) (i & INT_LOW_BYTE_MASK);
-        output[offset + secondByteOffset] = (byte) ((i >> secondByteOffset * BIT_SIZE_OF_BYTE) & INT_LOW_BYTE_MASK);
-        output[offset + thirdByteOffset] = (byte) ((i >> thirdByteOffset * BIT_SIZE_OF_BYTE) & INT_LOW_BYTE_MASK);
-        output[offset + fourthByteOffset] = (byte) ((i >> fourthByteOffset * BIT_SIZE_OF_BYTE) & INT_LOW_BYTE_MASK);
+        output[offset + secondByteOffset] = (byte) ((i >> secondByteOffset
+                                                          * BIT_SIZE_OF_BYTE) & INT_LOW_BYTE_MASK);
+        output[offset + thirdByteOffset] = (byte) ((i >> thirdByteOffset
+                                                         * BIT_SIZE_OF_BYTE) & INT_LOW_BYTE_MASK);
+        output[offset + fourthByteOffset] = (byte) ((i >> fourthByteOffset
+                                                          * BIT_SIZE_OF_BYTE) & INT_LOW_BYTE_MASK);
     }
 
     /**
@@ -455,8 +470,9 @@ public final class Binary {
      *         significant byte.
      */
     public static char toChar(final byte b0, final byte b1) {
-        final char result = (char) (((int) (b0 & Binary.INT_LOW_BYTE_MASK)) | (((int) (b1 & Binary.INT_LOW_BYTE_MASK)) << BIT_SIZE_OF_BYTE));
-        return result;
+        final int result = ((int) (b0 & Binary.INT_LOW_BYTE_MASK))
+                            | (((int) (b1 & Binary.INT_LOW_BYTE_MASK)) << BIT_SIZE_OF_BYTE);
+        return (char) result;
     }
 
     /**
@@ -490,9 +506,11 @@ public final class Binary {
         } else {
             final char[] charChars = new char[] {
                     HEX_DIGITS[(c >> BIT_SIZE_OF_SHORT - BITS_SIZE_OF_NIBBLE)
-                            & INT_BYTE_LOW_NIBBLE_MASK],
-                    HEX_DIGITS[(c >> BIT_SIZE_OF_BYTE) & INT_BYTE_LOW_NIBBLE_MASK],
-                    HEX_DIGITS[(c >> BITS_SIZE_OF_NIBBLE) & INT_BYTE_LOW_NIBBLE_MASK],
+                               & INT_BYTE_LOW_NIBBLE_MASK],
+                    HEX_DIGITS[(c >> BIT_SIZE_OF_BYTE)
+                               & INT_BYTE_LOW_NIBBLE_MASK],
+                    HEX_DIGITS[(c >> BITS_SIZE_OF_NIBBLE)
+                               & INT_BYTE_LOW_NIBBLE_MASK],
                     HEX_DIGITS[c & INT_BYTE_LOW_NIBBLE_MASK] };
 
             return new String(charChars);
@@ -509,15 +527,17 @@ public final class Binary {
     public static String toHex(final int i) {
         final char[] intChars = new char[] {
                 HEX_DIGITS[(i >> BIT_SIZE_OF_INTEGER - BITS_SIZE_OF_NIBBLE)
-                        & INT_BYTE_LOW_NIBBLE_MASK],
-                HEX_DIGITS[(i >> BIT_SIZE_OF_THREE_BYTES) & INT_BYTE_LOW_NIBBLE_MASK],
+                           & INT_BYTE_LOW_NIBBLE_MASK],
+                HEX_DIGITS[(i >> BIT_SIZE_OF_THREE_BYTES)
+                           & INT_BYTE_LOW_NIBBLE_MASK],
                 HEX_DIGITS[(i >> BIT_SIZE_OF_THREE_BYTES - BITS_SIZE_OF_NIBBLE)
-                        & INT_BYTE_LOW_NIBBLE_MASK],
+                           & INT_BYTE_LOW_NIBBLE_MASK],
                 HEX_DIGITS[(i >> BIT_SIZE_OF_SHORT) & INT_BYTE_LOW_NIBBLE_MASK],
                 HEX_DIGITS[(i >> BIT_SIZE_OF_SHORT - BITS_SIZE_OF_NIBBLE)
-                        & INT_BYTE_LOW_NIBBLE_MASK],
+                           & INT_BYTE_LOW_NIBBLE_MASK],
                 HEX_DIGITS[(i >> BIT_SIZE_OF_BYTE) & INT_BYTE_LOW_NIBBLE_MASK],
-                HEX_DIGITS[(i >> BITS_SIZE_OF_NIBBLE) & INT_BYTE_LOW_NIBBLE_MASK],
+                HEX_DIGITS[(i >> BITS_SIZE_OF_NIBBLE)
+                           & INT_BYTE_LOW_NIBBLE_MASK],
                 HEX_DIGITS[i & INT_BYTE_LOW_NIBBLE_MASK] };
 
         return new String(intChars);
@@ -534,8 +554,9 @@ public final class Binary {
 
         for (int i = 0; i < buffer.length; ++i) {
             charBuffer[i * 2] = HEX_DIGITS[(buffer[i] >> BITS_SIZE_OF_NIBBLE)
-                    & INT_BYTE_LOW_NIBBLE_MASK];
-            charBuffer[i * 2 + 1] = HEX_DIGITS[buffer[i] & INT_BYTE_LOW_NIBBLE_MASK];
+                                           & INT_BYTE_LOW_NIBBLE_MASK];
+            charBuffer[i * 2 + 1] = HEX_DIGITS[buffer[i]
+                                               & INT_BYTE_LOW_NIBBLE_MASK];
         }
 
         return new String(charBuffer);
@@ -562,11 +583,14 @@ public final class Binary {
      * @return an integer where b0 is the least significant byte and b3 is the most
      *         significant byte
      */
-    public static int toInteger(final byte b0, final byte b1, final byte b2, final byte b3) {
+    public static int toInteger(final byte b0,
+                                final byte b1,
+                                final byte b2,
+                                final byte b3) {
         final int result = ((int) (b0 & Binary.INT_LOW_BYTE_MASK))
-                | (((int) (b1 & Binary.INT_LOW_BYTE_MASK)) << BIT_SIZE_OF_BYTE)
-                | (((int) (b2 & Binary.INT_LOW_BYTE_MASK)) << BIT_SIZE_OF_SHORT)
-                | (((int) (b3 & Binary.INT_LOW_BYTE_MASK)) << BIT_SIZE_OF_THREE_BYTES);
+                           | (((int) (b1 & Binary.INT_LOW_BYTE_MASK)) << BIT_SIZE_OF_BYTE)
+                           | (((int) (b2 & Binary.INT_LOW_BYTE_MASK)) << BIT_SIZE_OF_SHORT)
+                           | (((int) (b3 & Binary.INT_LOW_BYTE_MASK)) << BIT_SIZE_OF_THREE_BYTES);
         return result;
     }
 
