@@ -4,7 +4,9 @@ import java.io.DataOutput;
 import java.io.IOException;
 import java.io.ObjectOutput;
 
-
+/**
+ * An {@link DataOutput} that write objects through a {@link Converter}.
+ */
 public class ObjectConverterOutput
         implements ObjectOutput {
 

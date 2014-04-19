@@ -4,7 +4,9 @@ import java.io.DataInput;
 import java.io.IOException;
 import java.io.ObjectInput;
 
-
+/**
+ * An {@link ObjectInput} that write objects through a {@link Converter}.
+ */
 public class ObjectConverterInput
         implements ObjectInput {
 
@@ -100,7 +102,7 @@ public class ObjectConverterInput
     }
 
     @Override
-    public Object readObject() throws ClassNotFoundException, IOException {
+    public Object readObject() throws IOException {
         return objectConverter.read(dataInput);
     }
 
