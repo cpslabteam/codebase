@@ -86,6 +86,16 @@ public final class Binary {
     public static final int SIZE_OF_LONG = 8;
 
     /**
+     * The size of a double in bytes.
+     */
+    public static final int SIZE_OF_DOUBLE = 8;
+
+    /**
+     * The size of a double in bytes.
+     */
+    public static final int SIZE_OF_FLOAT = 4;
+
+    /**
      * Table of Hex digits.
      */
     private static final char[] HEX_DIGITS = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
@@ -399,8 +409,7 @@ public final class Binary {
      * @return the converted value
      */
     public static short swapShort(final short value) {
-        return (short) ((((value >> 0) & INT_LOW_BYTE_MASK) << BIT_SIZE_OF_BYTE) 
-                + (((value >> BIT_SIZE_OF_BYTE) & INT_LOW_BYTE_MASK) << 0));        
+        return (short) ((((value >> 0) & INT_LOW_BYTE_MASK) << BIT_SIZE_OF_BYTE) + (((value >> BIT_SIZE_OF_BYTE) & INT_LOW_BYTE_MASK) << 0));
     }
 
     /**
@@ -446,8 +455,7 @@ public final class Binary {
      *         significant byte.
      */
     public static char toChar(final byte b0, final byte b1) {
-        final char result = (char) (((int) (b0 & Binary.INT_LOW_BYTE_MASK))
-                | (((int) (b1 & Binary.INT_LOW_BYTE_MASK)) << BIT_SIZE_OF_BYTE));
+        final char result = (char) (((int) (b0 & Binary.INT_LOW_BYTE_MASK)) | (((int) (b1 & Binary.INT_LOW_BYTE_MASK)) << BIT_SIZE_OF_BYTE));
         return result;
     }
 
