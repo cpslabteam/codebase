@@ -109,7 +109,7 @@ public class ByteArrayDataOutput
     private int pos = 0;
 
     public ByteArrayDataOutput(final byte[] data) {
-        this.outputBuffer = data.clone();
+        this.outputBuffer = data;
     }
 
     @Override

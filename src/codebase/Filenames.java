@@ -67,6 +67,8 @@ import java.util.Collection;
  *         Colebourne
  */
 public final class Filenames {
+    private static final String FILE_PROTOCOL_IDENTIFIER = "file";
+
     /**
      * The extension separator character.
      */
@@ -106,7 +108,8 @@ public final class Filenames {
      * @param includeSeparator true to include the end separator
      * @return the path
      */
-    private static String doGetFullPath(String filename, boolean includeSeparator) {
+    private static String doGetFullPath(String filename,
+                                        boolean includeSeparator) {
         if (filename == null) {
             return null;
         }
@@ -197,7 +200,8 @@ public final class Filenames {
 
         // compact adjoining slashes
         for (int i = prefix + 1; i < size; i++) {
-            if (array[i] == SYSTEM_SEPARATOR && array[i - 1] == SYSTEM_SEPARATOR) {
+            if (array[i] == SYSTEM_SEPARATOR
+                && array[i - 1] == SYSTEM_SEPARATOR) {
                 System.arraycopy(array, i, array, i - 1, size - i);
                 size--;
                 i--;
@@ -207,7 +211,7 @@ public final class Filenames {
         // compact dot slash
         for (int i = prefix + 1; i < size; i++) {
             if (array[i] == SYSTEM_SEPARATOR && array[i - 1] == '.'
-                    && (i == prefix + 1 || array[i - 2] == SYSTEM_SEPARATOR)) {
+                && (i == prefix + 1 || array[i - 2] == SYSTEM_SEPARATOR)) {
                 if (i == size - 1) {
                     lastIsDirectory = true;
                 }
@@ -219,8 +223,9 @@ public final class Filenames {
 
         // compact double dot slash
         outer: for (int i = prefix + 2; i < size; i++) {
-            if (array[i] == SYSTEM_SEPARATOR && array[i - 1] == '.' && array[i - 2] == '.'
-                    && (i == prefix + 2 || array[i - 3] == SYSTEM_SEPARATOR)) {
+            if (array[i] == SYSTEM_SEPARATOR && array[i - 1] == '.'
+                && array[i - 2] == '.'
+                && (i == prefix + 2 || array[i - 3] == SYSTEM_SEPARATOR)) {
                 if (i == prefix + 2) {
                     return null;
                 }
@@ -414,7 +419,8 @@ public final class Filenames {
      * @param filename2 the second filename to query, may be null
      * @return true if the filenames are equal, null equals null
      */
-    public static boolean equalsNormalizedOnSystem(String filename1, String filename2) {
+    public static boolean equalsNormalizedOnSystem(String filename1,
+                                                   String filename2) {
         return equals(filename1, filename2, true, true);
     }
 
@@ -751,7 +757,8 @@ public final class Filenames {
             } else if (isSeparator(ch0) && isSeparator(ch1)) {
                 int posUnix = filename.indexOf(UNIX_SEPARATOR, 2);
                 int posWin = filename.indexOf(WINDOWS_SEPARATOR, 2);
-                if ((posUnix == -1 && posWin == -1) || posUnix == 2 || posWin == 2) {
+                if ((posUnix == -1 && posWin == -1) || posUnix == 2
+                    || posWin == 2) {
                     return -1;
                 }
                 posUnix = (posUnix == -1 ? posWin : posUnix);
@@ -819,7 +826,8 @@ public final class Filenames {
      * @param extensions the extensions to check for, null checks for no extension
      * @return true if the filename is one of the extensions
      */
-    public static boolean isExtension(String filename, Collection<String> extensions) {
+    public static boolean isExtension(String filename,
+                                      Collection<String> extensions) {
         if (filename == null) {
             return false;
         }
@@ -1056,6 +1064,21 @@ public final class Filenames {
      * Prevent instantiation.
      */
     private Filenames() {
+    }
+
+    /**
+     * Converts a file URL if the format <tt>file:///</tt> to a path.
+     * 
+     * @param url the url
+     * @return a string with the disk path
+     */
+    public static String urlToPath(java.net.URL url) {
+        if (!url.getProtocol().equalsIgnoreCase(FILE_PROTOCOL_IDENTIFIER)) {
+            throw new IllegalArgumentException(
+                    "Argument must be a valid file URL");
+        }
+
+        return url.getPath();
     }
 
 }

@@ -25,10 +25,13 @@ public class GlobalTestRunner {
 
         // Individual package tests
         suite.addTest(codebase.binary.AllTests.suite());
+        suite.addTest(codebase.io.converters.binary.AllTests.suite());
+        suite.addTest(codebase.io.converters.display.AllTests.suite());
         suite.addTest(codebase.iterators.AllTests.suite());
+        suite.addTest(codebase.nodestore.AllTests.suite());
         suite.addTest(codebase.junit.AllTests.suite());
         suite.addTest(codebase.streams.AllTests.suite());
-        
+
         //$JUnit-END$
         return suite;
     }

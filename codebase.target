@@ -4,7 +4,7 @@
 <location includeAllPlatforms="true" includeConfigurePhase="false" includeMode="slicer" includeSource="true" type="InstallableUnit">
 <unit id="org.junit" version="0.0.0"/>
 <unit id="org.hamcrest.core" version="0.0.0"/>
-<repository location="http://sb-buildmaster.tagus.ist.utl.pt:8082/nexus/content/groups/p2-proxies/"/>
+<repository location="http://sb-buildmaster.tagus.ist.utl.pt:8082/nexus/content/groups/p2-proxies"/>
 </location>
 </locations>
 </target>

@@ -1,11 +1,21 @@
 package codebase;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.io.RandomAccessFile;
+import java.nio.channels.FileChannel;
 
 import javax.swing.filechooser.FileSystemView;
+
+import codebase.os.SysUtil;
 
 /**
  * Utility class for generic operations on files.
@@ -13,6 +23,9 @@ import javax.swing.filechooser.FileSystemView;
  * @since 3/Jun/2005
  */
 public final class Files {
+
+    private static final int DEFAULT_READ_BUFFER_SIZE = 16 * 1024;
+    private static final double ONE_KB_BYTES = 1024.0;
 
     /**
      * Prevent instantiations of this class.
@@ -29,7 +42,8 @@ public final class Files {
      */
     public static String getVolumeName(final String devicePath) {
         if (devicePath == null) {
-            throw new IllegalArgumentException("The volume name should be assigned");
+            throw new IllegalArgumentException(
+                    "The volume name should be assigned");
         }
         final FileSystemView view = FileSystemView.getFileSystemView();
         final File dir = new File(devicePath);
@@ -68,7 +82,8 @@ public final class Files {
      *         file already exists or if the file creation fails, for example, because the
      *         file specified is a directory.
      */
-    public static boolean verifyCanCreateFile(final String path, final long length) {
+    public static boolean verifyCanCreateFile(final String path,
+                                              final long length) {
         final File file = new File(path);
         if (!file.exists()) {
             final RandomAccessFile access;
@@ -146,12 +161,14 @@ public final class Files {
             if (file.isDirectory())
                 deleteDirectory(file);
             else if (!file.delete()) {
-                throw new IOException(String.format("Unable to delete file '%s'", file));
+                throw new IOException(String.format(
+                        "Unable to delete file '%s'", file));
             }
         }
 
         if (!path.delete())
-            throw new IOException(String.format("Unable to delete directory '%s'", path));
+            throw new IOException(String.format(
+                    "Unable to delete directory '%s'", path));
     }
 
 
@@ -165,7 +182,8 @@ public final class Files {
      * @return absolute path if <code>parentPath</code> is absolute; returns
      *         <code>null</code> if the
      */
-    public static String getAbsolutePath(final String parentPath, final String relativePath) {
+    public static String getAbsolutePath(final String parentPath,
+                                         final String relativePath) {
         if (parentPath == null || relativePath == null)
             return null;
 
@@ -200,9 +218,10 @@ public final class Files {
      * @return relative path if parent directory is included in absolutePath, otherwise
      *         return absolute path.
      */
-    public static String getRelativePath(final String parentPath, final String absolutePath) {
+    public static String getRelativePath(final String parentPath,
+                                         final String absolutePath) {
         if (parentPath == null || absolutePath == null
-                || (parentPath.length() > absolutePath.length())) {
+            || (parentPath.length() > absolutePath.length())) {
             return null;
         }
 
@@ -213,12 +232,15 @@ public final class Files {
 
             // parentFile must be absolute
             if (parentFile.isAbsolute()) {
-                final String dirPath = Filenames.normalize(parentFile.getAbsolutePath());
+                final String dirPath = Filenames.normalize(parentFile
+                        .getAbsolutePath());
 
-                final String normalizedAbsolutePath = Filenames.normalize(absolutePath);
+                final String normalizedAbsolutePath = Filenames
+                        .normalize(absolutePath);
                 int dirLength = dirPath.length();
 
-                if (normalizedAbsolutePath.substring(0, dirLength).equalsIgnoreCase(dirPath)) {
+                if (normalizedAbsolutePath.substring(0, dirLength)
+                        .equalsIgnoreCase(dirPath)) {
                     // Cut parent path
                     relativePath = normalizedAbsolutePath.substring(dirLength);
                     if (relativePath.startsWith("/")) {
@@ -233,5 +255,217 @@ public final class Files {
         }
 
         return relativePath;
+    }
+
+    /**
+     * Copies data from one stream to another, until the input stream ends. Uses an
+     * internal 16K buffer.
+     * 
+     * @param in Stream to read from
+     * @param out Stream to write to
+     * @return The number of bytes copied
+     * @throws IOException if there is some problem reading or writing
+     */
+    public static long copyStream(InputStream in, OutputStream out) throws IOException {
+        long total = 0;
+        int len;
+        byte[] buffer = new byte[DEFAULT_READ_BUFFER_SIZE];
+
+        while ((len = in.read(buffer)) >= 0) {
+            out.write(buffer, 0, len);
+            total += len;
+        }
+
+        return total;
+    }
+
+    /**
+     * Convenience function to delete a file.
+     * 
+     * @param path Path to delete
+     * @throws IOException If the operation fails.
+     */
+    public static void deleteFile(String path) throws IOException {
+        if (!new File(path).delete())
+            throw new IOException(String.format("Unable to delete file '%s'",
+                    path));
+    }
+
+    /**
+     * Convenience function to copy a file.
+     * <p>
+     * If the destination file exists it is overwritten.
+     * 
+     * @param origPath Original path
+     * @param destPath Destination path
+     * @throws IOException If the operation fails during the data copy phase or,
+     *             {@link FileNotFoundException} if either file exists but is a directory
+     *             rather than a regular file, does not exist but cannot be read/created,
+     *             or cannot be opened for any other reason.
+     */
+    public static void copyFile(String origPath, String destPath) throws IOException {
+        FileChannel in = null;
+        FileChannel out = null;
+        try {
+            in = new FileInputStream(origPath).getChannel();
+            out = new FileOutputStream(destPath).getChannel();
+            in.transferTo(0, in.size(), out);
+        } finally {
+            if (in != null)
+                in.close();
+            if (out != null)
+                out.close();
+        }
+    }
+
+    /**
+     * Returns the specified resource as a stream. Useful to read files from inside the
+     * jar.
+     * 
+     * @param resourcePath resource path
+     * @return resource input stream
+     */
+    public static InputStream getResourceAsStream(final String resourcePath) {
+        // todo: Double check this code.
+
+        /*
+         * Forces static initialization 
+         */
+        final Files placebo = new Files();
+        final ClassLoader cl = placebo.getClass().getClassLoader();
+
+        if (cl == null) {
+            // A system class.
+            return ClassLoader.getSystemResourceAsStream(resourcePath);
+        }
+        return cl.getResourceAsStream(resourcePath);
+    }
+
+    /**
+     * Gets the size of the path.
+     * <p>
+     * If the path is a directory the size is the sum of the size of all the files in the
+     * directory and sub-directories. If the path is a file, the size is the size of the
+     * file.
+     * </p>
+     * 
+     * @param path path
+     * @return path size in bytes
+     */
+    public static long getSize(final File path) {
+        long size = 0;
+        if (path.isFile()) {
+            size = path.length();
+        } else {
+            File[] subFiles = path.listFiles();
+
+            for (File file : subFiles) {
+                if (file.isFile()) {
+                    size += file.length();
+                } else {
+                    size += getSize(file);
+                }
+            }
+        }
+
+        return size;
+    }
+
+    /**
+     * Gets the size of the path in kbytes.
+     * <p>
+     * If the path is a directory the size is the sum of the size of all the files in the
+     * directory and sub-directories. If the path is a file, the size is the size of the
+     * file.
+     * </p>
+     * 
+     * @param path path
+     * @return size in megabytes
+     */
+    public static double getSizeInKbytes(final File path) {
+        return getSize(path) / ONE_KB_BYTES;
+    }
+
+    /**
+     * Gets the size of the path in megabytes.
+     * <p>
+     * If the path is a directory the size is the sum of the size of all the files in the
+     * directory and sub-directories. If the path is a file, the size is the size of the
+     * file.
+     * </p>
+     * 
+     * @param path path
+     * @return size in megabytes
+     */
+    public static double getSizeInMegabytes(final File path) {
+        return getSize(path) / (ONE_KB_BYTES * ONE_KB_BYTES);
+    }
+
+    /**
+     * Reads the contents of a text file into a String.
+     * <p>
+     * Notes: - Assumes file uses the system default encoding - Newlines are converted to
+     * the system default
+     * 
+     * @param path File to read
+     * @return File contents
+     * @throws IOException in case of failure
+     */
+    public static String readTextFile(String path) throws IOException {
+        StringBuilder contents = new StringBuilder();
+
+        String lineSep = System.getProperty("line.separator");
+        BufferedReader input = new BufferedReader(new FileReader(path));
+        try {
+            String line;
+            while ((line = input.readLine()) != null) {
+                contents.append(line);
+                contents.append(lineSep);
+            }
+        } finally {
+            input.close();
+        }
+
+        return contents.toString();
+    }
+
+    /**
+     * Convenience function to rename (move) a file.
+     * <p>
+     * The rename works even if the destination file exists, however the operation is not
+     * atomic on Windows, which means that it's possible for the rename to fail in such a
+     * way that the destination file is deleted but the original is not renamed.
+     * 
+     * @param origPath Original path
+     * @param destPath Destination path
+     * @throws IOException If the operation fails.
+     */
+    public static void renameFile(String origPath, String destPath) throws IOException {
+        File orig = new File(origPath);
+        File dest = new File(destPath);
+
+        // On windows, we must manually delete the destination file if it exists
+        if (SysUtil.getOperatingSystem() == SysUtil.OS.WINDOWS && dest.exists())
+            dest.delete();
+
+        if (!orig.renameTo(dest))
+            throw new IOException(String.format(
+                    "Unable to rename file from '%1$s' to '%2$s'",
+                    orig.toString(), dest.toString()));
+    }
+
+    /**
+     * Writes the contents of a String to a file.
+     * <p>
+     * Notes: - file will have the system default encoding
+     * 
+     * @param path File to write
+     * @param text File contents
+     * @throws IOException in case of failure
+     */
+    public static void writeTextFile(String path, String text) throws IOException {
+        FileWriter writer = new FileWriter(path, false);
+        writer.write(text);
+        writer.close();
     }
 }

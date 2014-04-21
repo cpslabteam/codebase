@@ -2,6 +2,7 @@ package codebase.streams;
 
 import java.io.DataInput;
 import java.io.DataInputStream;
+import java.io.EOFException;
 import java.io.IOException;
 
 import codebase.Binary;
@@ -45,6 +46,9 @@ public class ByteArrayDataInput
     }
 
     private int read() {
+        // TODO: Re-think all asserts
+        assert 0 <= pos && pos < inputBuffer.length : "Position is valid";
+
         return ((int) inputBuffer[pos++]) & Binary.INT_LOW_BYTE_MASK;
     }
 
@@ -59,18 +63,30 @@ public class ByteArrayDataInput
 
     @Override
     public final boolean readBoolean() throws IOException {
+        if (pos >= inputBuffer.length - 1) {
+            throw new EOFException("Not enough bytes left to read a boolean");
+        }
+
         final int b = read();
         return (b != 0);
     }
 
     @Override
     public final byte readByte() throws IOException {
+        if (pos > inputBuffer.length - 1) {
+            throw new EOFException("Not enough bytes left to read a byte");
+        }
+        
         final int b = read();
         return (byte) (b);
     }
 
     @Override
     public final char readChar() throws IOException {
+        if (pos > inputBuffer.length - Binary.SIZE_OF_CHAR) {
+            throw new EOFException("Not enough bytes left to read a byte");
+        }
+        
         final int b1 = read();
         final int b2 = read();
         return (char) ((b1 << Binary.BIT_SIZE_OF_BYTE) + (b2 << 0));
@@ -78,11 +94,19 @@ public class ByteArrayDataInput
 
     @Override
     public final double readDouble() throws IOException {
+        if (pos > inputBuffer.length - Binary.SIZE_OF_DOUBLE) {
+            throw new EOFException("Not enough bytes left to read a double");
+        }
+        
         return Double.longBitsToDouble(readLong());
     }
 
     @Override
     public final float readFloat() throws IOException {
+        if (pos > inputBuffer.length - Binary.SIZE_OF_FLOAT) {
+            throw new EOFException("Not enough bytes left to read a float");
+        }
+        
         return Float.intBitsToFloat(readInt());
     }
 
@@ -99,6 +123,10 @@ public class ByteArrayDataInput
 
     @Override
     public final int readInt() throws IOException {
+        if (pos > inputBuffer.length - Binary.SIZE_OF_INT) {
+            throw new EOFException("Not enough bytes left to read a float");
+        }
+        
         final int b1 = read();
         final int b2 = read();
         final int b3 = read();
@@ -184,17 +212,6 @@ public class ByteArrayDataInput
     @Override
     public final String readUTF() throws IOException {
         return DataInputStream.readUTF(this);
-    }
-
-    /**
-     * Resets the internal input buffer.
-     * 
-     * @param b the new byte[] buffer
-     */
-    public void setBytes(byte[] b) {
-        this.inputBuffer = b.clone();
-        pos = 0;
-        lineBuffer = null;
     }
 
     @Override

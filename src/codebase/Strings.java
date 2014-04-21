@@ -1,6 +1,7 @@
 package codebase;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.StringTokenizer;
 
 /**
@@ -36,19 +37,22 @@ public final class Strings {
     /**
      * Short name descriptions of ascii invisible characters.
      */
-    private static final String[] SHORT_CHAR_NAMES = { "NUL", "SOH", "STX", "ETX", "EOT", "ENQ",
-            "ACK", "BEL", "BS", "TAB", "LF", "VT", "FF", "CR", "SO", "SI", "DLE", "XON", "DC2",
-            "XOFF", "DC4", "NAK", "SYN", "ETB", "CAN", "EM ", "SUB" };
+    private static final String[] SHORT_CHAR_NAMES = { "NUL", "SOH", "STX",
+            "ETX", "EOT", "ENQ", "ACK", "BEL", "BS", "TAB", "LF", "VT", "FF",
+            "CR", "SO", "SI", "DLE", "XON", "DC2", "XOFF", "DC4", "NAK", "SYN",
+            "ETB", "CAN", "EM ", "SUB" };
 
     /**
      * Long name descriptions of ascii invisible characters.
      */
-    private static final String[] LONG_CHAR_NAMES = { "Null character", "Start of Header",
-            "Start of Text", "End of Text", "End of Transmission", "Enquiry", "Acknowledgment",
-            "Bell", "Backspace", "Tab", "Line feed", "Vertical Tab", "Form feed",
+    private static final String[] LONG_CHAR_NAMES = { "Null character",
+            "Start of Header", "Start of Text", "End of Text",
+            "End of Transmission", "Enquiry", "Acknowledgment", "Bell",
+            "Backspace", "Tab", "Line feed", "Vertical Tab", "Form feed",
             "Carriage Return", "Shift Out", "Shift In", "Data Link Escape",
-            "Device Control 1 (oft. XON)", "Device Control 2", "Device Control 3 (oft. XOFF)",
-            "Device Control 4", "Negative Acknowledgement", "Synchronous Idle",
+            "Device Control 1 (oft. XON)", "Device Control 2",
+            "Device Control 3 (oft. XOFF)", "Device Control 4",
+            "Negative Acknowledgement", "Synchronous Idle",
             "End of Trans. Block", "Cancel", "End of Medium", "Substitute" };
 
     /**
@@ -113,7 +117,7 @@ public final class Strings {
                 trailerSize = headerSize;
             }
             final String result = str.substring(0, headerSize) + ellipsis
-                    + str.substring(len - (trailerSize - 1), len);
+                                  + str.substring(len - (trailerSize - 1), len);
             // ASSERT: result.length = size
             return result;
         }
@@ -220,7 +224,9 @@ public final class Strings {
      * @param pad the pad string to be used
      * @return the padded string
      */
-    public static String pad(final String input, final int length, final String pad) {
+    public static String pad(final String input,
+                             final int length,
+                             final String pad) {
         final StringBuffer sb = new StringBuffer();
         final int padLength = length - input.length();
         while (sb.length() < padLength) {
@@ -358,18 +364,19 @@ public final class Strings {
         final StringBuilder buffer = new StringBuilder();
         final char[] chars = str.toCharArray();
 
-        for (int i = 0; i < chars.length; i++) {
+        int i = 0;
+        while (i < chars.length) {
             if (chars[i] == DOUBLE_QUOTE)
                 continue;
 
-            final boolean isEscapedQuote = chars[i] == '\\' && (i + 1 < chars.length)
-                    && (chars[i + 1] == DOUBLE_QUOTE);
-
-            if (isEscapedQuote) {
-                buffer.append(DOUBLE_QUOTE);
-            } else {
-                buffer.append(chars[i]);
+            final boolean isEscaped = chars[i] == '\\'
+                                      && (i + 1 < chars.length);
+            if (isEscaped) {
+                i++;
             }
+
+            buffer.append(chars[i]);
+            i++;
         }
         return buffer.toString();
     }
@@ -382,7 +389,8 @@ public final class Strings {
      * @return a pointer to the character immediately after the token or the void. Returns
      *         the original string if the token is not found.
      */
-    public static String stripPrefix(final String str, final java.lang.String token) {
+    public static String stripPrefix(final String str,
+                                     final java.lang.String token) {
         if (token.length() > 0 && str.startsWith(token)) {
             return str.substring(token.length());
         } else {
@@ -483,7 +491,8 @@ public final class Strings {
      * @param invisible the character to replace the invisible control characters
      * @return a string where invisible characters are replaced by a predefined character.
      */
-    public static String visibleAsciiString(final String string, final char invisible) {
+    public static String visibleAsciiString(final String string,
+                                            final char invisible) {
         try {
             final byte[] target = string.getBytes(DEFAULT_STRING_ENCODING);
             for (int i = 0; i < target.length; i++) {
@@ -498,4 +507,74 @@ public final class Strings {
         }
 
     }
+
+    /**
+     * Trims a portion of a string based on a begin and end index.
+     * 
+     * @param s the string
+     * @param start the start index of the trim operation
+     * @param end the end of the trim operation
+     * @return the trimmed string
+     */
+    public static String trim(final String s, final int start, final int end) {
+        final String trimedFirst = s.substring(0, start);
+        final String trimedSecond;
+        if (end < s.length()) {
+            trimedSecond = s.substring(end, s.length() - 1);
+        } else {
+            trimedSecond = "";
+        }
+        return trimedFirst + trimedSecond;
+    }
+
+    public static String rpad(String text, char filler, int size) {
+        StringBuffer result = new StringBuffer(text);
+        while (result.length() < size) {
+            result.append(filler);
+        }
+        return result.toString();
+    }
+
+    public static String join(Collection<?> objs, String delimiter) {
+        if (objs == null || objs.size() == 0)
+            return "";
+
+        StringBuffer buffer = new StringBuffer();
+        for (Object obj : objs) {
+            if (buffer.length() > 0) {
+                buffer.append(delimiter);
+            }
+            buffer.append(obj);
+        }
+        return buffer.toString();
+    }
+
+    public static String join(int[] objs, String delimiter) {
+        if (objs == null || objs.length == 0)
+            return "";
+
+        StringBuffer buffer = new StringBuffer();
+        for (int obj : objs) {
+            if (buffer.length() > 0) {
+                buffer.append(delimiter);
+            }
+            buffer.append(Integer.toString(obj));
+        }
+        return buffer.toString();
+    }
+
+    public static String join(short[] objs, String delimiter) {
+        if (objs == null || objs.length == 0)
+            return "";
+
+        StringBuffer buffer = new StringBuffer();
+        for (int obj : objs) {
+            if (buffer.length() > 0) {
+                buffer.append(delimiter);
+            }
+            buffer.append(Integer.toString(obj));
+        }
+        return buffer.toString();
+    }
+
 }

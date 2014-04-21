@@ -12,9 +12,11 @@ Embed-Dependency: *;scope=runtime;inline=false
 Embed-Directory: target/dependency
 Embed-StripGroup: true
 Export-Package: codebase;version="1.0.0";uses:="codebase.junit,javax.crypto.spec,junit.framework",
+ codebase.apputils,
  codebase.binary;version="1.0.0";uses:="junit.framework",
  codebase.iterators;version="1.0.0";uses:="codebase.junit,junit.framework",
  codebase.junit;version="1.0.0";uses:="junit.framework",
+ codebase.os,
  codebase.streams;version="1.0.0";uses:="junit.framework"
 Import-Package: 
  junit.framework;version="0.0.0",

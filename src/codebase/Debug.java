@@ -41,7 +41,10 @@ public final class Debug {
         try {
             Debug.dump(i, System.out);
         } catch (IOException e) {
+            //CHECKSTYLE:OFF
+            //This is a debug utility method that really should print to the screen.
             e.printStackTrace();
+            //CHECKSTYLE:ON
         }
     }
 
@@ -70,14 +73,15 @@ public final class Debug {
             try {
                 o = i.next();
             } catch (Exception e) {
-                throw new IllegalStateException("Exception when performing i.next():"
-                        + e.toString());
+                throw new IllegalStateException(
+                        "Exception when performing i.next():" + e.toString());
             }
             try {
                 str = codebase.Debug.toString(o);
             } catch (Exception e) {
-                throw new IllegalStateException("Exception when performing o.toString():"
-                        + e.toString());
+                throw new IllegalStateException(
+                        "Exception when performing o.toString():"
+                                + e.toString());
             }
 
             out.println(Integer.toString(rowNum) + ":" + str);
@@ -98,7 +102,10 @@ public final class Debug {
         try {
             Debug.dump(o, System.out);
         } catch (IOException e) {
+            //CHECKSTYLE:OFF
+            //This is a debug utility method that really should print to the screen.
             e.printStackTrace();
+            //CHECKSTYLE:ON
         }
     }
 
@@ -124,7 +131,10 @@ public final class Debug {
         try {
             Debug.dump(objs, System.out);
         } catch (IOException e) {
+            //CHECKSTYLE:OFF
+            //This is a debug utility method that really should print to the screen.
             e.printStackTrace();
+            //CHECKSTYLE:ON
         }
     }
 
@@ -157,7 +167,10 @@ public final class Debug {
         try {
             Debug.dumpToHexString(buffer, System.out);
         } catch (IOException e) {
+            //CHECKSTYLE:OFF
+            //This is a debug utility method that really should print to the screen.
             e.printStackTrace();
+            //CHECKSTYLE:ON
         }
     }
 
@@ -172,7 +185,10 @@ public final class Debug {
         try {
             Debug.dumpToHexString(buffer, System.out, size);
         } catch (IOException e) {
+            //CHECKSTYLE:OFF
+            //This is a debug utility method that really should print to the screen.
             e.printStackTrace();
+            //CHECKSTYLE:ON
         }
     }
 
@@ -188,7 +204,8 @@ public final class Debug {
      * @throws IOException if an exception occurs while writing on the output stream
      * @see #toHexStringDump(byte[])
      */
-    public static void dumpToHexString(final byte[] buffer, final OutputStream out) throws IOException {
+    public static void dumpToHexString(final byte[] buffer,
+                                       final OutputStream out) throws IOException {
         out.write(toHexStringDump(buffer).getBytes(DEFAULT_STRING_ENCODING));
         out.flush();
     }
@@ -206,8 +223,11 @@ public final class Debug {
      * @throws IOException if an exception occurs while writing on the output stream
      * @see #toHexStringDump(byte[], int)
      */
-    public static void dumpToHexString(final byte[] buffer, final OutputStream out, final int size) throws IOException {
-        out.write(toHexStringDump(buffer, size).getBytes(DEFAULT_STRING_ENCODING));
+    public static void dumpToHexString(final byte[] buffer,
+                                       final OutputStream out,
+                                       final int size) throws IOException {
+        out.write(toHexStringDump(buffer, size).getBytes(
+                DEFAULT_STRING_ENCODING));
         out.flush();
     }
 
@@ -221,7 +241,10 @@ public final class Debug {
         try {
             Debug.dumpWithClass(o, System.out);
         } catch (IOException e) {
+            //CHECKSTYLE:OFF
+            //This is a debug utility method that really should print to the screen.
             e.printStackTrace();
+            //CHECKSTYLE:ON
         }
     }
 
@@ -254,7 +277,7 @@ public final class Debug {
         try {
             final String result = Strings.visibleAsciiString(new String(buffer,
                     DEFAULT_STRING_ENCODING), '.')
-                    + "  " + Binary.toHexString(buffer);
+                                  + "  " + Binary.toHexString(buffer);
             return result;
         } catch (UnsupportedEncodingException e) {
             // this is an coding error situation - should never happen
@@ -310,7 +333,8 @@ public final class Debug {
             try {
                 o = iterator.next();
             } catch (Exception e) {
-                str = "Exception when performing iterator.next():" + e.toString();
+                str = "Exception when performing iterator.next():"
+                      + e.toString();
                 break;
             }
             try {
