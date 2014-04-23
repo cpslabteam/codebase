@@ -4,8 +4,6 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<bundle.symbolicName>codebase</bundle.symbolicName>
 		<bundle.namespace>codebase</bundle.namespace>
-		<tycho.version>0.19.0</tycho.version>
-		<tycho-extras.version>0.19.0</tycho-extras.version>
 	</properties>
 
 	<modelVersion>4.0.0</modelVersion>
@@ -15,20 +13,7 @@
 	<description>Codebase utility classes</description>
 	<name>${bundle.symbolicName} [${bundle.namespace}]</name>
 
-	<distributionManagement>
-		<repository>
-			<id>deployment</id>
-			<name>Internal Releases</name>
-			<url>http://sb-buildmaster.tagus.ist.utl.pt:8082/nexus/content/repositories/p2-releases/</url>
-		</repository>
-		<snapshotRepository>
-			<id>deployment</id>
-			<name>Internal Releases</name>
-			<url>http://sb-buildmaster.tagus.ist.utl.pt:8082/nexus/content/repositories/p2-releases/</url>
-		</snapshotRepository>
-	</distributionManagement>
-
-	<packaging>eclipse-plugin</packaging>
+	<packaging>jar</packaging>
 
 	<build>
 		<sourceDirectory>src</sourceDirectory>
@@ -41,59 +26,40 @@
 				</excludes>
 			</resource>
 		</resources>
+
 		<plugins>
 			<plugin>
-				<groupId>org.eclipse.tycho</groupId>
-				<artifactId>tycho-maven-plugin</artifactId>
-				<version>${tycho.version}</version>
-				<extensions>true</extensions>
-			</plugin>
-			<plugin>
-				<groupId>org.eclipse.tycho</groupId>
-				<artifactId>tycho-surefire-plugin</artifactId>
-				<version>${tycho.version}</version>
-			</plugin>
-			<plugin>
-				<groupId>org.eclipse.tycho</groupId>
-				<artifactId>target-platform-configuration</artifactId>
-				<version>${tycho.version}</version>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.1</version>
 				<configuration>
-					<target>
-						<artifact>
-							<groupId>codebase</groupId>
-							<artifactId>codebase</artifactId>
-							<version>${project.version}</version>
-						</artifact>
-					</target>
-					<environments>
-						<environment>
-							<os>linux</os>
-							<ws>gtk</ws>
-							<arch>x86</arch>
-						</environment>
-						<environment>
-							<os>linux</os>
-							<ws>gtk</ws>
-							<arch>x86_64</arch>
-						</environment>
-						<environment>
-							<os>win32</os>
-							<ws>win32</ws>
-							<arch>x86</arch>
-						</environment>
-						<environment>
-							<os>win32</os>
-							<ws>win32</ws>
-							<arch>x86_64</arch>
-						</environment>
-						<environment>
-							<os>macosx</os>
-							<ws>cocoa</ws>
-							<arch>x86_64</arch>
-						</environment>
-					</environments>
+					<source>1.7</source>
+					<target>1.7</target>
 				</configuration>
 			</plugin>
+
+			<plugin>
+				<groupId>org.apache.felix</groupId>
+				<artifactId>maven-bundle-plugin</artifactId>
+				<version>2.3.7</version>
+				<extensions>true</extensions>
+				<configuration>
+					<instructions>
+						<Export-Package>codebase.*</Export-Package>
+						<Import-Package>junit.framework.*</Import-Package>
+					</instructions>
+				</configuration>
+				<executions>
+					<execution>
+						<id>bundle-manifest</id>
+						<phase>process-classes</phase>
+						<goals>
+							<goal>manifest</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-javadoc-plugin</artifactId>
@@ -132,6 +98,24 @@
 			</plugin>
 		</plugins>
 	</build>
+
+
+	<dependencies>
+		<dependency>
+			<groupId>org.apache.felix</groupId>
+			<artifactId>org.osgi.core</artifactId>
+			<version>1.0.0</version>
+		</dependency>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.8.1</version>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
+
+
+
 	<reporting>
 		<plugins>
 			<plugin>
