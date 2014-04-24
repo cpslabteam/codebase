@@ -37,8 +37,13 @@ public class TestFiles extends
      */
     public void testVerifyCanCreateFile() {
         // Illegal file name
-        assertTrue(!Files.verifyCanCreateFile("C:", 10));
-        
+    	final String osName = System.getProperty("os.name").toLowerCase();
+    	//This tests won't work if they are run as admin/root
+    	if(osName.contains("win")){
+    		assertTrue(!Files.verifyCanCreateFile("C:", 10));
+    	} else {
+    		assertTrue(!Files.verifyCanCreateFile("/", 10));
+    	}
         // Regular file
         assertTrue(Files.verifyCanCreateFile(SUCCESSFULL_FILE_NAME, 10));
     }

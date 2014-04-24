@@ -366,8 +366,10 @@ public final class Strings {
 
         int i = 0;
         while (i < chars.length) {
-            if (chars[i] == DOUBLE_QUOTE)
-                continue;
+            if (chars[i] == DOUBLE_QUOTE){
+                i++;
+            	continue;
+            }
 
             final boolean isEscaped = chars[i] == '\\'
                                       && (i + 1 < chars.length);
