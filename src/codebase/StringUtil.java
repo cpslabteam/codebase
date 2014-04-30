@@ -37,23 +37,20 @@ public final class StringUtil {
     /**
      * Short name descriptions of ascii invisible characters.
      */
-    private static final String[] SHORT_CHAR_NAMES = { "NUL", "SOH", "STX",
-            "ETX", "EOT", "ENQ", "ACK", "BEL", "BS", "TAB", "LF", "VT", "FF",
-            "CR", "SO", "SI", "DLE", "XON", "DC2", "XOFF", "DC4", "NAK", "SYN",
-            "ETB", "CAN", "EM ", "SUB" };
+    private static final String[] SHORT_CHAR_NAMES = { "NUL", "SOH", "STX", "ETX", "EOT", "ENQ",
+            "ACK", "BEL", "BS", "TAB", "LF", "VT", "FF", "CR", "SO", "SI", "DLE", "XON", "DC2",
+            "XOFF", "DC4", "NAK", "SYN", "ETB", "CAN", "EM ", "SUB" };
 
     /**
      * Long name descriptions of ascii invisible characters.
      */
-    private static final String[] LONG_CHAR_NAMES = { "Null character",
-            "Start of Header", "Start of Text", "End of Text",
-            "End of Transmission", "Enquiry", "Acknowledgment", "Bell",
-            "Backspace", "Tab", "Line feed", "Vertical Tab", "Form feed",
-            "Carriage Return", "Shift Out", "Shift In", "Data Link Escape",
-            "Device Control 1 (oft. XON)", "Device Control 2",
-            "Device Control 3 (oft. XOFF)", "Device Control 4",
-            "Negative Acknowledgement", "Synchronous Idle",
-            "End of Trans. Block", "Cancel", "End of Medium", "Substitute" };
+    private static final String[] LONG_CHAR_NAMES = { "Null character", "Start of Header",
+            "Start of Text", "End of Text", "End of Transmission", "Enquiry", "Acknowledgment",
+            "Bell", "Backspace", "Tab", "Line feed", "Vertical Tab", "Form feed", "Carriage Return",
+            "Shift Out", "Shift In", "Data Link Escape", "Device Control 1 (oft. XON)",
+            "Device Control 2", "Device Control 3 (oft. XOFF)", "Device Control 4",
+            "Negative Acknowledgement", "Synchronous Idle", "End of Trans. Block", "Cancel",
+            "End of Medium", "Substitute" };
 
     /**
      * Returns the complete name of a char.
@@ -117,8 +114,9 @@ public final class StringUtil {
                 trailerSize = headerSize;
             }
             final String result = str.substring(0, headerSize) + ellipsis
-                                  + str.substring(len - (trailerSize - 1), len);
-            // ASSERT: result.length = size
+                    + str.substring(len - (trailerSize - 1), len);
+            
+            assert result.length() == size;
             return result;
         }
     }
@@ -224,9 +222,7 @@ public final class StringUtil {
      * @param pad the pad string to be used
      * @return the padded string
      */
-    public static String pad(final String input,
-                             final int length,
-                             final String pad) {
+    public static String pad(final String input, final int length, final String pad) {
         final StringBuffer sb = new StringBuffer();
         final int padLength = length - input.length();
         while (sb.length() < padLength) {
@@ -366,13 +362,12 @@ public final class StringUtil {
 
         int i = 0;
         while (i < chars.length) {
-            if (chars[i] == DOUBLE_QUOTE){
+            if (chars[i] == DOUBLE_QUOTE) {
                 i++;
-            	continue;
+                continue;
             }
 
-            final boolean isEscaped = chars[i] == '\\'
-                                      && (i + 1 < chars.length);
+            final boolean isEscaped = chars[i] == '\\' && (i + 1 < chars.length);
             if (isEscaped) {
                 i++;
             }
@@ -391,8 +386,7 @@ public final class StringUtil {
      * @return a pointer to the character immediately after the token or the void. Returns
      *         the original string if the token is not found.
      */
-    public static String stripPrefix(final String str,
-                                     final java.lang.String token) {
+    public static String stripPrefix(final String str, final java.lang.String token) {
         if (token.length() > 0 && str.startsWith(token)) {
             return str.substring(token.length());
         } else {
@@ -493,8 +487,7 @@ public final class StringUtil {
      * @param invisible the character to replace the invisible control characters
      * @return a string where invisible characters are replaced by a predefined character.
      */
-    public static String visibleAsciiString(final String string,
-                                            final char invisible) {
+    public static String visibleAsciiString(final String string, final char invisible) {
         try {
             final byte[] target = string.getBytes(DEFAULT_STRING_ENCODING);
             for (int i = 0; i < target.length; i++) {

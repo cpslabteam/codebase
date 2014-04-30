@@ -66,10 +66,9 @@ public final class SysUtil {
                 return "COM1";
             case LINUX:
                 return "/dev/ttyS0";
+            case MAC_OS:
+                return "/dev/ttys0";
             default:
-
-                // XXX implement more cases
-
                 return "???";
         }
     }
@@ -100,8 +99,7 @@ public final class SysUtil {
         if (getOperatingSystem() != OS.WINDOWS) {
             /*
              * result = WindowsRegistryReader
-             * .getFolderPath(WindowsRegistryReader.USER_DESKTOP_FOLDER_CMD); }
-             * else {
+             * .getFolderPath(WindowsRegistryReader.USER_DESKTOP_FOLDER_CMD); } else {
              */
             // result = System.getProperty("user.home");
             File desktopDir = new File(result + File.separator + "Desktop");
@@ -124,8 +122,8 @@ public final class SysUtil {
      * @return Path to the application install directory.
      */
     public static String getApplicationPath() {
-        File path = new File(SysUtil.class.getProtectionDomain()
-                .getCodeSource().getLocation().getPath());
+        File path =
+            new File(SysUtil.class.getProtectionDomain().getCodeSource().getLocation().getPath());
 
         if (path.getName().endsWith(".jar")) {
             // when running from the install, strip out the jar file and
@@ -154,9 +152,8 @@ public final class SysUtil {
         StringBuilder result = new StringBuilder();
 
         for (String component : components) {
-            if (result.length() > 0
-                && result.charAt(result.length() - 1) != sep
-                && component.charAt(0) != sep) {
+            if (result.length() > 0 && result.charAt(result.length() - 1) != sep
+                    && component.charAt(0) != sep) {
                 result.append(sep);
             }
             result.append(component);

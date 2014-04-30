@@ -7,13 +7,20 @@
 	</properties>
 
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>codebase</groupId>
+	<groupId>cpslab</groupId>
 	<artifactId>codebase</artifactId>
+	<version>2.1.0-SNAPSHOT</version>
 	<description>Codebase utility classes</description>
-	<name>${bundle.symbolicName}</name>
-
-	<packaging>bundle</packaging>
-
+	
+	<packaging>jar</packaging>
+<!-- 
+	<parent>
+		<groupId>io.cpslab</groupId>
+		<artifactId>cpslab</artifactId>
+		<version>0.0.6</version>
+	</parent>
+-->
+	
 	<build>
 		<sourceDirectory>src</sourceDirectory>
 		<testSourceDirectory>test</testSourceDirectory>
@@ -44,7 +51,7 @@
 				<extensions>true</extensions>
 				<configuration>
 					<instructions>
-					    <Bundle-SymbolicName>${project.artifactId};singleton:=true</Bundle-SymbolicName>
+						<Bundle-SymbolicName>${project.artifactId};singleton:=true</Bundle-SymbolicName>
 						<Bundle-Version>${project.version}</Bundle-Version>
 						<Export-Package>codebase.*</Export-Package>
 					</instructions>
@@ -64,9 +71,8 @@
 					<version>true</version>
 					<author>true</author>
 					<keywords>true</keywords>
-					<additionalparam>
-						-sourceclasspath ${project.build.outputDirectory}
-					</additionalparam>
+					<additionalparam>-Xdoclint:none -output
+						${project.build.outputDirectory}</additionalparam>
 				</configuration>
 			</plugin>
 
@@ -95,19 +101,6 @@
 		</dependency>
 	</dependencies>
 
-	<distributionManagement>
-		<repository>
-			<id>deployment</id>
-			<name>Internal Releases</name>
-			<url>http://sb-buildmaster.tagus.ist.utl.pt:8082/nexus/content/repositories/releases</url>
-		</repository>
-		<snapshotRepository>
-			<id>deployment</id>
-			<name>Internal Releases</name>
-			<url>http://sb-buildmaster.tagus.ist.utl.pt:8082/nexus/content/repositories/snapshots</url>
-		</snapshotRepository>
-	</distributionManagement>
-
 	<reporting>
 		<plugins>
 			<plugin>
@@ -125,5 +118,4 @@
 			</plugin>
 		</plugins>
 	</reporting>
-	<version>2.0.0</version>
 </project>

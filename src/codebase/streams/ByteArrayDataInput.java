@@ -17,8 +17,7 @@ import codebase.BinaryUtil;
  * 
  * @see ByteArrayDataOutput
  */
-public class ByteArrayDataInput
-        implements DataInput {
+public class ByteArrayDataInput implements DataInput {
     private static final int LINE_BUFFER_INCREMENT_SIZE = 128;
 
     /**
@@ -46,7 +45,6 @@ public class ByteArrayDataInput
     }
 
     private int read() {
-        // TODO: Re-think all asserts
         assert 0 <= pos && pos < inputBuffer.length : "Position is valid";
 
         return ((int) inputBuffer[pos++]) & BinaryUtil.INT_LOW_BYTE_MASK;
@@ -76,7 +74,7 @@ public class ByteArrayDataInput
         if (pos > inputBuffer.length - 1) {
             throw new EOFException("Not enough bytes left to read a byte");
         }
-        
+
         final int b = read();
         return (byte) (b);
     }
@@ -86,7 +84,7 @@ public class ByteArrayDataInput
         if (pos > inputBuffer.length - BinaryUtil.SIZE_OF_CHAR) {
             throw new EOFException("Not enough bytes left to read a byte");
         }
-        
+
         final int b1 = read();
         final int b2 = read();
         return (char) ((b1 << BinaryUtil.BIT_SIZE_OF_BYTE) + (b2 << 0));
@@ -97,7 +95,7 @@ public class ByteArrayDataInput
         if (pos > inputBuffer.length - BinaryUtil.SIZE_OF_DOUBLE) {
             throw new EOFException("Not enough bytes left to read a double");
         }
-        
+
         return Double.longBitsToDouble(readLong());
     }
 
@@ -106,7 +104,7 @@ public class ByteArrayDataInput
         if (pos > inputBuffer.length - BinaryUtil.SIZE_OF_FLOAT) {
             throw new EOFException("Not enough bytes left to read a float");
         }
-        
+
         return Float.intBitsToFloat(readInt());
     }
 
@@ -126,13 +124,14 @@ public class ByteArrayDataInput
         if (pos > inputBuffer.length - BinaryUtil.SIZE_OF_INT) {
             throw new EOFException("Not enough bytes left to read a float");
         }
-        
+
         final int b1 = read();
         final int b2 = read();
         final int b3 = read();
         final int b4 = read();
-        return ((b1 << BinaryUtil.BIT_SIZE_OF_THREE_BYTES) + (b2 << BinaryUtil.BIT_SIZE_OF_TWO_BYTES)
-                + (b3 << BinaryUtil.BIT_SIZE_OF_BYTE) + (b4 << 0));
+        return ((b1 << BinaryUtil.BIT_SIZE_OF_THREE_BYTES)
+                + (b2 << BinaryUtil.BIT_SIZE_OF_TWO_BYTES) + (b3 << BinaryUtil.BIT_SIZE_OF_BYTE)
+                + (b4 << 0));
     }
 
     @Override
@@ -185,7 +184,8 @@ public class ByteArrayDataInput
                 + ((long) (readBuffer[3] & BinaryUtil.INT_LOW_BYTE_MASK) << 32)
                 + ((long) (readBuffer[4] & BinaryUtil.INT_LOW_BYTE_MASK) << 24)
                 + ((long) (readBuffer[5] & BinaryUtil.INT_LOW_BYTE_MASK) << 16)
-                + ((long) (readBuffer[6] & BinaryUtil.INT_LOW_BYTE_MASK) << 8) + ((long) (readBuffer[7] & BinaryUtil.INT_LOW_BYTE_MASK) << 0));
+                + ((long) (readBuffer[6] & BinaryUtil.INT_LOW_BYTE_MASK) << 8)
+                + ((long) (readBuffer[7] & BinaryUtil.INT_LOW_BYTE_MASK) << 0));
         //CHECKSTYLE:ON
     }
 

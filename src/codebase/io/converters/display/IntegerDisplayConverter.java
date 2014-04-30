@@ -30,7 +30,7 @@ public class IntegerDisplayConverter
      * The first character must a sign or a digit until a character that is not a digit or
      * {@link EOFException} is found.
      * 
-     * @param dataInput the data input to read the data input from
+     * @param dataInput the data input to read the data input from, should never be <code>null</code>
      * @throws IOException if an exception occurs while reading the string
      * @return a string read from the data input
      */

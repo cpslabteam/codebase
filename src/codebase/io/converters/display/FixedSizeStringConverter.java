@@ -21,8 +21,7 @@ import codebase.io.converters.AbstractFixedSizeConverter;
  * marker is written. If the String is smaller that the fixed sized, then it is right
  * padded with space characters.
  */
-public class FixedSizeStringConverter extends
-        AbstractFixedSizeConverter {
+public class FixedSizeStringConverter extends AbstractFixedSizeConverter {
 
     /**
      * The buffer used to read in the data.
@@ -79,6 +78,8 @@ public class FixedSizeStringConverter extends
      * @return a string read from the data input
      */
     public synchronized Object read(final DataInput dataInput) throws IOException {
+        assert dataInput != null;
+        
         dataInput.readFully(readBuffer, 0, length);
         return createString(readBuffer);
     }
@@ -93,7 +94,10 @@ public class FixedSizeStringConverter extends
      * @throws IOException if an exception occurs while reading the string
      */
     public void write(final DataOutput dataOutput, final Object object) throws IOException {
-        assert object instanceof String;
+        assert dataOutput != null;
+        if (!(object instanceof String))
+            throw new IllegalArgumentException("Object must be a String");
+        
         final String input = (String) object;
         if (input.length() > length) {
             dataOutput.writeBytes(input.substring(0, length));

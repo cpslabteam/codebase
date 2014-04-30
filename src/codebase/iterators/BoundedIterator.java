@@ -12,8 +12,7 @@ import java.util.Iterator;
  * @param <E> the type of all the objects to be treated.
  * @author Paulo Carreira
  */
-public class BoundedIterator<E> extends
-        AbstractDecoratorIterator<E> {
+public class BoundedIterator<E> extends AbstractDecoratorIterator<E> {
     /**
      * The maximum number of elements.
      */
@@ -59,7 +58,7 @@ public class BoundedIterator<E> extends
     public final E next() {
         if (returnedSoFar < elementLimit) {
             returnedSoFar += 1;
-            return super.next();
+            return getDecorated().next();
         } else {
             throw new IllegalStateException("Element limit reached");
         }
@@ -69,19 +68,16 @@ public class BoundedIterator<E> extends
      * Removes as item from the decorated iterator.
      * <p>
      * If the <i>remove</i> operation of the decorated instance succeeds, then the number
-     * of elelement returned so far is decremented.
+     * of elements returned so far is decremented.
      * 
-     * @throws IllegalStateException if the number of elements returned so far is zero
+     * @throws IllegalStateException if no element can be removed
      */
     public final void remove() {
-        if (returnedSoFar > 0) {
-            super.remove();
-            returnedSoFar -= 1;
-        } else {
-            throw new IllegalStateException("No element returned so far");
+        try {
+            getDecorated().remove();
+            returnedSoFar += 1;
+        } catch (Exception e) {
+            throw new IllegalStateException("Cannot remove element", e);
         }
     }
-
-
-
 }
