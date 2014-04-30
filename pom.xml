@@ -13,19 +13,14 @@
 	<description>Codebase utility classes</description>
 	<name>${bundle.symbolicName}</name>
 
-	<packaging>jar</packaging>
+	<packaging>bundle</packaging>
 
 	<build>
 		<sourceDirectory>src</sourceDirectory>
 		<testSourceDirectory>test</testSourceDirectory>
-		<resources>
-			<resource>
-				<directory>src</directory>
-				<excludes>
-					<exclude>**/*.java</exclude>
-				</excludes>
-			</resource>
-		</resources>
+		<!-- <resources> <resource> <directory>src</directory> <excludes> <exclude>**/*.java</exclude> 
+			</excludes> </resource> </resources> -->
+
 
 		<plugins>
 			<plugin>
@@ -45,7 +40,7 @@
 				<extensions>true</extensions>
 				<configuration>
 					<instructions>
-						<Export-Package>codebase.*</Export-Package>
+						<Export-Package>${project.artifactId}.*</Export-Package>
 					</instructions>
 				</configuration>
 				<executions>
