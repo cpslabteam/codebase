@@ -9,7 +9,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>codebase</groupId>
 	<artifactId>codebase</artifactId>
-	<version>1.0.0</version>
+	<version>1.0.1-SNAPSHOT</version>
 	<description>Codebase utility classes</description>
 	<name>${bundle.symbolicName}</name>
 
@@ -43,15 +43,6 @@
 						<Export-Package>${project.artifactId}.*</Export-Package>
 					</instructions>
 				</configuration>
-				<executions>
-					<execution>
-						<id>bundle-manifest</id>
-						<phase>process-classes</phase>
-						<goals>
-							<goal>manifest</goal>
-						</goals>
-					</execution>
-				</executions>
 			</plugin>
 
 			<plugin>
