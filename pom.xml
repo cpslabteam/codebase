@@ -107,31 +107,13 @@
 	<distributionManagement>
 		<repository>
 			<id>deployment</id>
-			<name>Internal Releases</name>
+			<name>Releases</name>
 			<url>http://sb-buildmaster.tagus.ist.utl.pt:8082/nexus/content/repositories/releases</url>
 		</repository>
 		<snapshotRepository>
 			<id>deployment</id>
-			<name>Internal Releases</name>
+			<name>Snapshots</name>
 			<url>http://sb-buildmaster.tagus.ist.utl.pt:8082/nexus/content/repositories/snapshots</url>
 		</snapshotRepository>
 	</distributionManagement>
-
-	<reporting>
-		<plugins>
-			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>findbugs-maven-plugin</artifactId>
-				<version>2.5.4-SNAPSHOT</version>
-				<configuration>
-					<xmlOutput>true</xmlOutput>
-				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-jxr-plugin</artifactId>
-				<version>2.3</version>
-			</plugin>
-		</plugins>
-	</reporting>
 </project>
