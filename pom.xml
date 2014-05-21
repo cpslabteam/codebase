@@ -13,7 +13,7 @@
 	<description>Codebase utility classes</description>
 	<name>${bundle.symbolicName}</name>
 
-	<packaging>jar</packaging>
+	<packaging>bundle</packaging>
 
 	<build>
 		<sourceDirectory>src</sourceDirectory>
@@ -45,6 +45,8 @@
 				<extensions>true</extensions>
 				<configuration>
 					<instructions>
+					    <Bundle-SymbolicName>${project.artifactId};singleton:=true</Bundle-SymbolicName>
+						<Bundle-Version>${project.version}</Bundle-Version>
 						<Export-Package>codebase.*</Export-Package>
 					</instructions>
 				</configuration>
