@@ -5,7 +5,7 @@ import java.io.EOFException;
 import java.io.IOException;
 import java.io.UTFDataFormatException;
 
-import codebase.Binary;
+import codebase.BinaryUtil;
 
 /**
  * A {@link DataOutput} that writes to a byte array.
@@ -170,7 +170,7 @@ public class ByteArrayDataOutput
 
     @Override
     public final void writeChar(int v) throws IOException {
-        if ((pos + Binary.SIZE_OF_CHAR) >= outputBuffer.length) {
+        if ((pos + BinaryUtil.SIZE_OF_CHAR) >= outputBuffer.length) {
             throw new EOFException("Ouput buffer full");
         }
 
@@ -239,7 +239,7 @@ public class ByteArrayDataOutput
 
     @Override
     public final void writeInt(int v) throws IOException {
-        if ((pos + Binary.SIZE_OF_INT) >= outputBuffer.length) {
+        if ((pos + BinaryUtil.SIZE_OF_INT) >= outputBuffer.length) {
             throw new EOFException("Ouput buffer full");
         }
 
@@ -253,7 +253,7 @@ public class ByteArrayDataOutput
 
     @Override
     public final void writeLong(long v) throws IOException {
-        final byte[] writeBuffer = new byte[Binary.SIZE_OF_LONG];
+        final byte[] writeBuffer = new byte[BinaryUtil.SIZE_OF_LONG];
 
         // CHECKSTYLE:OFF - Performs bitwise operations
         writeBuffer[0] = (byte) (v >>> 56);

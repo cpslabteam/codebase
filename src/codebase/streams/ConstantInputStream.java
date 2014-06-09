@@ -3,7 +3,7 @@ package codebase.streams;
 import java.io.IOException;
 import java.io.InputStream;
 
-import codebase.Binary;
+import codebase.BinaryUtil;
 
 
 /**
@@ -116,7 +116,7 @@ public class ConstantInputStream extends
      * @see java.io.InputStream#read()
      */
     public final int read() {
-        final int result = peekNextByte() & Binary.INT_LOW_BYTE_MASK;
+        final int result = peekNextByte() & BinaryUtil.INT_LOW_BYTE_MASK;
         return result;
     }
 

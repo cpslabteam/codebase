@@ -5,7 +5,7 @@ import java.io.DataOutput;
 import java.io.EOFException;
 import java.io.IOException;
 
-import codebase.Binary;
+import codebase.BinaryUtil;
 import codebase.io.converters.Converter;
 
 /**
@@ -41,7 +41,7 @@ public class IntegerDisplayConverter
         int ch;
         do {
             try {
-                ch = (dataInput.readByte() & Binary.INT_LOW_BYTE_MASK);
+                ch = (dataInput.readByte() & BinaryUtil.INT_LOW_BYTE_MASK);
             } catch (EOFException e) {
                 /*
                  * This means that no valid integer 
@@ -70,7 +70,7 @@ public class IntegerDisplayConverter
 
         do {
             try {
-                ch = (dataInput.readByte() & Binary.INT_LOW_BYTE_MASK);
+                ch = (dataInput.readByte() & BinaryUtil.INT_LOW_BYTE_MASK);
                 final boolean isValidDigit = ch >= '0' && ch <= '9';
 
                 if (!isValidDigit)

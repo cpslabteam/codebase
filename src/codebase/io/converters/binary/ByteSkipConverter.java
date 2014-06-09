@@ -8,8 +8,8 @@ import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.IOException;
 
-import codebase.Arrays;
-import codebase.Strings;
+import codebase.ArrayUtil;
+import codebase.StringUtil;
 import codebase.io.converters.AbstractFixedSizeConverter;
 
 /**
@@ -72,7 +72,7 @@ public class ByteSkipConverter extends
      * @throws IllegalArgumentException if size is not positive
      */
     public ByteSkipConverter(final int size) {
-        this(size, Arrays.replicate(Strings.ASCII_SPACE_BYTE, size));
+        this(size, ArrayUtil.replicate(StringUtil.ASCII_SPACE_BYTE, size));
     }
 
     /**

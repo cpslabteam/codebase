@@ -12,7 +12,7 @@ import java.util.StringTokenizer;
  * @since Created on 7/Out/2004
  * @author Paulo Carreira, André Gonçalves
  */
-public final class Strings {
+public final class StringUtil {
 
     /**
      * String representation of a double-comma.
@@ -481,7 +481,7 @@ public final class Strings {
     /**
      * Avoid this class form being instantiated.
      */
-    private Strings() {
+    private StringUtil() {
     }
 
     /**
@@ -498,7 +498,7 @@ public final class Strings {
         try {
             final byte[] target = string.getBytes(DEFAULT_STRING_ENCODING);
             for (int i = 0; i < target.length; i++) {
-                if (Strings.isControl((char) target[i])) {
+                if (StringUtil.isControl((char) target[i])) {
                     target[i] = (byte) invisible;
                 }
             }

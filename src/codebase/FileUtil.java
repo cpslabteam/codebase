@@ -22,7 +22,7 @@ import codebase.os.SysUtil;
  * 
  * @since 3/Jun/2005
  */
-public final class Files {
+public final class FileUtil {
 
     private static final int DEFAULT_READ_BUFFER_SIZE = 16 * 1024;
     private static final double ONE_KB_BYTES = 1024.0;
@@ -30,7 +30,7 @@ public final class Files {
     /**
      * Prevent instantiations of this class.
      */
-    private Files() {
+    private FileUtil() {
     }
 
     /**
@@ -191,8 +191,8 @@ public final class Files {
             return null;
         }
 
-        final File parentFile = new File(Filenames.normalize(parentPath));
-        final File relativeFile = new File(Filenames.normalize(relativePath));
+        final File parentFile = new File(FilenameUtil.normalize(parentPath));
+        final File relativeFile = new File(FilenameUtil.normalize(relativePath));
         File dir = null;
 
         if (parentFile.isAbsolute() && (!relativeFile.isAbsolute())) {
@@ -203,7 +203,7 @@ public final class Files {
             }
 
             final File absoluteFile = new File(dir, relativeFile.getPath());
-            return Filenames.normalize(absoluteFile.getAbsolutePath());
+            return FilenameUtil.normalize(absoluteFile.getAbsolutePath());
         }
         return relativePath;
     }
@@ -232,10 +232,10 @@ public final class Files {
 
             // parentFile must be absolute
             if (parentFile.isAbsolute()) {
-                final String dirPath = Filenames.normalize(parentFile
+                final String dirPath = FilenameUtil.normalize(parentFile
                         .getAbsolutePath());
 
-                final String normalizedAbsolutePath = Filenames
+                final String normalizedAbsolutePath = FilenameUtil
                         .normalize(absolutePath);
                 int dirLength = dirPath.length();
 
@@ -248,10 +248,10 @@ public final class Files {
                     }
                 }
             } else {
-                relativePath = Filenames.normalize(absoluteFile.getPath());
+                relativePath = FilenameUtil.normalize(absoluteFile.getPath());
             }
         } else {
-            relativePath = Filenames.normalize(absoluteFile.getPath());
+            relativePath = FilenameUtil.normalize(absoluteFile.getPath());
         }
 
         return relativePath;
@@ -331,7 +331,7 @@ public final class Files {
         /*
          * Forces static initialization 
          */
-        final Files placebo = new Files();
+        final FileUtil placebo = new FileUtil();
         final ClassLoader cl = placebo.getClass().getClassLoader();
 
         if (cl == null) {

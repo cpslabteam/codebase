@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.io.DataOutput;
 import java.io.DataInput;
 
-import codebase.Binary;
+import codebase.BinaryUtil;
 
 
 /**
@@ -86,7 +86,7 @@ public final class BitVector {
                 /*
                  * sum bits per byte
                  */
-                c += Binary.getSetBits(bits[i] & byteIndexMask);
+                c += BinaryUtil.getSetBits(bits[i] & byteIndexMask);
                 cachedCount = c;
             }
         }

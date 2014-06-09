@@ -99,7 +99,7 @@ public class StringLiteralConverter
                     "Max read length for a string literal exceeded.");
         }
 
-        return codebase.Strings.unstringify(sb.toString());
+        return codebase.StringUtil.unstringify(sb.toString());
     }
 
     /**
@@ -114,7 +114,7 @@ public class StringLiteralConverter
         assert dataOutput != null;
         assert object != null;
 
-        final String s = codebase.Strings.stringify(object.toString());
+        final String s = codebase.StringUtil.stringify(object.toString());
         dataOutput.write(s.getBytes());
     }
 }

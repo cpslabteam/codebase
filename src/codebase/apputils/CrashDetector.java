@@ -36,7 +36,7 @@ public class CrashDetector {
      * @param directory the directory where the file is to be created.
      */
     public CrashDetector(final String directory) {
-        lockFilePath = codebase.Filenames.concat(directory,
+        lockFilePath = codebase.FilenameUtil.concat(directory,
                 CRASH_LOCK_FILE_NAME);
     }
 

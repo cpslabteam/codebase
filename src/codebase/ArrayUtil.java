@@ -15,7 +15,7 @@ import java.lang.reflect.Array;
  * 
  * @since Created on 18/Nov/2004
  */
-public final class Arrays {
+public final class ArrayUtil {
 
     /*
      * Tests if two object arrays are equal!
@@ -467,7 +467,7 @@ public final class Arrays {
             final Object[] oa = (Object[]) o;
             Object[] result = new Object[] {};
             for (int i = 0; i < oa.length; i++) {
-                result = codebase.Arrays.append(result, flatten(oa[i]));
+                result = codebase.ArrayUtil.append(result, flatten(oa[i]));
             }
             return result;
         } else {
@@ -876,7 +876,7 @@ public final class Arrays {
     /**
      * Avoid instantiation of utility class.
      */
-    private Arrays() {
+    private ArrayUtil() {
     }
 
 }

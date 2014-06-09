@@ -66,7 +66,7 @@ import java.util.Collection;
  *         Cooper <a href="mailto:jeremias@apache.org">Jeremias Maerki</a>, Stephen
  *         Colebourne
  */
-public final class Filenames {
+public final class FilenameUtil {
     private static final String FILE_PROTOCOL_IDENTIFIER = "file";
 
     /**
@@ -1063,7 +1063,7 @@ public final class Filenames {
     /**
      * Prevent instantiation.
      */
-    private Filenames() {
+    private FilenameUtil() {
     }
 
     /**
