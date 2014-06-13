@@ -131,4 +131,33 @@ public class TimeoutInputStream extends
             throw new IOException("Interruped aquiring read semaphore in TimeoutInputStream");
         }
     }
+
+    @Override
+    public int read(byte b[]) throws IOException {
+        int i = 0;
+        while (i < b.length) {
+            b[i] = (byte) this.read();
+            i++;
+        }
+        return i;
+    }
+
+    @Override
+    public int read(byte[] b, int off, int len) throws IOException {
+        int i = off;
+        while (i < (off + len)) {
+            b[i] = (byte) this.read();
+            i++;
+        }
+        return i;
+    }
+
+    @Override
+    public int available() throws IOException {
+        int available = 0;
+        if (dataToClient.availablePermits() > 0)
+            available++;
+        available += in.available();
+        return available;
+    }
 }
