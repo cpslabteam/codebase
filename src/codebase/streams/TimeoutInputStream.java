@@ -41,6 +41,12 @@ public class TimeoutInputStream extends
     private int message;
 
     /**
+     * Indicates if we have unread messages. In case we have, the DataReader thread should
+     * not be ask to read (i.e. dataFromDecorated should not be released).
+     */
+    private boolean unreadMessage = false;
+
+    /**
      * Last exception that occurred, if any. Can be <code>null</code>.
      */
     private IOException ioexception;
@@ -60,7 +66,9 @@ public class TimeoutInputStream extends
                         ioexception = null;
                     } catch (IOException e) {
                         ioexception = e;
+                        e.printStackTrace();
                     }
+                    unreadMessage = true;
                     dataToClient.release();
                 }
             } catch (InterruptedException ex) {
@@ -72,7 +80,7 @@ public class TimeoutInputStream extends
         }
     };
 
-    private final DataReader dataReader = new DataReader();
+    private final DataReader dataReader;
 
     /**
      * Instantiates a new timeout stream decorator with default timeout.
@@ -92,11 +100,11 @@ public class TimeoutInputStream extends
      */
     public TimeoutInputStream(final InputStream in, final int timeout) {
         super(in);
-
         if (timeout <= 0) {
             throw new IllegalArgumentException("Timeout must be positive.");
         }
         streamTimeout = timeout;
+        dataReader = new DataReader();
         dataReader.start();
     }
 
@@ -107,23 +115,24 @@ public class TimeoutInputStream extends
     }
 
     @Override
-    public int read() throws IOException {
-        dataFromDecorated.release();
-        Thread.yield();
-
+    public synchronized int read() throws IOException {
+        /**
+         * If we have an unread message then we don't need to ask for the producer thread
+         * (DataReader) to give us a new reading.
+         */
+        if (!unreadMessage)
+            dataFromDecorated.release();
         try {
             /*
              * Check that the reader thread is not blocked inside 'in.read()'
              */
             if (dataToClient.tryAcquire(this.streamTimeout, TimeUnit.MILLISECONDS)) {
-                if (ioexception == null)
+                if (ioexception == null) {
+                    unreadMessage = false;
                     return message;
-                else
+                } else
                     throw ioexception;
             } else {
-                /*
-                 * Trouble: DTR is still down then we are locked somewhere!
-                 */
                 throw new TimeoutException("Could not read from decorated input stream after "
                         + streamTimeout + TimeUnit.MILLISECONDS.toString());
             }
