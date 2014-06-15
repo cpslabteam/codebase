@@ -58,9 +58,7 @@ public class TestTimeoutInputStream extends
         assertEquals(s.read(b), 2);
         assertEquals(b[0], 'X');
         assertEquals(b[1], 'Y');
-
-        assertEquals(s.read(b), 1);
-        assertEquals(b[0], 'Z');
+        assertEquals(s.read(), 'Z');
 
         // Sanity check
         assertEquals(s.available(), 0);
