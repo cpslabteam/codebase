@@ -81,11 +81,7 @@ public class TimeoutOutputStream extends
                 while (true) {
                     dataFromClient.acquire();
                     try {
-                        //System.out.println("DW:" + new String(message));
-                        //long millis = System.currentTimeMillis();
                         out.write(message);
-                        //System.out.println("Took " + (System.currentTimeMillis() - millis)
-                        //        + " millis");
                         ioexception = null;
                         dataToDecorated.release();
                     } catch (IOException e) {
@@ -251,7 +247,6 @@ public class TimeoutOutputStream extends
              */
             if (dataToDecorated.tryAcquire(this.streamTimeout, this.streamTimeoutUnit)) {
                 dataToDecorated.release();
-                //System.out.println("writen: '" + new String(message) + "'");
 
                 if (ioexception != null)
                     throw ioexception;
