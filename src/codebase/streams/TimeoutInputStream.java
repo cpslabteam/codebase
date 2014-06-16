@@ -18,7 +18,7 @@ public class TimeoutInputStream extends
     /**
      * Port default timeout in milliseconds for open, read and write operations.
      */
-    private static final int TIMEOUT_MILLIS = 2000;
+    private static final int DEFAULT_TIMEOUT_MILLIS = 2000;
 
     /**
      * The timeout for open, message send and receive operations.
@@ -88,17 +88,18 @@ public class TimeoutInputStream extends
      * @param in the input stream to be decorated from where the reading will take place.
      */
     public TimeoutInputStream(final InputStream in) {
-        this(in, TIMEOUT_MILLIS);
+        this(in, DEFAULT_TIMEOUT_MILLIS, TimeUnit.MILLISECONDS);
     }
 
     /**
      * Instantiates a new timeout stream decorator with the given timeout.
-     * 
+     *
      * @param in the input stream to be decorated from where the reading will take place.
      * @param timeout the driver timeout parameter for open, read and write operations in
      *            millis. Must be positive.
+     * @param timeoutUnit the units of the timeout parameter
      */
-    public TimeoutInputStream(final InputStream in, final int timeout) {
+    public TimeoutInputStream(final InputStream in, final int timeout, TimeUnit milliseconds) {
         super(in);
         if (timeout <= 0) {
             throw new IllegalArgumentException("Timeout must be positive.");
@@ -122,11 +123,15 @@ public class TimeoutInputStream extends
          */
         if (!unreadMessage)
             dataFromDecorated.release();
+        
+//        assert dataFromDecorated.availablePermits() == 0 : "";
+        
         try {
             /*
              * Check that the reader thread is not blocked inside 'in.read()'
              */
             if (dataToClient.tryAcquire(this.streamTimeout, TimeUnit.MILLISECONDS)) {
+                
                 if (ioexception == null) {
                     unreadMessage = false;
                     return message;

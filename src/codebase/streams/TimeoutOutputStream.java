@@ -23,7 +23,7 @@ public class TimeoutOutputStream extends
     /**
      * Port default timeout in milliseconds for open, read and write operations.
      */
-    private static final int TIMEOUT_MILLIS = 2000;
+    private static final int DEFAULT_TIMEOUT_MILLIS = 2000;
 
     /**
      * The timeout for open, message send and receive operations.
@@ -109,7 +109,7 @@ public class TimeoutOutputStream extends
      * @param out the input stream to be decorated from where the reading will take place.
      */
     public TimeoutOutputStream(final OutputStream out) {
-        this(out, TIMEOUT_MILLIS, TimeUnit.MILLISECONDS);
+        this(out, DEFAULT_TIMEOUT_MILLIS, TimeUnit.MILLISECONDS);
     }
 
     /**
