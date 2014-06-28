@@ -4,6 +4,11 @@ import java.io.FilterInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
+import shared.properties.api.IProperty;
+import shared.properties.base.DefaultValueStore;
+import shared.properties.base.NumberPropertyType;
+import shared.properties.base.Property;
+
 /**
  * An input stream that waits for a fixed time each time before reading form another
  * stream.
@@ -16,12 +21,12 @@ public class DelayedInputStream extends
     /**
      * The the number of bytes per second.
      */
-    private final int intervalMillis;
+    private final IProperty intervalProperty;
 
     /**
      * Constructs an input stream that converges a predefined bandwidth.
      * 
-     * @param interval the time to wait before sending the message.
+     * @param interval the time to wait before sending the message in milliseconds.
      * @param input The input stream to be wrapped.
      * @throws IllegalArgumentException if the bandwidth is not positive
      */
@@ -30,8 +35,38 @@ public class DelayedInputStream extends
         if (interval <= 0) {
             throw new IllegalArgumentException("The interval must be positive");
         }
+        this.intervalProperty =
+            new Property.PropertyBuilder("Interval", new NumberPropertyType())
+                    .setCloneable(true)
+                    .setName("Stream Interval")
+                    .setReadOnly(false)
+                    .setTransient(true)
+                    .setValueStore(new DefaultValueStore(interval))
+                    .setDescription(
+                            "Interrval between messages of this InputStream in millisenconds.")
+                    .build();
+    }
 
-        intervalMillis = interval;
+    /**
+     * Constructs an input stream that converges a predefined bandwidth.
+     * 
+     * @param intervalProperty the time to wait before sending the message in
+     *            milliseconds. Must be a {@link NumberPropertyType}. This stream will be
+     *            attached to this property and each update in the property's value will
+     *            instantly affect the stream
+     * @param input The input stream to be wrapped.
+     * @throws IllegalArgumentException if the bandwidth is not positive
+     */
+    public DelayedInputStream(final InputStream input, final IProperty intervalProperty) {
+        super(input);
+        if (!intervalProperty.getPropertyType().equals(new NumberPropertyType())) {
+            throw new IllegalArgumentException("The property must be a "
+                    + NumberPropertyType.class.getSimpleName() + ".");
+        }
+        if ((Integer) intervalProperty.getValue() <= 0) {
+            throw new IllegalArgumentException("The interval must be positive");
+        }
+        this.intervalProperty = intervalProperty;
     }
 
 
@@ -48,7 +83,7 @@ public class DelayedInputStream extends
             return c;
 
         try {
-            Thread.sleep(intervalMillis);
+            Thread.sleep((Integer) intervalProperty.getValue());
         } catch (InterruptedException e) {
             return -1;
         }
@@ -73,7 +108,7 @@ public class DelayedInputStream extends
             return nr;
 
         try {
-            Thread.sleep(intervalMillis);
+            Thread.sleep((Integer) intervalProperty.getValue());
         } catch (InterruptedException e) {
             return -1;
         }
