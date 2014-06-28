@@ -9,7 +9,6 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>codebase</groupId>
 	<artifactId>codebase</artifactId>
-	<version>1.0.1-SNAPSHOT</version>
 	<description>Codebase utility classes</description>
 	<name>${bundle.symbolicName}</name>
 
