@@ -104,7 +104,7 @@ public class TimeoutInputStream extends
      *            millis. Must be positive.
      * @param timeoutUnit the units of the timeout parameter
      */
-    public TimeoutInputStream(final InputStream in, final int timeout, TimeUnit milliseconds) {
+    public TimeoutInputStream(final InputStream in, final int timeout, TimeUnit timeoutUnit) {
         super(in);
         if (timeout <= 0) {
             throw new IllegalArgumentException("Timeout must be positive.");
@@ -130,7 +130,7 @@ public class TimeoutInputStream extends
      */
     public TimeoutInputStream(final InputStream in,
                               final IProperty timeoutProperty,
-                              TimeUnit milliseconds) {
+                              TimeUnit timeoutUnit) {
         super(in);
         if (!timeoutProperty.getPropertyType().equals(new NumberPropertyType())) {
             throw new IllegalArgumentException("The property must be a "

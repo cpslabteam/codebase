@@ -6,6 +6,11 @@ import java.io.OutputStream;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
 
+import shared.properties.api.IProperty;
+import shared.properties.base.DefaultValueStore;
+import shared.properties.base.NumberPropertyType;
+import shared.properties.base.Property;
+
 /**
  * An output stream decorator that times out (instead of blocking) on write operations.
  * <p>
@@ -26,9 +31,9 @@ public class TimeoutOutputStream extends
     private static final int DEFAULT_TIMEOUT_MILLIS = 2000;
 
     /**
-     * The timeout for open, message send and receive operations.
+     * The timeout property.
      */
-    private final int streamTimeout;
+    private final IProperty timeoutProperty;
 
     /**
      * The timeout unit specified for {@link #driverTimeoutUnit}.
@@ -90,8 +95,8 @@ public class TimeoutOutputStream extends
                 }
             } catch (InterruptedException ex) {
                 /*
-                 * If the thread is stopped its not a problem: we just ignore it since we are 
-                 * not locking any resources. We are being stopped for shutdown.
+                 * If the thread is stopped its not a problem: we just ignore it since we
+                 * are not locking any resources. We are being stopped for shutdown.
                  */
             }
         }
@@ -117,7 +122,39 @@ public class TimeoutOutputStream extends
      */
     public TimeoutOutputStream(final OutputStream out, final int timeout, final TimeUnit timeoutUnit) {
         super(out);
-        streamTimeout = timeout;
+        if (timeout <= 0) {
+            throw new IllegalArgumentException("Timeout must be positive.");
+        }
+        timeoutProperty =
+            new Property.PropertyBuilder("Timeout", new NumberPropertyType()).setCloneable(true)
+                    .setName("Stream Timeout").setReadOnly(false).setTransient(true)
+                    .setValueStore(new DefaultValueStore(timeout))
+                    .setDescription("Timeout of this OutputStream in millisenconds.").build();
+        streamTimeoutUnit = timeoutUnit;
+    }
+
+    /**
+     * Instantiates a new timeout stream decorator with the given timeout.
+     * 
+     * @param in the output stream to be decorated from where the reading will take place.
+     * @param timeout the driver timeout parameter for open, read and write operations in
+     *            millis. Must be a {@link NumberPropertyType}. This stream will be
+     *            attached to this property and each update in the property's value will
+     *            instantly affect the stream
+     * @param timeoutUnit the units of the timeout parameter
+     */
+    public TimeoutOutputStream(final OutputStream out,
+                               final IProperty timeoutProperty,
+                               TimeUnit timeoutUnit) {
+        super(out);
+        if (!timeoutProperty.getPropertyType().equals(new NumberPropertyType())) {
+            throw new IllegalArgumentException("The property must be a "
+                    + NumberPropertyType.class.getSimpleName() + ".");
+        }
+        if ((Integer) timeoutProperty.getValue() <= 0) {
+            throw new IllegalArgumentException("Timeout must be positive.");
+        }
+        this.timeoutProperty = timeoutProperty;
         streamTimeoutUnit = timeoutUnit;
     }
 
@@ -154,7 +191,7 @@ public class TimeoutOutputStream extends
      * Closes the timeout output stream and the decorated output stream.
      * 
      * @see java.io.FilterOutputStream#close()
-     * @throws IOException if the decorated if the decorated stream throws one 
+     * @throws IOException if the decorated if the decorated stream throws one
      */
     @Override
     public synchronized void close() throws IOException {
@@ -163,7 +200,7 @@ public class TimeoutOutputStream extends
         if (dataWritter != null) {
             dataWritter.interrupt();
             try {
-                dataWritter.join(TimeoutOutputStream.this.streamTimeout);
+                dataWritter.join((Integer) this.timeoutProperty.getValue());
                 if (!dataWritter.isAlive()) {
                     isClosed = true;
                     super.close();
@@ -195,7 +232,7 @@ public class TimeoutOutputStream extends
      * <p>
      * Note: Does not check if the decorated stream is closed. This behavior is consistent
      * with the behavior of {@link FilterOutputStream}.
-     *
+     * 
      * @param b the byte[] message to be written
      * @param off the offset to write on. Must be smaller that b.lenght
      * @param len the length the number of bytes to write in the buffer
@@ -226,16 +263,18 @@ public class TimeoutOutputStream extends
 
         try {
             /*
-             * Checks if it the last message was sent.
-             * This way, there is no need for the write() method to be synchronized.
+             * Checks if it the last message was sent. This way, there is no need for the
+             * write() method to be synchronized.
              */
-            if (!dataToDecorated.tryAcquire(this.streamTimeout, this.streamTimeoutUnit)) {
+            if (!dataToDecorated.tryAcquire((Integer) this.timeoutProperty.getValue(),
+                    this.streamTimeoutUnit)) {
                 throw new TimeoutException("Could not write to decorated output stream after "
-                        + streamTimeout + streamTimeoutUnit.toString());
+                        + (Integer) this.timeoutProperty.getValue() + streamTimeoutUnit.toString());
             }
 
             /*
-             * Put the message in the buffer and wait for the DataWritter thread to consume it
+             * Put the message in the buffer and wait for the DataWritter thread to
+             * consume it
              */
             message = b.clone();
 
@@ -243,19 +282,22 @@ public class TimeoutOutputStream extends
             Thread.yield();
 
             /*
-             * Check that the writer thread has consumed the message and is not blocked inside 'in.read()'
+             * Check that the writer thread has consumed the message and is not blocked
+             * inside 'in.read()'
              */
-            if (dataToDecorated.tryAcquire(this.streamTimeout, this.streamTimeoutUnit)) {
+            if (dataToDecorated.tryAcquire((Integer) this.timeoutProperty.getValue(),
+                    this.streamTimeoutUnit)) {
                 dataToDecorated.release();
 
                 if (ioexception != null)
                     throw ioexception;
             } else {
                 /*
-                 * Trouble: The writer thread is locked. The decorated output stream appears to be locked.  
+                 * Trouble: The writer thread is locked. The decorated output stream
+                 * appears to be locked.
                  */
                 throw new TimeoutException("Could not write to decorated output stream after "
-                        + streamTimeout + streamTimeoutUnit.toString());
+                        + (Integer) this.timeoutProperty.getValue() + streamTimeoutUnit.toString());
             }
         } catch (InterruptedException e) {
             throw new IOException("Interruped aquiring write semaphore in TimeoutOutputStream");
