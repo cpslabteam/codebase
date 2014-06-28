@@ -5,7 +5,7 @@ import java.io.DataInputStream;
 import java.io.EOFException;
 import java.io.IOException;
 
-import codebase.Binary;
+import codebase.BinaryUtil;
 
 /**
  * A {@link DataInput} that reads data from a byte[].
@@ -49,7 +49,7 @@ public class ByteArrayDataInput
         // TODO: Re-think all asserts
         assert 0 <= pos && pos < inputBuffer.length : "Position is valid";
 
-        return ((int) inputBuffer[pos++]) & Binary.INT_LOW_BYTE_MASK;
+        return ((int) inputBuffer[pos++]) & BinaryUtil.INT_LOW_BYTE_MASK;
     }
 
     /**
@@ -83,18 +83,18 @@ public class ByteArrayDataInput
 
     @Override
     public final char readChar() throws IOException {
-        if (pos > inputBuffer.length - Binary.SIZE_OF_CHAR) {
+        if (pos > inputBuffer.length - BinaryUtil.SIZE_OF_CHAR) {
             throw new EOFException("Not enough bytes left to read a byte");
         }
         
         final int b1 = read();
         final int b2 = read();
-        return (char) ((b1 << Binary.BIT_SIZE_OF_BYTE) + (b2 << 0));
+        return (char) ((b1 << BinaryUtil.BIT_SIZE_OF_BYTE) + (b2 << 0));
     }
 
     @Override
     public final double readDouble() throws IOException {
-        if (pos > inputBuffer.length - Binary.SIZE_OF_DOUBLE) {
+        if (pos > inputBuffer.length - BinaryUtil.SIZE_OF_DOUBLE) {
             throw new EOFException("Not enough bytes left to read a double");
         }
         
@@ -103,7 +103,7 @@ public class ByteArrayDataInput
 
     @Override
     public final float readFloat() throws IOException {
-        if (pos > inputBuffer.length - Binary.SIZE_OF_FLOAT) {
+        if (pos > inputBuffer.length - BinaryUtil.SIZE_OF_FLOAT) {
             throw new EOFException("Not enough bytes left to read a float");
         }
         
@@ -123,7 +123,7 @@ public class ByteArrayDataInput
 
     @Override
     public final int readInt() throws IOException {
-        if (pos > inputBuffer.length - Binary.SIZE_OF_INT) {
+        if (pos > inputBuffer.length - BinaryUtil.SIZE_OF_INT) {
             throw new EOFException("Not enough bytes left to read a float");
         }
         
@@ -131,8 +131,8 @@ public class ByteArrayDataInput
         final int b2 = read();
         final int b3 = read();
         final int b4 = read();
-        return ((b1 << Binary.BIT_SIZE_OF_THREE_BYTES) + (b2 << Binary.BIT_SIZE_OF_TWO_BYTES)
-                + (b3 << Binary.BIT_SIZE_OF_BYTE) + (b4 << 0));
+        return ((b1 << BinaryUtil.BIT_SIZE_OF_THREE_BYTES) + (b2 << BinaryUtil.BIT_SIZE_OF_TWO_BYTES)
+                + (b3 << BinaryUtil.BIT_SIZE_OF_BYTE) + (b4 << 0));
     }
 
     @Override
@@ -176,16 +176,16 @@ public class ByteArrayDataInput
 
     @Override
     public final long readLong() throws IOException {
-        final byte[] readBuffer = new byte[Binary.SIZE_OF_LONG];
-        readFully(readBuffer, 0, Binary.SIZE_OF_LONG);
+        final byte[] readBuffer = new byte[BinaryUtil.SIZE_OF_LONG];
+        readFully(readBuffer, 0, BinaryUtil.SIZE_OF_LONG);
         //CHECKSTYLE:OFF - uses byte position and number of bit rotations
         return (((long) readBuffer[0] << 56)
-                + ((long) (readBuffer[1] & Binary.INT_LOW_BYTE_MASK) << 48)
-                + ((long) (readBuffer[2] & Binary.INT_LOW_BYTE_MASK) << 40)
-                + ((long) (readBuffer[3] & Binary.INT_LOW_BYTE_MASK) << 32)
-                + ((long) (readBuffer[4] & Binary.INT_LOW_BYTE_MASK) << 24)
-                + ((long) (readBuffer[5] & Binary.INT_LOW_BYTE_MASK) << 16)
-                + ((long) (readBuffer[6] & Binary.INT_LOW_BYTE_MASK) << 8) + ((long) (readBuffer[7] & Binary.INT_LOW_BYTE_MASK) << 0));
+                + ((long) (readBuffer[1] & BinaryUtil.INT_LOW_BYTE_MASK) << 48)
+                + ((long) (readBuffer[2] & BinaryUtil.INT_LOW_BYTE_MASK) << 40)
+                + ((long) (readBuffer[3] & BinaryUtil.INT_LOW_BYTE_MASK) << 32)
+                + ((long) (readBuffer[4] & BinaryUtil.INT_LOW_BYTE_MASK) << 24)
+                + ((long) (readBuffer[5] & BinaryUtil.INT_LOW_BYTE_MASK) << 16)
+                + ((long) (readBuffer[6] & BinaryUtil.INT_LOW_BYTE_MASK) << 8) + ((long) (readBuffer[7] & BinaryUtil.INT_LOW_BYTE_MASK) << 0));
         //CHECKSTYLE:ON
     }
 
@@ -193,7 +193,7 @@ public class ByteArrayDataInput
     public final short readShort() throws IOException {
         final int b1 = read();
         final int b2 = read();
-        return (short) ((b1 << Binary.BIT_SIZE_OF_BYTE) + (b2 << 0));
+        return (short) ((b1 << BinaryUtil.BIT_SIZE_OF_BYTE) + (b2 << 0));
     }
 
     @Override
@@ -206,7 +206,7 @@ public class ByteArrayDataInput
     public final int readUnsignedShort() throws IOException {
         final int b1 = read();
         final int b2 = read();
-        return (b1 << Binary.BIT_SIZE_OF_BYTE) + (b2 << 0);
+        return (b1 << BinaryUtil.BIT_SIZE_OF_BYTE) + (b2 << 0);
     }
 
     @Override

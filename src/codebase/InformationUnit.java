@@ -56,11 +56,11 @@ public final class InformationUnit {
         final String result;
 
         if (bytes >= GB) {
-            result = Double.toString(Math.round(gb(bytes), decimals)) + GB_UNIT;
+            result = Double.toString(MathUtil.round(gb(bytes), decimals)) + GB_UNIT;
         } else if (bytes >= MB) {
-            result = Double.toString(Math.round(mb(bytes), decimals)) + MB_UNIT;
+            result = Double.toString(MathUtil.round(mb(bytes), decimals)) + MB_UNIT;
         } else if (bytes >= KB) {
-            result = Double.toString(Math.round(kb(bytes), decimals)) + KB_UNIT;
+            result = Double.toString(MathUtil.round(kb(bytes), decimals)) + KB_UNIT;
         } else {
             result = Long.toString(bytes) + BYTE_UNIT;
         }

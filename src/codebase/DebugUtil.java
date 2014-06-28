@@ -22,7 +22,7 @@ import java.util.Iterator;
  * 
  * @since Created on 18/Nov/2004
  */
-public final class Debug {
+public final class DebugUtil {
 
     /**
      * Default string encoding.
@@ -39,7 +39,7 @@ public final class Debug {
      */
     public static void dump(final Iterator<?> i) {
         try {
-            Debug.dump(i, System.out);
+            DebugUtil.dump(i, System.out);
         } catch (IOException e) {
             //CHECKSTYLE:OFF
             //This is a debug utility method that really should print to the screen.
@@ -77,7 +77,7 @@ public final class Debug {
                         "Exception when performing i.next():" + e.toString());
             }
             try {
-                str = codebase.Debug.toString(o);
+                str = codebase.DebugUtil.toString(o);
             } catch (Exception e) {
                 throw new IllegalStateException(
                         "Exception when performing o.toString():"
@@ -94,13 +94,13 @@ public final class Debug {
 
     /**
      * Prints the dump of an object to the console by calling
-     * {@link Debug#toString(Object)}.
+     * {@link DebugUtil#toString(Object)}.
      * 
      * @param o the object to be dumped
      */
     public static void dump(final Object o) {
         try {
-            Debug.dump(o, System.out);
+            DebugUtil.dump(o, System.out);
         } catch (IOException e) {
             //CHECKSTYLE:OFF
             //This is a debug utility method that really should print to the screen.
@@ -110,26 +110,26 @@ public final class Debug {
     }
 
     /**
-     * Dumps an object to a stream the console by calling {@link Debug#toString(Object)}.
+     * Dumps an object to a stream the console by calling {@link DebugUtil#toString(Object)}.
      * 
      * @param o the object to be dumped
      * @param out the output stream to write the object
      * @throws IOException if an exception occurs while writing on the output stream
      */
     public static void dump(final Object o, final OutputStream out) throws IOException {
-        out.write(Debug.toString(o).getBytes(DEFAULT_STRING_ENCODING));
+        out.write(DebugUtil.toString(o).getBytes(DEFAULT_STRING_ENCODING));
         out.flush();
         System.out.flush();
     }
 
     /**
-     * Prints an object[] to the console by calling {@link Debug#toString(Object[])}.
+     * Prints an object[] to the console by calling {@link DebugUtil#toString(Object[])}.
      * 
      * @param objs the object array to be dumped
      */
     public static void dump(final Object[] objs) {
         try {
-            Debug.dump(objs, System.out);
+            DebugUtil.dump(objs, System.out);
         } catch (IOException e) {
             //CHECKSTYLE:OFF
             //This is a debug utility method that really should print to the screen.
@@ -139,7 +139,7 @@ public final class Debug {
     }
 
     /**
-     * Dumps an object[] to a stream by calling {@link Debug#toString(Object[])}.
+     * Dumps an object[] to a stream by calling {@link DebugUtil#toString(Object[])}.
      * 
      * @param objs the objects to be dumped
      * @param out the output stream to write the object
@@ -165,7 +165,7 @@ public final class Debug {
      */
     public static void dumpToHexString(final byte[] buffer) {
         try {
-            Debug.dumpToHexString(buffer, System.out);
+            DebugUtil.dumpToHexString(buffer, System.out);
         } catch (IOException e) {
             //CHECKSTYLE:OFF
             //This is a debug utility method that really should print to the screen.
@@ -183,7 +183,7 @@ public final class Debug {
      */
     public static void dumpToHexString(final byte[] buffer, final int size) {
         try {
-            Debug.dumpToHexString(buffer, System.out, size);
+            DebugUtil.dumpToHexString(buffer, System.out, size);
         } catch (IOException e) {
             //CHECKSTYLE:OFF
             //This is a debug utility method that really should print to the screen.
@@ -239,7 +239,7 @@ public final class Debug {
      */
     public static void dumpWithClass(final Object o) {
         try {
-            Debug.dumpWithClass(o, System.out);
+            DebugUtil.dumpWithClass(o, System.out);
         } catch (IOException e) {
             //CHECKSTYLE:OFF
             //This is a debug utility method that really should print to the screen.
@@ -275,9 +275,9 @@ public final class Debug {
      */
     public static String toHexStringDump(final byte[] buffer) {
         try {
-            final String result = Strings.visibleAsciiString(new String(buffer,
+            final String result = StringUtil.visibleAsciiString(new String(buffer,
                     DEFAULT_STRING_ENCODING), '.')
-                                  + "  " + Binary.toHexString(buffer);
+                                  + "  " + BinaryUtil.toHexString(buffer);
             return result;
         } catch (UnsupportedEncodingException e) {
             // this is an coding error situation - should never happen
@@ -338,7 +338,7 @@ public final class Debug {
                 break;
             }
             try {
-                str = codebase.Debug.toString(o);
+                str = codebase.DebugUtil.toString(o);
             } catch (Exception e) {
                 str = "Exception when performing o.toString():" + e.toString();
                 break;
@@ -373,11 +373,11 @@ public final class Debug {
             if (o instanceof Object[]) {
                 result = toString((Object[]) o);
             } else if (o instanceof byte[]) {
-                result = Arrays.toString((byte[]) o);
+                result = ArrayUtil.toString((byte[]) o);
             } else if (o instanceof int[]) {
-                result = Arrays.toString((int[]) o);
+                result = ArrayUtil.toString((int[]) o);
             } else if (o instanceof long[]) {
-                result = Arrays.toString((long[]) o);
+                result = ArrayUtil.toString((long[]) o);
             } else if (o instanceof String) {
                 result = "'" + o.toString() + "'";
             } else {
@@ -424,7 +424,7 @@ public final class Debug {
         if (o == null) {
             result = "null";
         } else {
-            result = o.getClass().toString() + ":" + Debug.toString(o);
+            result = o.getClass().toString() + ":" + DebugUtil.toString(o);
         }
 
         return result;
@@ -433,6 +433,6 @@ public final class Debug {
     /**
      * Prevent instantiation.
      */
-    private Debug() {
+    private DebugUtil() {
     }
 }

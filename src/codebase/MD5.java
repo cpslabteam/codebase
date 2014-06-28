@@ -131,7 +131,7 @@ public final class MD5 {
         // CHECKSTYLE:ON
 
         private static int rotateLeft(int x, int n) {
-            return ((x << n) | (x >>> (Binary.BIT_SIZE_OF_INTEGER - n)));
+            return ((x << n) | (x >>> (BinaryUtil.BIT_SIZE_OF_INTEGER - n)));
         }
 
         /**
@@ -155,7 +155,7 @@ public final class MD5 {
             int c = state[2];
             int d = state[3];
 
-            final int[] x = Binary.encodeBytesToIntegers(block, offset, BLOCK_TREATMENT_SIZE);
+            final int[] x = BinaryUtil.encodeBytesToIntegers(block, offset, BLOCK_TREATMENT_SIZE);
 
             /* Round 1 */
             a = FF(a, b, c, d, x[0], S11, 0xd76aa478); /* 1 */
@@ -246,7 +246,7 @@ public final class MD5 {
          * Number of positions in the array of integers that correspond to the size of 16
          * bytes
          */
-        private static final int NUM_POSITIONS = 16 / Binary.SIZE_OF_INT;
+        private static final int NUM_POSITIONS = 16 / BinaryUtil.SIZE_OF_INT;
 
         /**
          * The 4 integer array used to encode that status.
@@ -271,16 +271,16 @@ public final class MD5 {
         }
 
         private byte[] end() {
-            byte[] bits = new byte[Binary.BIT_SIZE_OF_BYTE];
-            for (int i = 0; i < Binary.BIT_SIZE_OF_BYTE; i++) {
-                final int displacement = (i * Binary.BIT_SIZE_OF_BYTE);
-                bits[i] = (byte) ((count >>> displacement) & Binary.INT_LOW_BYTE_MASK);
+            byte[] bits = new byte[BinaryUtil.BIT_SIZE_OF_BYTE];
+            for (int i = 0; i < BinaryUtil.BIT_SIZE_OF_BYTE; i++) {
+                final int displacement = (i * BinaryUtil.BIT_SIZE_OF_BYTE);
+                bits[i] = (byte) ((count >>> displacement) & BinaryUtil.INT_LOW_BYTE_MASK);
             }
             int index = ((int) (count >> 3)) & 0x3f;
             int padlen = (index < 56) ? (56 - index) : (120 - index);
             update(MD5Funcs.PADDING, padlen);
-            update(bits, Binary.BIT_SIZE_OF_BYTE);
-            return Binary.decodeIntegersToBytes(digest, 2 * Binary.BIT_SIZE_OF_BYTE);
+            update(bits, BinaryUtil.BIT_SIZE_OF_BYTE);
+            return BinaryUtil.decodeIntegersToBytes(digest, 2 * BinaryUtil.BIT_SIZE_OF_BYTE);
         }
 
         /**
@@ -329,7 +329,7 @@ public final class MD5 {
     /**
      * Size in bytes of the treatment unit. We perform the treatment in block of 64 bytes.
      */
-    private static final int BLOCK_TREATMENT_SIZE = DIGEST_SIZE * Binary.SIZE_OF_INT;
+    private static final int BLOCK_TREATMENT_SIZE = DIGEST_SIZE * BinaryUtil.SIZE_OF_INT;
 
     /**
      * Size of the blocks to be read from the stream.
@@ -344,7 +344,7 @@ public final class MD5 {
      * @throws IOException if a problem occurs while reading the stream
      */
     public static String getDigest(final InputStream input) throws IOException {
-        final String hexDigest = Binary.toHexString(getDigestRaw(input));
+        final String hexDigest = BinaryUtil.toHexString(getDigestRaw(input));
         return hexDigest;
     }
 
@@ -357,7 +357,7 @@ public final class MD5 {
      * @return An instance of String, with the MD5 result of a message.
      */
     public static String getDigest(final String s) {
-        final String hexDigest = Binary.toHexString(getDigestRaw(s, Strings.DEFAULT_STRING_ENCODING));
+        final String hexDigest = BinaryUtil.toHexString(getDigestRaw(s, StringUtil.DEFAULT_STRING_ENCODING));
         return hexDigest;
     }
 
@@ -373,7 +373,7 @@ public final class MD5 {
      * @return An instance of String, with the MD5 result of a message.
      */
     public static String getDigest(final String s, final String encoding) {
-        final String hexDigest = Binary.toHexString(getDigestRaw(s, encoding));
+        final String hexDigest = BinaryUtil.toHexString(getDigestRaw(s, encoding));
         return hexDigest;
     }
 

@@ -15,33 +15,42 @@ package codebase;
  * 
  * @since 1/Nov/2004
  */
-public final class Math {
+public final class MathUtil {
 
     /**
      * Powers of ten as long values 10^0; 10^1; 10^2 ...10^18.
      */
-    private static final long[] POWER10 = new long[] { 1L, 10L, 100L, 1000L, 10000L, 100000L,
-            1000000L, 10000000L, 100000000L, 1000000000L, 10000000000L, 100000000000L,
-            1000000000000L, 10000000000000L, 100000000000000L, 1000000000000000L,
-            10000000000000000L, 100000000000000000L, 1000000000000000000L };
+    private static final long[] POWER10 = new long[] { 1L, 10L, 100L, 1000L,
+            10000L, 100000L, 1000000L, 10000000L, 100000000L, 1000000000L,
+            10000000000L, 100000000000L, 1000000000000L, 10000000000000L,
+            100000000000000L, 1000000000000000L, 10000000000000000L,
+            100000000000000000L, 1000000000000000000L };
     /**
      * The closest log2 per byte.
      */
-    private static final byte[] LOG2_PER_BYTE = { 0, 0, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3,
-            4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5,
-            5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6,
-            6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6,
-            6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 7, 7, 7, 7,
-            7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7,
-            7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7,
-            7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7,
-            7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7,
-            7, 7, 7, 7, 7, 7, 7, 7 };
+    private static final byte[] LOG2_PER_BYTE = { 0, 0, 1, 1, 2, 2, 2, 2, 3, 3,
+            3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4,
+            5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5,
+            5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6,
+            6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6,
+            6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6,
+            6, 6, 6, 6, 6, 6, 6, 6, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7,
+            7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7,
+            7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7,
+            7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7,
+            7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7,
+            7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7,
+            7, 7, 7, 7 };
+
+    /**
+     * Used to obtain a fraction from an integer percent.
+     */
+    private static final double PERCENT_MULTIPLIER = 100.0;
 
     /**
      * Prevent from instantiating this class.
      */
-    private Math() {
+    private MathUtil() {
     }
 
     /**
@@ -139,10 +148,10 @@ public final class Math {
 
         // CHECKSTYLE:ON
 
-        int lg2 = LOG2_PER_BYTE[(int) ((l >>> log) & Binary.LONG_LOW_BYTE_MASK)];
+        int lg2 = LOG2_PER_BYTE[(int) ((l >>> log) & BinaryUtil.LONG_LOW_BYTE_MASK)];
         while (lg2 == 0 && log > 0) {
-            log -= Binary.BIT_SIZE_OF_BYTE;
-            lg2 = LOG2_PER_BYTE[(int) ((l >>> log) & Binary.LONG_LOW_BYTE_MASK)];
+            log -= BinaryUtil.BIT_SIZE_OF_BYTE;
+            lg2 = LOG2_PER_BYTE[(int) ((l >>> log) & BinaryUtil.LONG_LOW_BYTE_MASK)];
         }
         return log + lg2;
     }
@@ -165,10 +174,10 @@ public final class Math {
 
         // CHECKSTYLE:ON
 
-        int lg2 = LOG2_PER_BYTE[(i >>> log) & Binary.INT_LOW_BYTE_MASK];
+        int lg2 = LOG2_PER_BYTE[(i >>> log) & BinaryUtil.INT_LOW_BYTE_MASK];
         while (lg2 == 0 && log > 0) {
-            log -= Binary.BIT_SIZE_OF_BYTE;
-            lg2 = LOG2_PER_BYTE[(i >>> log) & Binary.INT_LOW_BYTE_MASK];
+            log -= BinaryUtil.BIT_SIZE_OF_BYTE;
+            lg2 = LOG2_PER_BYTE[(i >>> log) & BinaryUtil.INT_LOW_BYTE_MASK];
         }
         return log + lg2;
     }
@@ -181,7 +190,7 @@ public final class Math {
      */
     public static int hash(final double value) {
         final long bits = Double.doubleToLongBits(value);
-        return (int) (bits ^ (bits >>> Binary.BIT_SIZE_OF_INTEGER));
+        return (int) (bits ^ (bits >>> BinaryUtil.BIT_SIZE_OF_INTEGER));
     }
 
     /**
@@ -327,5 +336,26 @@ public final class Math {
             t += i;
         }
         return t;
+    }
+
+    /**
+     * Converts an integer with a percent value into the corresponding fraction.
+     * 
+     * @param percent the integer percent value.
+     * @return a value <i>v</i> such that <code>percent</code> = round(<i>v</i> *
+     *         <code>100</code>).
+     */
+    public static double percentToRatio(final int percent) {
+        return percent / PERCENT_MULTIPLIER;
+    }
+
+    /**
+     * Converts ratio to a percent value.
+     * 
+     * @param ratio the integer percent value.
+     * @return a value <i>v</i> such that <code>ratio</code> = <i>v</i> / <code>100</code>
+     */
+    public static int ratioToPercent(final double ratio) {
+        return (int) MathUtil.round(ratio * PERCENT_MULTIPLIER, 0);
     }
 }

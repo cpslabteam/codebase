@@ -113,23 +113,23 @@ public class NodeDisplayConverter
             final AttributeNode node = (AttributeNode) object;
             nodeRepresentation = "#" + node.getNumber() + " = A("
                                  + node.getInstanceNode() + ", "
-                                 + codebase.Strings.stringify(node.getName())
+                                 + codebase.StringUtil.stringify(node.getName())
                                  + ", "
-                                 + codebase.Strings.stringify(node.getValue())
+                                 + codebase.StringUtil.stringify(node.getValue())
                                  + ")";
         } else if (object instanceof InstanceNode) {
             final InstanceNode node = (InstanceNode) object;
             nodeRepresentation = "#"
                                  + node.getNumber()
                                  + " = I("
-                                 + codebase.Strings.stringify(node
+                                 + codebase.StringUtil.stringify(node
                                          .getTypeName()) + ")";
         } else if (object instanceof RelationNode) {
             final RelationNode node = (RelationNode) object;
             nodeRepresentation = "#"
                                  + node.getNumber()
                                  + " = R("
-                                 + codebase.Strings.stringify(node
+                                 + codebase.StringUtil.stringify(node
                                          .getTypeName()) + ", "
                                  + node.getSource() + ", " + node.getTarget()
                                  + ")";

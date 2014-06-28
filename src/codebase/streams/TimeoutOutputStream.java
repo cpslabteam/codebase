@@ -23,7 +23,7 @@ public class TimeoutOutputStream extends
     /**
      * Port default timeout in milliseconds for open, read and write operations.
      */
-    private static final int TIMEOUT_MILLIS = 2000;
+    private static final int DEFAULT_TIMEOUT_MILLIS = 2000;
 
     /**
      * The timeout for open, message send and receive operations.
@@ -81,11 +81,7 @@ public class TimeoutOutputStream extends
                 while (true) {
                     dataFromClient.acquire();
                     try {
-                        //System.out.println("DW:" + new String(message));
-                        //long millis = System.currentTimeMillis();
                         out.write(message);
-                        //System.out.println("Took " + (System.currentTimeMillis() - millis)
-                        //        + " millis");
                         ioexception = null;
                         dataToDecorated.release();
                     } catch (IOException e) {
@@ -109,7 +105,7 @@ public class TimeoutOutputStream extends
      * @param out the input stream to be decorated from where the reading will take place.
      */
     public TimeoutOutputStream(final OutputStream out) {
-        this(out, TIMEOUT_MILLIS, TimeUnit.MILLISECONDS);
+        this(out, DEFAULT_TIMEOUT_MILLIS, TimeUnit.MILLISECONDS);
     }
 
     /**
@@ -251,7 +247,6 @@ public class TimeoutOutputStream extends
              */
             if (dataToDecorated.tryAcquire(this.streamTimeout, this.streamTimeoutUnit)) {
                 dataToDecorated.release();
-                //System.out.println("writen: '" + new String(message) + "'");
 
                 if (ioexception != null)
                     throw ioexception;

@@ -7,7 +7,7 @@ package codebase;
  * purpose library class meant to be used by any code that must deal with binary
  * operations.
  */
-public final class Binary {
+public final class BinaryUtil {
 
     /**
      * Number of bits on a byte.
@@ -470,8 +470,8 @@ public final class Binary {
      *         significant byte.
      */
     public static char toChar(final byte b0, final byte b1) {
-        final int result = ((int) (b0 & Binary.INT_LOW_BYTE_MASK))
-                            | (((int) (b1 & Binary.INT_LOW_BYTE_MASK)) << BIT_SIZE_OF_BYTE);
+        final int result = ((int) (b0 & BinaryUtil.INT_LOW_BYTE_MASK))
+                            | (((int) (b1 & BinaryUtil.INT_LOW_BYTE_MASK)) << BIT_SIZE_OF_BYTE);
         return (char) result;
     }
 
@@ -587,16 +587,16 @@ public final class Binary {
                                 final byte b1,
                                 final byte b2,
                                 final byte b3) {
-        final int result = ((int) (b0 & Binary.INT_LOW_BYTE_MASK))
-                           | (((int) (b1 & Binary.INT_LOW_BYTE_MASK)) << BIT_SIZE_OF_BYTE)
-                           | (((int) (b2 & Binary.INT_LOW_BYTE_MASK)) << BIT_SIZE_OF_SHORT)
-                           | (((int) (b3 & Binary.INT_LOW_BYTE_MASK)) << BIT_SIZE_OF_THREE_BYTES);
+        final int result = ((int) (b0 & BinaryUtil.INT_LOW_BYTE_MASK))
+                           | (((int) (b1 & BinaryUtil.INT_LOW_BYTE_MASK)) << BIT_SIZE_OF_BYTE)
+                           | (((int) (b2 & BinaryUtil.INT_LOW_BYTE_MASK)) << BIT_SIZE_OF_SHORT)
+                           | (((int) (b3 & BinaryUtil.INT_LOW_BYTE_MASK)) << BIT_SIZE_OF_THREE_BYTES);
         return result;
     }
 
     /**
      * Prevent instantiation.
      */
-    private Binary() {
+    private BinaryUtil() {
     }
 }

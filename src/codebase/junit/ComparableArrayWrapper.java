@@ -3,7 +3,7 @@
  */
 package codebase.junit;
 
-import codebase.Arrays;
+import codebase.ArrayUtil;
 
 /**
  * A wrapper class for arrays to enable comparing them.
@@ -51,7 +51,7 @@ class ComparableArrayWrapper {
      *            {@link ComparableArrayWrapper}
      * @return <code>true</code> if the array being wrapped and the array passed as
      *         argument are both <code>null</code> or are equal element by element
-     * @see Arrays#equals(Object[], Object[])
+     * @see ArrayUtil#equals(Object[], Object[])
      * @see java.lang.Object#equals(java.lang.Object)
      * @throws IllegalArgumentException if the object being passed as argument is neither
      *             an object array nor a {@link ComparableArrayWrapper}
@@ -74,7 +74,7 @@ class ComparableArrayWrapper {
                 throw new IllegalArgumentException("Expecting an object array");
             }
 
-        final boolean isEqual = Arrays.equals(wrapped, anotherArray);
+        final boolean isEqual = ArrayUtil.equals(wrapped, anotherArray);
         return isEqual;
     }
 

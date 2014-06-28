@@ -18,7 +18,7 @@ public class TimeoutInputStream extends
     /**
      * Port default timeout in milliseconds for open, read and write operations.
      */
-    private static final int TIMEOUT_MILLIS = 2000;
+    private static final int DEFAULT_TIMEOUT_MILLIS = 2000;
 
     /**
      * The timeout for open, message send and receive operations.
@@ -41,6 +41,12 @@ public class TimeoutInputStream extends
     private int message;
 
     /**
+     * Indicates if we have unread messages. In case we have, the DataReader thread should
+     * not be ask to read (i.e. dataFromDecorated should not be released).
+     */
+    private boolean unreadMessage = false;
+
+    /**
      * Last exception that occurred, if any. Can be <code>null</code>.
      */
     private IOException ioexception;
@@ -60,7 +66,9 @@ public class TimeoutInputStream extends
                         ioexception = null;
                     } catch (IOException e) {
                         ioexception = e;
+                        e.printStackTrace();
                     }
+                    unreadMessage = true;
                     dataToClient.release();
                 }
             } catch (InterruptedException ex) {
@@ -72,7 +80,7 @@ public class TimeoutInputStream extends
         }
     };
 
-    private final DataReader dataReader = new DataReader();
+    private final DataReader dataReader;
 
     /**
      * Instantiates a new timeout stream decorator with default timeout.
@@ -80,23 +88,24 @@ public class TimeoutInputStream extends
      * @param in the input stream to be decorated from where the reading will take place.
      */
     public TimeoutInputStream(final InputStream in) {
-        this(in, TIMEOUT_MILLIS);
+        this(in, DEFAULT_TIMEOUT_MILLIS, TimeUnit.MILLISECONDS);
     }
 
     /**
      * Instantiates a new timeout stream decorator with the given timeout.
-     * 
+     *
      * @param in the input stream to be decorated from where the reading will take place.
      * @param timeout the driver timeout parameter for open, read and write operations in
      *            millis. Must be positive.
+     * @param timeoutUnit the units of the timeout parameter
      */
-    public TimeoutInputStream(final InputStream in, final int timeout) {
+    public TimeoutInputStream(final InputStream in, final int timeout, TimeUnit milliseconds) {
         super(in);
-
         if (timeout <= 0) {
             throw new IllegalArgumentException("Timeout must be positive.");
         }
         streamTimeout = timeout;
+        dataReader = new DataReader();
         dataReader.start();
     }
 
@@ -107,28 +116,62 @@ public class TimeoutInputStream extends
     }
 
     @Override
-    public int read() throws IOException {
-        dataFromDecorated.release();
-        Thread.yield();
-
+    public synchronized int read() throws IOException {
+        /**
+         * If we have an unread message then we don't need to ask for the producer thread
+         * (DataReader) to give us a new reading.
+         */
+        if (!unreadMessage)
+            dataFromDecorated.release();
+        
+//        assert dataFromDecorated.availablePermits() == 0 : "";
+        
         try {
             /*
              * Check that the reader thread is not blocked inside 'in.read()'
              */
             if (dataToClient.tryAcquire(this.streamTimeout, TimeUnit.MILLISECONDS)) {
-                if (ioexception == null)
+                
+                if (ioexception == null) {
+                    unreadMessage = false;
                     return message;
-                else
+                } else
                     throw ioexception;
             } else {
-                /*
-                 * Trouble: DTR is still down then we are locked somewhere!
-                 */
                 throw new TimeoutException("Could not read from decorated input stream after "
                         + streamTimeout + TimeUnit.MILLISECONDS.toString());
             }
         } catch (InterruptedException e) {
             throw new IOException("Interruped aquiring read semaphore in TimeoutInputStream");
         }
+    }
+
+    @Override
+    public int read(byte b[]) throws IOException {
+        int i = 0;
+        while (i < b.length) {
+            b[i] = (byte) this.read();
+            i++;
+        }
+        return i;
+    }
+
+    @Override
+    public int read(byte[] b, int off, int len) throws IOException {
+        int i = off;
+        while (i < (off + len)) {
+            b[i] = (byte) this.read();
+            i++;
+        }
+        return i;
+    }
+
+    @Override
+    public int available() throws IOException {
+        int available = 0;
+        if (dataToClient.availablePermits() > 0)
+            available++;
+        available += in.available();
+        return available;
     }
 }

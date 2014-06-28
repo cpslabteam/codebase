@@ -7,7 +7,7 @@ import java.io.FilterInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
-import codebase.Binary;
+import codebase.BinaryUtil;
 
 /**
  * A fast buffered input stream that is not thread safe.
@@ -166,7 +166,7 @@ public class FastBufferedInputStream extends
             if (pos >= count)
                 return -1;
         }
-        return buffered[pos++] & Binary.INT_LOW_BYTE_MASK;
+        return buffered[pos++] & BinaryUtil.INT_LOW_BYTE_MASK;
     }
 
     /**

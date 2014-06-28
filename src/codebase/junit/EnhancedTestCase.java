@@ -7,9 +7,9 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import codebase.Arrays;
-import codebase.Binary;
-import codebase.Debug;
+import codebase.ArrayUtil;
+import codebase.BinaryUtil;
+import codebase.DebugUtil;
 import codebase.iterators.ArrayIterator;
 
 import junit.framework.TestCase;
@@ -77,7 +77,7 @@ public class EnhancedTestCase extends
                 return false;
 
             final RefObject entry = (RefObject) o;
-            return Arrays.isEqualArrayDeep(entry.baseElem, baseElem);
+            return ArrayUtil.isEqualArrayDeep(entry.baseElem, baseElem);
         }
 
         /**
@@ -122,7 +122,7 @@ public class EnhancedTestCase extends
          *         of references.
          */
         public String toString() {
-            final String elementRepr = Debug.toString(baseElem);
+            final String elementRepr = DebugUtil.toString(baseElem);
             return "Element <" + elementRepr + "> expected <"
                     + Integer.valueOf(expectedRefCount).toString() + "> times; seen <"
                     + Integer.valueOf(actualRefCount) + "> times.";
@@ -251,8 +251,8 @@ public class EnhancedTestCase extends
     public static final void assertEquals(final char expected, final char actual) {
         if (expected != actual) {
             throw new junit.framework.AssertionFailedError("Expecting <" + safeChar(expected)
-                    + "> (" + (int) expected + ", 0x" + Binary.toHex(expected) + ") but found <"
-                    + safeChar(actual) + "> (" + (int) actual + ", 0x" + Binary.toHex(actual)
+                    + "> (" + (int) expected + ", 0x" + BinaryUtil.toHex(expected) + ") but found <"
+                    + safeChar(actual) + "> (" + (int) actual + ", 0x" + BinaryUtil.toHex(actual)
                     + ").");
         }
     }
@@ -265,8 +265,8 @@ public class EnhancedTestCase extends
      */
     public static final void assertEquals(final byte[] expected, final byte[] actual) {
         performBaseNullChecks(expected, actual);
-        performArrayEmptyChecks(Arrays.toByteArray(expected), Arrays.toByteArray(actual));
-        performArrayComparison(Arrays.toByteArray(expected), Arrays.toByteArray(actual));
+        performArrayEmptyChecks(ArrayUtil.toByteArray(expected), ArrayUtil.toByteArray(actual));
+        performArrayComparison(ArrayUtil.toByteArray(expected), ArrayUtil.toByteArray(actual));
     }
 
     /**
@@ -277,8 +277,8 @@ public class EnhancedTestCase extends
      */
     public static final void assertEquals(final int[] expected, final int[] actual) {
         performBaseNullChecks(expected, actual);
-        performArrayEmptyChecks(Arrays.toIntegerArray(expected), Arrays.toIntegerArray(actual));
-        performArrayComparison(Arrays.toIntegerArray(expected), Arrays.toIntegerArray(actual));
+        performArrayEmptyChecks(ArrayUtil.toIntegerArray(expected), ArrayUtil.toIntegerArray(actual));
+        performArrayComparison(ArrayUtil.toIntegerArray(expected), ArrayUtil.toIntegerArray(actual));
     }
 
     /**
@@ -289,8 +289,8 @@ public class EnhancedTestCase extends
      */    
     public static final void assertEquals(final long[] expected, final long[] actual) {
         performBaseNullChecks(expected, actual);
-        performArrayEmptyChecks(Arrays.toLongArray(expected), Arrays.toLongArray(actual));
-        performArrayComparison(Arrays.toLongArray(expected), Arrays.toLongArray(actual));
+        performArrayEmptyChecks(ArrayUtil.toLongArray(expected), ArrayUtil.toLongArray(actual));
+        performArrayComparison(ArrayUtil.toLongArray(expected), ArrayUtil.toLongArray(actual));
     }
 
     /**
@@ -440,7 +440,7 @@ public class EnhancedTestCase extends
                 ((RefObject) expectedElements.get(elemIndex)).incrementActualRefCount();
             } else {
                 throw new junit.framework.AssertionFailedError("The element <"
-                        + Debug.toString(element) + ">; at (0-based) row "
+                        + DebugUtil.toString(element) + ">; at (0-based) row "
                         + Integer.toString(rowNum) + " was not present in the expected iterator");
             }
         }
@@ -458,7 +458,7 @@ public class EnhancedTestCase extends
             if (!entry.isOk()) {
                 throw new junit.framework.AssertionFailedError(
                         "Mismatched number of occourrences on the "
-                                + "expected and actual iterators. " + Debug.toString(entry));
+                                + "expected and actual iterators. " + DebugUtil.toString(entry));
             }
         }
     }
@@ -497,8 +497,8 @@ public class EnhancedTestCase extends
                  */
                 if (!actualValue.toString().equals(expectedValue.toString())) {
                     throw new junit.framework.AssertionFailedError("Expected <"
-                            + Debug.toString(expectedValue) + ">; Actual <"
-                            + Debug.toString(actualValue) + ">  at (0-based) row "
+                            + DebugUtil.toString(expectedValue) + ">; Actual <"
+                            + DebugUtil.toString(actualValue) + ">  at (0-based) row "
                             + Integer.toString(rowNum));
                 }
             }
@@ -549,11 +549,11 @@ public class EnhancedTestCase extends
         }
 
         for (int i = 0; i < expectedArray.length; i++) {
-            if (!Arrays.isEqualArrayDeep(expectedArray[i], actualArray[i])) {
+            if (!ArrayUtil.isEqualArrayDeep(expectedArray[i], actualArray[i])) {
                 throw new junit.framework.AssertionFailedError(
                         "Actual and Expected differ at position " + Integer.toString(i)
-                                + ". Expected <" + Debug.toString(expectedArray[i])
-                                + ">; Actual value <" + Debug.toString(actualArray[i]) + ">");
+                                + ". Expected <" + DebugUtil.toString(expectedArray[i])
+                                + ">; Actual value <" + DebugUtil.toString(actualArray[i]) + ">");
             }
         }
     }
@@ -616,14 +616,14 @@ public class EnhancedTestCase extends
             final Object element = expected.next();
             throw new junit.framework.AssertionFailedError(
                     "Actual is empty but rows are expected. Expected element details: <"
-                            + Debug.toString(element) + ">.");
+                            + DebugUtil.toString(element) + ">.");
         }
 
         if (actualHasNext && !expectedHasNext) {
             final Object element = actual.next();
             throw new junit.framework.AssertionFailedError(
                     "Actual has rows but no rows are expected. Actual element datails: <"
-                            + Debug.toString(element) + ">.");
+                            + DebugUtil.toString(element) + ">.");
         }
     }
 
@@ -645,7 +645,7 @@ public class EnhancedTestCase extends
                 throw new junit.framework.AssertionFailedError(
                         "Actual element at (0-based) position " + Integer.toString(rowNum)
                                 + " does not exist is expected element list. Element datails: <"
-                                + Debug.toString(elem) + ">.");
+                                + DebugUtil.toString(elem) + ">.");
             }
             rowNum += 1;
         }
@@ -680,29 +680,29 @@ public class EnhancedTestCase extends
         if (actual == null) {
             throw new junit.framework.AssertionFailedError(
                     "The mapper function result is invalid (null). Expecting the element <"
-                            + Debug.toString(expected) + ">.");
+                            + DebugUtil.toString(expected) + ">.");
         }
         if (actual.length < 1) {
             throw new junit.framework.AssertionFailedError(
                     "The function result is empty. Expecting the element <"
-                            + Debug.toString(expected) + ">.");
+                            + DebugUtil.toString(expected) + ">.");
         }
         if (actual.length > 1) {
             throw new junit.framework.AssertionFailedError("The function result has many values <"
-                    + Debug.toString(actual) + ">. Expecting the singleton element <"
-                    + Debug.toString(expected) + ">.");
+                    + DebugUtil.toString(actual) + ">. Expecting the singleton element <"
+                    + DebugUtil.toString(expected) + ">.");
         }
 
         final Object result = actual[0];
         if ((result == null) && (expected != null)) {
             throw new junit.framework.AssertionFailedError(
                     "The function returned one null value. Expecting the singleton element <"
-                            + Debug.toString(expected) + ">.");
+                            + DebugUtil.toString(expected) + ">.");
         }
         if (result != null && !result.equals(expected)) {
             throw new junit.framework.AssertionFailedError("The function returned value <"
-                    + Debug.toString(result) + "> differs from the expected value <"
-                    + Debug.toString(expected) + ">.");
+                    + DebugUtil.toString(result) + "> differs from the expected value <"
+                    + DebugUtil.toString(expected) + ">.");
         }
     }
 
