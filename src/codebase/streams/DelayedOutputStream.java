@@ -87,4 +87,39 @@ public class DelayedOutputStream extends
         }
         super.write(b);
     }
+
+    /**
+     * Writes a byte waiting for a predefined amount of time writting.
+     * 
+     * @param b the byte to be written.
+     * @throws IOException when if writing on the decorated stream fails or if the the
+     *             stream was not allowed to wait the specified amount of milliseconds
+     *             before writing the byte
+     */
+    @Override
+    public void write(byte[] b) throws IOException {
+        try {
+            Thread.sleep((Integer) intervalProperty.getValue());
+        } catch (InterruptedException e) {
+            throw new TimeoutException(e);
+        }
+        super.write(b);
+    }
+
+    /**
+     * Writes a byte waiting for a predefined amount of time writting.
+     * 
+     * @param b the byte to be written.
+     * @param off the byte offset
+     * @param len the byte len to write
+     * @throws IOException when if writing on the decorated stream fails or if the the
+     *             stream was not allowed to wait the specified amount of milliseconds
+     *             before writing the byte
+     */
+    @Override
+    public void write(byte[] b, int off, int len) throws IOException {
+        final byte[] segment = new byte[len];
+        System.arraycopy(b, off, segment, 0, len);
+        this.write(segment);
+    }
 }
