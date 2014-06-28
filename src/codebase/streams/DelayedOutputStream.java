@@ -1,6 +1,5 @@
 package codebase.streams;
 
-import java.io.FilterOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 
@@ -16,13 +15,18 @@ import shared.properties.base.Property;
  * Used primarily for testing the timeout behavior of other classes.
  */
 public class DelayedOutputStream extends
-        FilterOutputStream {
+        OutputStream {
 
     /**
      * The the number of bytes per second.
      */
     private final IProperty intervalProperty;
 
+    /**
+     * The decorated stream.
+     */
+    private final OutputStream decoratedStream;
+    
     /**
      * Constructs an output stream that converges a predefined bandwidth.
      * 
@@ -31,7 +35,7 @@ public class DelayedOutputStream extends
      * @throws IllegalArgumentException if the bandwidth is not positive
      */
     public DelayedOutputStream(final OutputStream output, final int interval) {
-        super(output);
+        decoratedStream = output;
         if (interval <= 0) {
             throw new IllegalArgumentException("The interval must be positive");
         }
@@ -58,7 +62,7 @@ public class DelayedOutputStream extends
      * @throws IllegalArgumentException if the bandwidth is not positive
      */
     public DelayedOutputStream(final OutputStream output, final IProperty intervalProperty) {
-        super(output);
+        decoratedStream = output;
         if (!intervalProperty.getPropertyType().equals(new NumberPropertyType())) {
             throw new IllegalArgumentException("The property must be a "
                     + NumberPropertyType.class.getSimpleName() + ".");
@@ -85,7 +89,7 @@ public class DelayedOutputStream extends
         } catch (InterruptedException e) {
             throw new TimeoutException(e);
         }
-        super.write(b);
+        decoratedStream.write(b);
     }
 
     /**
@@ -103,7 +107,7 @@ public class DelayedOutputStream extends
         } catch (InterruptedException e) {
             throw new TimeoutException(e);
         }
-        super.write(b);
+        decoratedStream.write(b);
     }
 
     /**

@@ -1,6 +1,5 @@
 package codebase.streams;
 
-import java.io.FilterInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.concurrent.Semaphore;
@@ -18,7 +17,7 @@ import shared.properties.base.Property;
  * stream.
  */
 public class TimeoutInputStream extends
-        FilterInputStream {
+        InputStream {
 
     /**
      * Port default timeout in milliseconds for open, read and write operations.
@@ -29,6 +28,11 @@ public class TimeoutInputStream extends
      * The timeout property.
      */
     private final IProperty timeoutProperty;
+
+    /**
+     * The decorated stream.
+     */
+    private final InputStream decoratedStream;
 
     /**
      * Up when the sender has a message to send.
@@ -67,7 +71,7 @@ public class TimeoutInputStream extends
                 while (true) {
                     dataFromDecorated.acquire();
                     try {
-                        message = in.read();
+                        message = decoratedStream.read();
                         ioexception = null;
                     } catch (IOException e) {
                         ioexception = e;
@@ -105,7 +109,7 @@ public class TimeoutInputStream extends
      * @param timeoutUnit the units of the timeout parameter
      */
     public TimeoutInputStream(final InputStream in, final int timeout, TimeUnit timeoutUnit) {
-        super(in);
+        decoratedStream = in;
         if (timeout <= 0) {
             throw new IllegalArgumentException("Timeout must be positive.");
         }
@@ -131,7 +135,7 @@ public class TimeoutInputStream extends
     public TimeoutInputStream(final InputStream in,
                               final IProperty timeoutProperty,
                               TimeUnit timeoutUnit) {
-        super(in);
+        decoratedStream = in;
         if (!timeoutProperty.getPropertyType().equals(new NumberPropertyType())) {
             throw new IllegalArgumentException("The property must be a "
                     + NumberPropertyType.class.getSimpleName() + ".");
@@ -209,7 +213,7 @@ public class TimeoutInputStream extends
         int available = 0;
         if (dataToClient.availablePermits() > 0)
             available++;
-        available += in.available();
+        available += decoratedStream.available();
         return available;
     }
 }

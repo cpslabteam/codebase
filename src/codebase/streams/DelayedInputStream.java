@@ -16,12 +16,17 @@ import shared.properties.base.Property;
  * Used primarily for testing purposes.
  */
 public class DelayedInputStream extends
-        FilterInputStream {
+        InputStream {
 
     /**
      * The the number of bytes per second.
      */
     private final IProperty intervalProperty;
+
+    /**
+     * The decorated stream.
+     */
+    private final InputStream decoratedStream;
 
     /**
      * Constructs an input stream that converges a predefined bandwidth.
@@ -31,7 +36,7 @@ public class DelayedInputStream extends
      * @throws IllegalArgumentException if the bandwidth is not positive
      */
     public DelayedInputStream(final InputStream input, final int interval) {
-        super(input);
+        decoratedStream = input;
         if (interval <= 0) {
             throw new IllegalArgumentException("The interval must be positive");
         }
@@ -58,7 +63,7 @@ public class DelayedInputStream extends
      * @throws IllegalArgumentException if the bandwidth is not positive
      */
     public DelayedInputStream(final InputStream input, final IProperty intervalProperty) {
-        super(input);
+        decoratedStream = input;
         if (!intervalProperty.getPropertyType().equals(new NumberPropertyType())) {
             throw new IllegalArgumentException("The property must be a "
                     + NumberPropertyType.class.getSimpleName() + ".");
@@ -78,7 +83,7 @@ public class DelayedInputStream extends
      * @see FilterInputStream#read()
      */
     public final int read() throws IOException {
-        int c = in.read();
+        int c = decoratedStream.read();
         if (c < 0)
             return c;
 
@@ -103,7 +108,7 @@ public class DelayedInputStream extends
      * @return {@inheritDoc}
      */
     public final long skip(final long n) throws IOException {
-        long nr = in.skip(n);
+        long nr = decoratedStream.skip(n);
         if (nr <= 0)
             return nr;
 

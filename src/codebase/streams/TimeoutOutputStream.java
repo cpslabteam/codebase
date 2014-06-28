@@ -23,7 +23,7 @@ import shared.properties.base.Property;
  * not block on writing, there's no way the write operation can timeout.
  */
 public class TimeoutOutputStream extends
-        FilterOutputStream {
+        OutputStream {
 
     /**
      * Port default timeout in milliseconds for open, read and write operations.
@@ -34,6 +34,11 @@ public class TimeoutOutputStream extends
      * The timeout property.
      */
     private final IProperty timeoutProperty;
+
+    /**
+     * The decorated stream.
+     */
+    private final OutputStream decoratedStream;
 
     /**
      * The timeout unit specified for {@link #driverTimeoutUnit}.
@@ -86,7 +91,7 @@ public class TimeoutOutputStream extends
                 while (true) {
                     dataFromClient.acquire();
                     try {
-                        out.write(message);
+                        decoratedStream.write(message);
                         ioexception = null;
                         dataToDecorated.release();
                     } catch (IOException e) {
@@ -121,7 +126,7 @@ public class TimeoutOutputStream extends
      * @param timeoutUnit the units of the timeout parameter
      */
     public TimeoutOutputStream(final OutputStream out, final int timeout, final TimeUnit timeoutUnit) {
-        super(out);
+        decoratedStream = out;
         if (timeout <= 0) {
             throw new IllegalArgumentException("Timeout must be positive.");
         }
@@ -146,7 +151,7 @@ public class TimeoutOutputStream extends
     public TimeoutOutputStream(final OutputStream out,
                                final IProperty timeoutProperty,
                                TimeUnit timeoutUnit) {
-        super(out);
+        decoratedStream = out;
         if (!timeoutProperty.getPropertyType().equals(new NumberPropertyType())) {
             throw new IllegalArgumentException("The property must be a "
                     + NumberPropertyType.class.getSimpleName() + ".");
