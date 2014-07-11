@@ -41,10 +41,10 @@ public final class DebugUtil {
         try {
             DebugUtil.dump(i, System.out);
         } catch (IOException e) {
-            //CHECKSTYLE:OFF
-            //This is a debug utility method that really should print to the screen.
+            // CHECKSTYLE:OFF
+            // This is a debug utility method that really should print to the screen.
             e.printStackTrace();
-            //CHECKSTYLE:ON
+            // CHECKSTYLE:ON
         }
     }
 
@@ -73,15 +73,14 @@ public final class DebugUtil {
             try {
                 o = i.next();
             } catch (Exception e) {
-                throw new IllegalStateException(
-                        "Exception when performing i.next():" + e.toString());
+                throw new IllegalStateException("Exception when performing i.next():"
+                        + e.toString());
             }
             try {
                 str = codebase.DebugUtil.toString(o);
             } catch (Exception e) {
-                throw new IllegalStateException(
-                        "Exception when performing o.toString():"
-                                + e.toString());
+                throw new IllegalStateException("Exception when performing o.toString():"
+                        + e.toString());
             }
 
             out.println(Integer.toString(rowNum) + ":" + str);
@@ -102,15 +101,16 @@ public final class DebugUtil {
         try {
             DebugUtil.dump(o, System.out);
         } catch (IOException e) {
-            //CHECKSTYLE:OFF
-            //This is a debug utility method that really should print to the screen.
+            // CHECKSTYLE:OFF
+            // This is a debug utility method that really should print to the screen.
             e.printStackTrace();
-            //CHECKSTYLE:ON
+            // CHECKSTYLE:ON
         }
     }
 
     /**
-     * Dumps an object to a stream the console by calling {@link DebugUtil#toString(Object)}.
+     * Dumps an object to a stream the console by calling
+     * {@link DebugUtil#toString(Object)}.
      * 
      * @param o the object to be dumped
      * @param out the output stream to write the object
@@ -123,7 +123,7 @@ public final class DebugUtil {
     }
 
     /**
-     * Prints an object[] to the console by calling {@link DebugUtil#toString(Object[])}.
+     * Prints an object[] to the console by calling {@link ArrayUtil#toString(Object[])}.
      * 
      * @param objs the object array to be dumped
      */
@@ -131,22 +131,22 @@ public final class DebugUtil {
         try {
             DebugUtil.dump(objs, System.out);
         } catch (IOException e) {
-            //CHECKSTYLE:OFF
-            //This is a debug utility method that really should print to the screen.
+            // CHECKSTYLE:OFF
+            // This is a debug utility method that really should print to the screen.
             e.printStackTrace();
-            //CHECKSTYLE:ON
+            // CHECKSTYLE:ON
         }
     }
 
     /**
-     * Dumps an object[] to a stream by calling {@link DebugUtil#toString(Object[])}.
+     * Dumps an object[] to a stream by calling {@link ArrayUtil#toString(Object[])}.
      * 
      * @param objs the objects to be dumped
      * @param out the output stream to write the object
      * @throws IOException if an exception occurs while writing on the output stream
      */
     public static void dump(final Object[] objs, OutputStream out) throws IOException {
-        out.write(toString(objs).getBytes(DEFAULT_STRING_ENCODING));
+        out.write(ArrayUtil.toString(objs, ", ").getBytes(DEFAULT_STRING_ENCODING));
         out.flush();
     }
 
@@ -167,10 +167,10 @@ public final class DebugUtil {
         try {
             DebugUtil.dumpToHexString(buffer, System.out);
         } catch (IOException e) {
-            //CHECKSTYLE:OFF
-            //This is a debug utility method that really should print to the screen.
+            // CHECKSTYLE:OFF
+            // This is a debug utility method that really should print to the screen.
             e.printStackTrace();
-            //CHECKSTYLE:ON
+            // CHECKSTYLE:ON
         }
     }
 
@@ -185,10 +185,10 @@ public final class DebugUtil {
         try {
             DebugUtil.dumpToHexString(buffer, System.out, size);
         } catch (IOException e) {
-            //CHECKSTYLE:OFF
-            //This is a debug utility method that really should print to the screen.
+            // CHECKSTYLE:OFF
+            // This is a debug utility method that really should print to the screen.
             e.printStackTrace();
-            //CHECKSTYLE:ON
+            // CHECKSTYLE:ON
         }
     }
 
@@ -204,8 +204,7 @@ public final class DebugUtil {
      * @throws IOException if an exception occurs while writing on the output stream
      * @see #toHexStringDump(byte[])
      */
-    public static void dumpToHexString(final byte[] buffer,
-                                       final OutputStream out) throws IOException {
+    public static void dumpToHexString(final byte[] buffer, final OutputStream out) throws IOException {
         out.write(toHexStringDump(buffer).getBytes(DEFAULT_STRING_ENCODING));
         out.flush();
     }
@@ -223,11 +222,8 @@ public final class DebugUtil {
      * @throws IOException if an exception occurs while writing on the output stream
      * @see #toHexStringDump(byte[], int)
      */
-    public static void dumpToHexString(final byte[] buffer,
-                                       final OutputStream out,
-                                       final int size) throws IOException {
-        out.write(toHexStringDump(buffer, size).getBytes(
-                DEFAULT_STRING_ENCODING));
+    public static void dumpToHexString(final byte[] buffer, final OutputStream out, final int size) throws IOException {
+        out.write(toHexStringDump(buffer, size).getBytes(DEFAULT_STRING_ENCODING));
         out.flush();
     }
 
@@ -241,10 +237,10 @@ public final class DebugUtil {
         try {
             DebugUtil.dumpWithClass(o, System.out);
         } catch (IOException e) {
-            //CHECKSTYLE:OFF
-            //This is a debug utility method that really should print to the screen.
+            // CHECKSTYLE:OFF
+            // This is a debug utility method that really should print to the screen.
             e.printStackTrace();
-            //CHECKSTYLE:ON
+            // CHECKSTYLE:ON
         }
     }
 
@@ -275,9 +271,9 @@ public final class DebugUtil {
      */
     public static String toHexStringDump(final byte[] buffer) {
         try {
-            final String result = StringUtil.visibleAsciiString(new String(buffer,
-                    DEFAULT_STRING_ENCODING), '.')
-                                  + "  " + BinaryUtil.toHexString(buffer);
+            final String result =
+                StringUtil.visibleAsciiString(new String(buffer, DEFAULT_STRING_ENCODING), '.')
+                        + "  " + BinaryUtil.toHexString(buffer);
             return result;
         } catch (UnsupportedEncodingException e) {
             // this is an coding error situation - should never happen
@@ -333,8 +329,7 @@ public final class DebugUtil {
             try {
                 o = iterator.next();
             } catch (Exception e) {
-                str = "Exception when performing iterator.next():"
-                      + e.toString();
+                str = "Exception when performing iterator.next():" + e.toString();
                 break;
             }
             try {
@@ -371,13 +366,13 @@ public final class DebugUtil {
             result = "null";
         } else {
             if (o instanceof Object[]) {
-                result = toString((Object[]) o);
+                result = "[" + ArrayUtil.toString((Object[]) o, ", ") + "]";
             } else if (o instanceof byte[]) {
-                result = ArrayUtil.toString((byte[]) o);
+                result = "[" + ArrayUtil.toString((byte[]) o, ", ") + "]";
             } else if (o instanceof int[]) {
-                result = ArrayUtil.toString((int[]) o);
+                result = "[" + ArrayUtil.toString((int[]) o, ", ") + "]";
             } else if (o instanceof long[]) {
-                result = ArrayUtil.toString((long[]) o);
+                result = "[" + ArrayUtil.toString((long[]) o, ", ") + "]";
             } else if (o instanceof String) {
                 result = "'" + o.toString() + "'";
             } else {
@@ -386,25 +381,6 @@ public final class DebugUtil {
         }
         return result;
 
-    }
-
-    /**
-     * Obtains the string representation of an array of objects.
-     * 
-     * @param objs the objects array to be converted
-     * @return a string of the form <code>[o1, ..., on]</code>
-     */
-    public static String toString(final Object[] objs) {
-        final StringBuffer result = new StringBuffer();
-        for (int i = 0; i < objs.length; i++) {
-            if (result.length() != 0) {
-                result.append("," + toString(objs[i]));
-            } else {
-                result.append(toString(objs[i]));
-            }
-        }
-
-        return "[" + result.toString() + "]";
     }
 
     /**

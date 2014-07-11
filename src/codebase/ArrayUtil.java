@@ -173,6 +173,7 @@ public final class ArrayUtil {
 
     /**
      * Copies an array of integers into another.
+     * 
      * @param source the source array
      * @param target the target array
      * @param from the source start position
@@ -299,8 +300,9 @@ public final class ArrayUtil {
         int elemCount = size;
 
         while (elemCount > 0) {
-            final int length = java.lang.Math.min(
-                    java.lang.Math.min(sourceLength - start, targetLength - finish), size);
+            final int length =
+                java.lang.Math.min(java.lang.Math.min(sourceLength - start, targetLength - finish),
+                        size);
             System.arraycopy(source, start, target, finish, length);
             start = (start + length) % sourceLength;
             finish = (finish + length) % targetLength;
@@ -787,13 +789,14 @@ public final class ArrayUtil {
      * Obtains the string representation of an array of integers.
      * 
      * @param bytes the byte values to be converted
-     * @return a string of the form <code>[b1, ..., bn]</code>
+     * @param delimiter a string specifying the delimiter to be used
+     * @return a string of the form <code>b1, ..., bn</code>, where ', ' is the delimiter
      */
-    public static String toString(final byte[] bytes) {
+    public static String toString(final byte[] bytes, final String delimiter) {
         final StringBuffer result = new StringBuffer();
         for (int i = 0; i < bytes.length; i++) {
             if (result.length() != 0) {
-                result.append("," + Byte.toString(bytes[i]));
+                result.append(delimiter + Byte.toString(bytes[i]));
             } else {
                 result.append(Integer.toString(bytes[i]));
             }
@@ -805,36 +808,39 @@ public final class ArrayUtil {
      * Obtains the string representation of an array of integers.
      * 
      * @param ints the integer values to be converted
-     * @return a string of the form <code>[i1, ..., in]</code>
+     * @param delimiter a string specifying the delimiter to be used
+     * @return a string of the form <code>[i1, ..., in]</code>, where ', ' is the
+     *         delimiter
      */
-    public static String toString(final int[] ints) {
+    public static String toString(final int[] ints, final String delimiter) {
         final StringBuffer result = new StringBuffer();
         for (int i = 0; i < ints.length; i++) {
             if (result.length() != 0) {
-                result.append("," + Integer.toString(ints[i]));
+                result.append(delimiter + Integer.toString(ints[i]));
             } else {
                 result.append(Integer.toString(ints[i]));
             }
         }
-        return "[" + result.toString() + "]";
+        return result.toString();
     }
 
     /**
      * Obtains the string representation of an array of longs.
      * 
      * @param longs the long values to be converted
-     * @return a string of the form <code>[l1, ..., ln]</code>
+     * @param delimiter a string specifying the delimiter to be used
+     * @return a string of the form <code>l1, ..., ln</code>, where ', ' is the delimiter
      */
-    public static String toString(final long[] longs) {
+    public static String toString(final long[] longs, final String delimiter) {
         final StringBuffer result = new StringBuffer();
         for (int i = 0; i < longs.length; i++) {
             if (result.length() != 0) {
-                result.append("," + Long.toString(longs[i]));
+                result.append(delimiter + Long.toString(longs[i]));
             } else {
                 result.append(Long.toString(longs[i]));
             }
         }
-        return "[" + result.toString() + "]";
+        return result.toString();
     }
 
     /**
@@ -877,6 +883,25 @@ public final class ArrayUtil {
      * Avoid instantiation of utility class.
      */
     private ArrayUtil() {
+    }
+
+    /**
+     * Obtains the string representation of an array of objects.
+     * 
+     * @param objs the objects array to be converted
+     * @return a string of the form <code>[o1, ..., on]</code>
+     */
+    public static String toString(final Object[] objs, final String delimiter) {
+        final StringBuffer result = new StringBuffer();
+        for (int i = 0; i < objs.length; i++) {
+            if (result.length() != 0) {
+                result.append(delimiter + DebugUtil.toString(objs[i]));
+            } else {
+                result.append(DebugUtil.toString(objs[i]));
+            }
+        }
+    
+        return result.toString();
     }
 
 }

@@ -689,7 +689,7 @@ public class EnhancedTestCase extends
         }
         if (actual.length > 1) {
             throw new junit.framework.AssertionFailedError("The function result has many values <"
-                    + DebugUtil.toString(actual) + ">. Expecting the singleton element <"
+                    + ArrayUtil.toString(actual, ", ") + ">. Expecting the singleton element <"
                     + DebugUtil.toString(expected) + ">.");
         }
 
