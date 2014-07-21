@@ -156,8 +156,13 @@ public final class StringUtil {
     /**
      * Converts an array of objects to a delimited representation.
      * <p>
+<<<<<<< HEAD
      * The stirng representation of each element is obtained via <code>toString()</code>.
      * If a element of the array is <code>null</code> it is skiped.
+=======
+     * The string representation of each element is obtained via <code>toString()</code>.
+     * If a element of the array is <code>null</code> it is skipped.
+>>>>>>> [FIX] Corrects an off-by-one bug on StringUtil.join()
      * 
      * @param items the array of items to join
      * @param delimiter the text to place between each element in the array, cannot be
@@ -169,27 +174,20 @@ public final class StringUtil {
             return null;
         }
 
-        final int length = items.length;
-        String result = "";
+        final StringBuffer sb = new StringBuffer();
 
-        if (length > 0) {
-            final StringBuffer sb = new StringBuffer();
-
-            for (int i = 0; i < length - 1; i++) {
-                final Object o = items[i];
-                if (o != null) {
-                    if (sb.length() > 0) {
-                        sb.append(delimiter);
-                    }
-
-                    sb.append(o);
+        for (int i = 0; i < items.length; i++) {
+            final Object o = items[i];
+            if (o != null) {
+                if (sb.length() > 0) {
+                    sb.append(delimiter);
                 }
-            }
 
-            result = sb.toString();
+                sb.append(o);
+            }
         }
 
-        return result;
+        return sb.toString();
     }
 
     /**
