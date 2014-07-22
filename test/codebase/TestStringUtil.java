@@ -1,5 +1,6 @@
 package codebase;
 
+import junit.framework.Assert;
 import codebase.iterators.ArrayIterator;
 import codebase.iterators.EmptyIterator;
 import codebase.junit.EnhancedTestCase;
@@ -95,6 +96,13 @@ public class TestStringUtil extends
         assertEquals("\"something\"", StringUtil.stringify("something"));
     }
 
+    public void testSafeString() {
+        assertEquals("", StringUtil.safeString("", ""));
+        assertEquals("", StringUtil.safeString(null, ""));
+        assertEquals("something", StringUtil.safeString(null, "something"));
+        assertEquals("something", StringUtil.safeString("something", "else"));
+    }
+
     public void testUnstringify() {
         // Empty string
         assertEquals("", StringUtil.unstringify(""));
@@ -104,20 +112,20 @@ public class TestStringUtil extends
         assertEquals("", StringUtil.unstringify("\"\""));
         // Balanced but extra " is ignored
         assertEquals("", StringUtil.unstringify("\"\"\""));
-        
+
         // String contains literally \"
         assertEquals("\"", StringUtil.unstringify("\\\""));
         // String contains literally "\"" (extra ")
         assertEquals("\"", StringUtil.unstringify("\"\\\"\""));
-                
+
         // String contains literally "X", should be stripped (single character case)
         assertEquals("X", StringUtil.unstringify("\"X\""));
         // String contains literally "something", should be stripped (multiple character case)
         assertEquals("something", StringUtil.unstringify("\"something\""));
-        
+
         // "\" (lost \ causing " unbalance)
         assertEquals("\"", StringUtil.unstringify("\"\\\""));
-        
+
         // "\\" should be interpreted correctly to \ 
         assertEquals("\\", StringUtil.unstringify("\"\\\\\""));
     }
@@ -161,18 +169,64 @@ public class TestStringUtil extends
     }
 
     public void testSplit() {
-        assertEquals(new ArrayIterator<String>(StringUtil.split("", "")), new EmptyIterator<String>());
+        assertEquals(new ArrayIterator<String>(StringUtil.split("", "")),
+                new EmptyIterator<String>());
         assertEquals(new ArrayIterator<String>(StringUtil.split("", "\t")),
                 new EmptyIterator<String>());
         assertEquals(new ArrayIterator<String>(StringUtil.split("a", "a")),
                 new EmptyIterator<String>());
-        assertEquals(new ArrayIterator<String>(StringUtil.split("a", " ")), new ArrayIterator<String>(
-                new String[] { "a" }));
+        assertEquals(new ArrayIterator<String>(StringUtil.split("a", " ")),
+                new ArrayIterator<String>(new String[] { "a" }));
         assertEquals(new ArrayIterator<String>(StringUtil.split("abc", "a")),
                 new ArrayIterator<String>(new String[] { "bc" }));
         assertEquals(new ArrayIterator<String>(StringUtil.split("abc", "c")),
                 new ArrayIterator<String>(new String[] { "ab" }));
         assertEquals(new ArrayIterator<String>(StringUtil.split("a b c", " ")),
                 new ArrayIterator<String>(new String[] { "a", "b", "c" }));
+    }
+
+    /**
+     * Tests various String joining cases and object joining by asserting String arrays
+     * get properly joined with the proper delimiters and Object arrays get joined with
+     * the proper toString() values. TO REMOVE --> Mind that null delimiters are supported
+     * but WON'T be in the future, hence the test case.
+     */
+    public void testJoin() {
+
+        // Check if a string array gets properly joined with an empty delimiter
+        assertEquals(StringUtil.join(new String[] { "hello", "123", "hello" }, ""), "hello123hello");
+
+        // Check if a string array gets properly joined using a space delimiter
+        assertEquals(StringUtil.join(new String[] { "hello", "123", "hello" }, " "),
+                "hello 123 hello");
+
+        // Check if it blows up with a NPE when a delimiter is null
+        try {
+            StringUtil.join(new String[] { "hello", "123", "hello" }, null);
+            fail("Should have thrown a NullPointerException.");
+        } catch (NullPointerException e) {
+            // pass the test
+        }
+
+        // Check if the join skips a beginning null value and does not append 
+        // a delimiter in the beginning
+        assertEquals(StringUtil.join(new String[] { null, "hi!", "hello", "JohnConnor" }, "--"),
+                "hi!--hello--JohnConnor");
+
+        // Check if the join skips various null values and does not append extra delimiters
+        assertEquals(
+                StringUtil.join(new String[] { "dont worry", null, null, "be happy", null }, "--"),
+                "dont worry--be happy");
+
+        // Check if a null-filled array equates to an empty string
+        assertEquals(StringUtil.join(new String[] { null, null, null }, ";"), "");
+
+        // Check if it handles a null reference
+        assertEquals(StringUtil.join((String[]) null, "-"), null);
+
+        // Check if it joins the objects by their toString() values correctly
+        Object[] array = new Object[] { new Integer(167), new Float(3.14), null, "XXX" };
+        Assert.assertEquals(StringUtil.join(array, ""), "1673.14XXX");
+        Assert.assertEquals(StringUtil.join(array, ", "), "167, 3.14, XXX");
     }
 }
