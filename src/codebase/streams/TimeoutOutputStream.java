@@ -17,8 +17,7 @@ import java.util.concurrent.TimeUnit;
  * output stream can block. Otherwise, it is unknown if the decorated output stream does
  * not block on writing, there's no way the write operation can timeout.
  */
-public class TimeoutOutputStream extends
-        FilterOutputStream {
+public class TimeoutOutputStream extends FilterOutputStream {
 
     /**
      * Port default timeout in milliseconds for open, read and write operations.
@@ -68,8 +67,7 @@ public class TimeoutOutputStream extends
     /**
      * Reads data form the input stream and puts it in the queue.
      */
-    private final class DataWriter extends
-            Thread {
+    private final class DataWriter extends Thread {
 
         public DataWriter() {
             super(DATA_WRITER_THREAD_NAME);
@@ -90,8 +88,8 @@ public class TimeoutOutputStream extends
                 }
             } catch (InterruptedException ex) {
                 /*
-                 * If the thread is stopped its not a problem: we just ignore it since we are 
-                 * not locking any resources. We are being stopped for shutdown.
+                 * If the thread is stopped its not a problem: we just ignore it since we
+                 * are not locking any resources. We are being stopped for shutdown.
                  */
             }
         }
@@ -115,8 +113,13 @@ public class TimeoutOutputStream extends
      * @param timeout the driver timeout parameter for open, read and write operations
      * @param timeoutUnit the units of the timeout parameter
      */
-    public TimeoutOutputStream(final OutputStream out, final int timeout, final TimeUnit timeoutUnit) {
-        super(out);
+    public TimeoutOutputStream(final OutputStream out,
+                               final int timeout,
+                               final TimeUnit timeoutUnit) {
+        decoratedStream = out;
+        if (timeout <= 0) {
+            throw new IllegalArgumentException("Timeout must be positive.");
+        }
         streamTimeout = timeout;
         streamTimeoutUnit = timeoutUnit;
     }
@@ -163,7 +166,7 @@ public class TimeoutOutputStream extends
         if (dataWritter != null) {
             dataWritter.interrupt();
             try {
-                dataWritter.join(TimeoutOutputStream.this.streamTimeout);
+                dataWritter.join(streamTimeout);
                 if (!dataWritter.isAlive()) {
                     isClosed = true;
                     super.close();
@@ -229,7 +232,7 @@ public class TimeoutOutputStream extends
              * Checks if it the last message was sent.
              * This way, there is no need for the write() method to be synchronized.
              */
-            if (!dataToDecorated.tryAcquire(this.streamTimeout, this.streamTimeoutUnit)) {
+            if (!dataToDecorated.tryAcquire(streamTimeout, this.streamTimeoutUnit)) {
                 throw new TimeoutException("Could not write to decorated output stream after "
                         + streamTimeout + streamTimeoutUnit.toString());
             }

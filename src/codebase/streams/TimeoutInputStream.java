@@ -12,8 +12,7 @@ import java.util.concurrent.TimeUnit;
  * This stream decorator is especially useful to add timeout behavior to an existing
  * stream.
  */
-public class TimeoutInputStream extends
-        FilterInputStream {
+public class TimeoutInputStream extends FilterInputStream {
 
     /**
      * Port default timeout in milliseconds for open, read and write operations.
@@ -21,7 +20,13 @@ public class TimeoutInputStream extends
     private static final int DEFAULT_TIMEOUT_MILLIS = 2000;
 
     /**
-     * The timeout for open, message send and receive operations.
+     * <<<<<<< HEAD ======= The decorated stream.
+     */
+    private final InputStream decoratedStream;
+
+    /**
+     * >>>>>>> [CLS] Cleans up the code from the properties dependencies. The timeout for
+     * open, message send and receive operations.
      */
     private final int streamTimeout;
 
@@ -54,8 +59,7 @@ public class TimeoutInputStream extends
     /**
      * Reads data form the input stream and puts it in the queue.
      */
-    private final class DataReader extends
-            Thread {
+    private final class DataReader extends Thread {
         @Override
         public void run() {
             try {
@@ -73,8 +77,8 @@ public class TimeoutInputStream extends
                 }
             } catch (InterruptedException ex) {
                 /*
-                 * If the thread is stopped its not a problem: we just ignore it since we are 
-                 * not locking any resources. We are being stopped for shutdown.
+                 * If the thread is stopped its not a problem: we just ignore it since we
+                 * are not locking any resources. We are being stopped for shutdown.
                  */
             }
         }
@@ -104,10 +108,13 @@ public class TimeoutInputStream extends
         if (timeout <= 0) {
             throw new IllegalArgumentException("Timeout must be positive.");
         }
+
         streamTimeout = timeout;
+
         dataReader = new DataReader();
         dataReader.start();
     }
+
 
     @Override
     public void close() throws IOException {
@@ -123,13 +130,14 @@ public class TimeoutInputStream extends
          */
         if (!unreadMessage)
             dataFromDecorated.release();
-        
+
+        // assert dataFromDecorated.availablePermits() == 0 : "";
+
         try {
             /*
              * Check that the reader thread is not blocked inside 'in.read()'
              */
             if (dataToClient.tryAcquire(this.streamTimeout, TimeUnit.MILLISECONDS)) {
-                
                 if (ioexception == null) {
                     unreadMessage = false;
                     return message;
@@ -137,12 +145,7 @@ public class TimeoutInputStream extends
                     throw ioexception;
             } else {
                 throw new TimeoutException("Could not read from decorated input stream after "
-<<<<<<< HEAD
                         + streamTimeout + TimeUnit.MILLISECONDS.toString());
-=======
-                        + (Integer) this.timeoutProperty.getValue() + " " 
-                        + TimeUnit.MILLISECONDS.toString());
->>>>>>> [FIX] Fixes the tests of the TimeoutInputStream.
             }
         } catch (InterruptedException e) {
             throw new IOException("Interruped aquiring read semaphore in TimeoutInputStream");

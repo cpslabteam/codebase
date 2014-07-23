@@ -4,11 +4,6 @@ import java.io.FilterInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
-import shared.properties.api.IProperty;
-import shared.properties.base.DefaultValueStore;
-import shared.properties.base.NumberPropertyType;
-import shared.properties.base.Property;
-
 /**
  * An input stream that waits for a fixed time each time before reading form another
  * stream.
@@ -19,9 +14,9 @@ public class DelayedInputStream extends
         FilterInputStream {
 
     /**
-     * The the number of bytes per second.
+     * The amount of time to wait before each message in milliseconds.
      */
-    private final IProperty intervalProperty;
+    private final int interval;
 
     /**
      * Constructs an input stream that converges a predefined bandwidth.
@@ -35,18 +30,8 @@ public class DelayedInputStream extends
         if (interval <= 0) {
             throw new IllegalArgumentException("The interval must be positive");
         }
-        this.intervalProperty =
-            new Property.PropertyBuilder("Interval", new NumberPropertyType())
-                    .setCloneable(true)
-                    .setName("Stream Interval")
-                    .setReadOnly(false)
-                    .setTransient(true)
-                    .setValueStore(new DefaultValueStore(interval))
-                    .setDescription(
-                            "Interrval between messages of this InputStream in millisenconds.")
-                    .build();
-    }
 
+<<<<<<< HEAD
     /**
      * Constructs an input stream that converges a predefined bandwidth.
      * 
@@ -67,8 +52,10 @@ public class DelayedInputStream extends
             throw new IllegalArgumentException("The interval must be positive");
         }
         this.intervalProperty = intervalProperty;
+=======
+        this.interval = interval;
+>>>>>>> [CLS] Cleans up the code from the properties dependencies.
     }
-
 
     /**
      * Reads a byte from the wrapped stream and waits for the given interval.
@@ -83,7 +70,7 @@ public class DelayedInputStream extends
             return c;
 
         try {
-            Thread.sleep((Integer) intervalProperty.getValue());
+            Thread.sleep(interval);
         } catch (InterruptedException e) {
             return -1;
         }
@@ -108,7 +95,7 @@ public class DelayedInputStream extends
             return nr;
 
         try {
-            Thread.sleep((Integer) intervalProperty.getValue());
+            Thread.sleep(interval);
         } catch (InterruptedException e) {
             return -1;
         }
