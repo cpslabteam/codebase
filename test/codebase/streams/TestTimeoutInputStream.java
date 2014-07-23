@@ -3,6 +3,7 @@ package codebase.streams;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.concurrent.TimeUnit;
 
 import junit.framework.TestCase;
 
@@ -14,6 +15,10 @@ import junit.framework.TestCase;
  */
 public class TestTimeoutInputStream extends
         TestCase {
+    
+    private static final int DEFAULT_TIMEOUT_DELTA = 100;
+    private static final int DEFAULT_TIMEOUT = 2000;
+
     /**
      * Tests that reading form the one element stream returns the element.
      */
@@ -84,17 +89,29 @@ public class TestTimeoutInputStream extends
     }
 
     /**
-     * Tests that with a delay of 1.9 sec the three characters are read.
+     * Tests that {@link TimeoutInputStream} does not complain when input input stream
+     * delay is high but still lower than the specified timeout.
+     * <p>
+     * Creates a delayed input stream (from a string) that takes 2 secs minus a safety
+     * delta to timeout, reads bytes from the stream in different ways and checks that no
+     * timeout occurs.
      */
     public void testSlowElementBuffer() throws IOException {
-        InputStream s = new TimeoutInputStream(new DelayedInputStream(
-                new StringInputStream("XYZW"), 1990));
+        InputStream s =
+            new TimeoutInputStream(new DelayedInputStream(new StringInputStream("XYZW"),
+                    DEFAULT_TIMEOUT - DEFAULT_TIMEOUT_DELTA), DEFAULT_TIMEOUT,
+                    TimeUnit.MILLISECONDS);
+
+        // Test read array
         byte[] b = new byte[2];
         assertEquals(s.read(b), 2);
         assertEquals(b[0], 'X');
         assertEquals(b[1], 'Y');
 
+        // Test skip
         assertEquals(1, s.skip(1));
+
+        // Test read int
         assertEquals(s.read(), 'W');
 
         // Sanity check
@@ -105,11 +122,18 @@ public class TestTimeoutInputStream extends
     }
 
     /**
-     * Tests that with a delay of 2 secs, it times out.
+     * Tests that the timeout condition is successfully identified when the input stream
+     * delay is greater than the delay specified in the {@link TimeoutInputStream}.
+     * <p>
+     * Creates a {@link TimeoutInputStream} wrapping a delayed input stream with a delay
+     * greater than two seconds, reads a bytes and checks that a {@link TimeoutException}
+     * in thrown.
      */
     public void testElementTimeout() throws IOException {
-        InputStream s = new TimeoutInputStream(new DelayedInputStream(new StringInputStream("XYZ"),
-                2100));
+        InputStream s =
+            new TimeoutInputStream(new DelayedInputStream(new StringInputStream("XYZ"),
+                    DEFAULT_TIMEOUT + DEFAULT_TIMEOUT_DELTA), DEFAULT_TIMEOUT,
+                    TimeUnit.MILLISECONDS);
         try {
             assertEquals(s.read(), 'X');
         } catch (TimeoutException e) {

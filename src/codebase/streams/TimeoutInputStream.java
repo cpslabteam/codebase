@@ -180,7 +180,7 @@ public class TimeoutInputStream extends
                     throw ioexception;
             } else {
                 throw new TimeoutException("Could not read from decorated input stream after "
-                        + (Integer) this.timeoutProperty.getValue()
+                        + (Integer) this.timeoutProperty.getValue() + " " 
                         + TimeUnit.MILLISECONDS.toString());
             }
         } catch (InterruptedException e) {
