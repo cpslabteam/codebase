@@ -103,19 +103,19 @@ public final class StringUtil {
         final String ellipsis = "...";
         final int lenEllipsis = ellipsis.length();
         final int len = str.length();
-        if ((size < ellipsis.length() + 2) || (len <= size)) {
+        if (size < ellipsis.length() + 2 || len <= size) {
             return str;
         } else {
             final int headerSize = (size - lenEllipsis) / 2;
             final int trailerSize;
-            if ((2 * (headerSize + 1) + lenEllipsis) <= size + 1) {
+            if (2 * (headerSize + 1) + lenEllipsis <= size + 1) {
                 trailerSize = headerSize + 1;
             } else {
                 trailerSize = headerSize;
             }
             final String result = str.substring(0, headerSize) + ellipsis
                     + str.substring(len - (trailerSize - 1), len);
-            
+
             assert result.length() == size;
             return result;
         }
@@ -150,28 +150,30 @@ public final class StringUtil {
      * @return <code>true</code> if <code>0&leq;c and c<{@link #ASCII_SPACE_BYTE}</code>.
      */
     public static boolean isControl(final char c) {
-        return (0 <= c) && (c < ASCII_SPACE_BYTE);
+        return 0 <= c && c < ASCII_SPACE_BYTE;
     }
 
     /**
      * Converts an array of objects to a delimited representation.
      * <p>
-<<<<<<< HEAD
-     * The stirng representation of each element is obtained via <code>toString()</code>.
-     * If a element of the array is <code>null</code> it is skiped.
-=======
-     * The string representation of each element is obtained via <code>toString()</code>.
-     * If a element of the array is <code>null</code> it is skipped.
->>>>>>> [FIX] Corrects an off-by-one bug on StringUtil.join()
+     * <<<<<<< HEAD The stirng representation of each element is obtained via
+     * <code>toString()</code>. If a element of the array is <code>null</code> it is
+     * skiped. ======= The string representation of each element is obtained via
+     * <code>toString()</code>. If a element of the array is <code>null</code> it is
+     * skipped. >>>>>>> [FIX] Corrects an off-by-one bug on StringUtil.join()
      * 
      * @param items the array of items to join
      * @param delimiter the text to place between each element in the array, cannot be
-     *            <code>null</code>
+     *            <code>null</code>. To join without a delimiter, use an empty string.
      * @return the resulting string on <code>null</code> if items is <code>null</code>
+     * @throws NullPointerException if the received delimiter is null.
      */
     public static String join(final Object[] items, final String delimiter) {
         if (items == null) {
             return null;
+        }
+        if (delimiter == null) {
+            throw new NullPointerException("Delimiter must not be null.");
         }
 
         final StringBuffer sb = new StringBuffer();
@@ -284,7 +286,7 @@ public final class StringUtil {
     public static boolean safeEquals(final String left, final String right) {
         if (left == right) {
             return true;
-        } else if ((left != null && right == null) || (left == null)) {
+        } else if (left != null && right == null || left == null) {
             return false;
         } else {
             return left.equals(right);
@@ -292,7 +294,22 @@ public final class StringUtil {
     }
 
     /**
-     * Converts a string to an array of strings separated by a token.
+     * <<<<<<< HEAD ======= Obtains the safe value of a atring when the string is
+     * <code>null</code>.
+     * 
+     * @param s the string to be converted that can be <code>null</code>
+     * @param nullReplacement a default string value to replace when s is
+     *            <code>null</code>. Cannot be <code>null</code>.
+     */
+    public static String safeString(final String s, final String nullReplacement) {
+        assert nullReplacement != null : "Null replacement value cannot be null";
+
+        return s == null ? nullReplacement : s;
+    }
+
+    /**
+     * >>>>>>> [FIX] StringUtil.join() throws an NPE when delimiter is null. Altered
+     * corresponding docs. Converts a string to an array of strings separated by a token.
      * <p>
      * Can be used to convert comma-separated tokens into an array. Used as a replacement
      * for <code>String.split(String)</code> which has a bug with DBCS.
@@ -529,8 +546,9 @@ public final class StringUtil {
     }
 
     public static String join(Collection<?> objs, String delimiter) {
-        if (objs == null || objs.size() == 0)
+        if (objs == null || objs.size() == 0) {
             return "";
+        }
 
         StringBuffer buffer = new StringBuffer();
         for (Object obj : objs) {
@@ -543,8 +561,9 @@ public final class StringUtil {
     }
 
     public static String join(int[] objs, String delimiter) {
-        if (objs == null || objs.length == 0)
+        if (objs == null || objs.length == 0) {
             return "";
+        }
 
         StringBuffer buffer = new StringBuffer();
         for (int obj : objs) {
@@ -557,8 +576,9 @@ public final class StringUtil {
     }
 
     public static String join(short[] objs, String delimiter) {
-        if (objs == null || objs.length == 0)
+        if (objs == null || objs.length == 0) {
             return "";
+        }
 
         StringBuffer buffer = new StringBuffer();
         for (int obj : objs) {
