@@ -137,7 +137,12 @@ public class TimeoutInputStream extends
                     throw ioexception;
             } else {
                 throw new TimeoutException("Could not read from decorated input stream after "
+<<<<<<< HEAD
                         + streamTimeout + TimeUnit.MILLISECONDS.toString());
+=======
+                        + (Integer) this.timeoutProperty.getValue() + " " 
+                        + TimeUnit.MILLISECONDS.toString());
+>>>>>>> [FIX] Fixes the tests of the TimeoutInputStream.
             }
         } catch (InterruptedException e) {
             throw new IOException("Interruped aquiring read semaphore in TimeoutInputStream");
