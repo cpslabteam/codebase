@@ -124,7 +124,7 @@ public class TimeoutInputStream extends
         if (!unreadMessage)
             dataFromDecorated.release();
         
-//        assert dataFromDecorated.availablePermits() == 0 : "";
+        assert dataFromDecorated.availablePermits() == 0 : "";
         
         try {
             /*
