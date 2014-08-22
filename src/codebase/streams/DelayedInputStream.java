@@ -6,8 +6,8 @@ import java.io.InputStream;
 
 import shared.properties.api.IProperty;
 import shared.properties.base.DefaultValueStore;
-import shared.properties.base.NumberPropertyType;
 import shared.properties.base.Property;
+import shared.properties.base.datatypes.NumberDataType;
 
 /**
  * An input stream that waits for a fixed time each time before reading form another
@@ -41,22 +41,16 @@ public class DelayedInputStream extends
             throw new IllegalArgumentException("The interval must be positive");
         }
         this.intervalProperty =
-            new Property.PropertyBuilder("Interval", new NumberPropertyType())
-                    .setCloneable(true)
-                    .setName("Stream Interval")
-                    .setReadOnly(false)
-                    .setTransient(true)
-                    .setValueStore(new DefaultValueStore(interval))
-                    .setDescription(
-                            "Interrval between messages of this InputStream in millisenconds.")
-                    .build();
+            new Property.PropertyBuilder("Interval", new NumberDataType()).setCloneable(true).setName("Stream Interval")
+                    .setReadOnly(false).setTransient(true).setValueStore(new DefaultValueStore(interval))
+                    .setDescription("Interrval between messages of this InputStream in millisenconds.").build();
     }
 
     /**
      * Constructs an input stream that converges a predefined bandwidth.
      * 
      * @param intervalProperty the time to wait before sending the message in
-     *            milliseconds. Must be a {@link NumberPropertyType}. This stream will be
+     *            milliseconds. Must be a {@link NumberDataType}. This stream will be
      *            attached to this property and each update in the property's value will
      *            instantly affect the stream
      * @param input The input stream to be wrapped.
@@ -64,9 +58,8 @@ public class DelayedInputStream extends
      */
     public DelayedInputStream(final InputStream input, final IProperty intervalProperty) {
         decoratedStream = input;
-        if (!intervalProperty.getPropertyType().equals(new NumberPropertyType())) {
-            throw new IllegalArgumentException("The property must be a "
-                    + NumberPropertyType.class.getSimpleName() + ".");
+        if (!intervalProperty.getPropertyType().equals(new NumberDataType())) {
+            throw new IllegalArgumentException("The property must be a " + NumberDataType.class.getSimpleName() + ".");
         }
         if ((Integer) intervalProperty.getValue() <= 0) {
             throw new IllegalArgumentException("The interval must be positive");

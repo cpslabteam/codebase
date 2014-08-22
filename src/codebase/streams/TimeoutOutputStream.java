@@ -8,8 +8,8 @@ import java.util.concurrent.TimeUnit;
 
 import shared.properties.api.IProperty;
 import shared.properties.base.DefaultValueStore;
-import shared.properties.base.NumberPropertyType;
 import shared.properties.base.Property;
+import shared.properties.base.datatypes.NumberDataType;
 
 /**
  * An output stream decorator that times out (instead of blocking) on write operations.
@@ -131,7 +131,7 @@ public class TimeoutOutputStream extends
             throw new IllegalArgumentException("Timeout must be positive.");
         }
         timeoutProperty =
-            new Property.PropertyBuilder("Timeout", new NumberPropertyType()).setCloneable(true)
+            new Property.PropertyBuilder("Timeout", new NumberDataType()).setCloneable(true)
                     .setName("Stream Timeout").setReadOnly(false).setTransient(true)
                     .setValueStore(new DefaultValueStore(timeout))
                     .setDescription("Timeout of this OutputStream in millisenconds.").build();
@@ -143,7 +143,7 @@ public class TimeoutOutputStream extends
      * 
      * @param in the output stream to be decorated from where the reading will take place.
      * @param timeout the driver timeout parameter for open, read and write operations in
-     *            millis. Must be a {@link NumberPropertyType}. This stream will be
+     *            millis. Must be a {@link NumberDataType}. This stream will be
      *            attached to this property and each update in the property's value will
      *            instantly affect the stream
      * @param timeoutUnit the units of the timeout parameter
@@ -152,9 +152,9 @@ public class TimeoutOutputStream extends
                                final IProperty timeoutProperty,
                                TimeUnit timeoutUnit) {
         decoratedStream = out;
-        if (!timeoutProperty.getPropertyType().equals(new NumberPropertyType())) {
+        if (!timeoutProperty.getPropertyType().equals(new NumberDataType())) {
             throw new IllegalArgumentException("The property must be a "
-                    + NumberPropertyType.class.getSimpleName() + ".");
+                    + NumberDataType.class.getSimpleName() + ".");
         }
         if ((Integer) timeoutProperty.getValue() <= 0) {
             throw new IllegalArgumentException("Timeout must be positive.");

@@ -7,8 +7,8 @@ import java.util.concurrent.TimeUnit;
 
 import shared.properties.api.IProperty;
 import shared.properties.base.DefaultValueStore;
-import shared.properties.base.NumberPropertyType;
 import shared.properties.base.Property;
+import shared.properties.base.datatypes.NumberDataType;
 
 /**
  * An input stream decorator that times out (instead of blocking) on read operations.
@@ -114,9 +114,8 @@ public class TimeoutInputStream extends
             throw new IllegalArgumentException("Timeout must be positive.");
         }
         timeoutProperty =
-            new Property.PropertyBuilder("Timeout", new NumberPropertyType()).setCloneable(true)
-                    .setName("Stream Timeout").setReadOnly(false).setTransient(true)
-                    .setValueStore(new DefaultValueStore(timeout))
+            new Property.PropertyBuilder("Timeout", new NumberDataType()).setCloneable(true).setName("Stream Timeout")
+                    .setReadOnly(false).setTransient(true).setValueStore(new DefaultValueStore(timeout))
                     .setDescription("Timeout of this InputStream in millisenconds.").build();
         dataReader = new DataReader();
         dataReader.start();
@@ -127,18 +126,15 @@ public class TimeoutInputStream extends
      * 
      * @param in the input stream to be decorated from where the reading will take place.
      * @param timeout the driver timeout parameter for open, read and write operations in
-     *            millis. Must be a {@link NumberPropertyType}. This stream will be
-     *            attached to this property and each update in the property's value will
-     *            instantly affect the stream
+     *            millis. Must be a {@link NumberDataType}. This stream will be attached
+     *            to this property and each update in the property's value will instantly
+     *            affect the stream
      * @param timeoutUnit the units of the timeout parameter
      */
-    public TimeoutInputStream(final InputStream in,
-                              final IProperty timeoutProperty,
-                              TimeUnit timeoutUnit) {
+    public TimeoutInputStream(final InputStream in, final IProperty timeoutProperty, TimeUnit timeoutUnit) {
         decoratedStream = in;
-        if (!timeoutProperty.getPropertyType().equals(new NumberPropertyType())) {
-            throw new IllegalArgumentException("The property must be a "
-                    + NumberPropertyType.class.getSimpleName() + ".");
+        if (!timeoutProperty.getPropertyType().equals(new NumberDataType())) {
+            throw new IllegalArgumentException("The property must be a " + NumberDataType.class.getSimpleName() + ".");
         }
         if ((Integer) timeoutProperty.getValue() <= 0) {
             throw new IllegalArgumentException("Timeout must be positive.");
@@ -170,8 +166,7 @@ public class TimeoutInputStream extends
             /*
              * Check that the reader thread is not blocked inside 'in.read()'
              */
-            if (dataToClient.tryAcquire((Integer) this.timeoutProperty.getValue(),
-                    TimeUnit.MILLISECONDS)) {
+            if (dataToClient.tryAcquire((Integer) this.timeoutProperty.getValue(), TimeUnit.MILLISECONDS)) {
 
                 if (ioexception == null) {
                     unreadMessage = false;
@@ -180,8 +175,7 @@ public class TimeoutInputStream extends
                     throw ioexception;
             } else {
                 throw new TimeoutException("Could not read from decorated input stream after "
-                        + (Integer) this.timeoutProperty.getValue()
-                        + TimeUnit.MILLISECONDS.toString());
+                        + (Integer) this.timeoutProperty.getValue() + TimeUnit.MILLISECONDS.toString());
             }
         } catch (InterruptedException e) {
             throw new IOException("Interruped aquiring read semaphore in TimeoutInputStream");
