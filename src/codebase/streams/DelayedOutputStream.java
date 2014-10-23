@@ -5,9 +5,9 @@ import java.io.IOException;
 import java.io.OutputStream;
 
 import shared.properties.api.IProperty;
-import shared.properties.base.DefaultValueStore;
-import shared.properties.base.NumberPropertyType;
+import shared.properties.base.DefaultPropertyValue;
 import shared.properties.base.Property;
+import shared.properties.base.datatypes.NumberDataType;
 
 /**
  * An output stream that waits for a predefined interval before writing <b>each byte</b>
@@ -36,15 +36,9 @@ public class DelayedOutputStream extends
             throw new IllegalArgumentException("The interval must be positive");
         }
         this.intervalProperty =
-            new Property.PropertyBuilder("Interval", new NumberPropertyType())
-                    .setCloneable(true)
-                    .setName("Stream Interval")
-                    .setReadOnly(false)
-                    .setTransient(true)
-                    .setValueStore(new DefaultValueStore(interval))
-                    .setDescription(
-                            "Interrval between messages of this InputStream in millisenconds.")
-                    .build();
+            new Property.PropertyBuilder("Interval", NumberDataType.getInstance()).setCloneable(true).setName("Stream Interval")
+                    .setReadOnly(false).setTransient(true).setPropertyValue(new DefaultPropertyValue(interval))
+                    .setDescription("Interrval between messages of this InputStream in millisenconds.").build();
     }
 
     /**
@@ -59,9 +53,8 @@ public class DelayedOutputStream extends
      */
     public DelayedOutputStream(final OutputStream output, final IProperty intervalProperty) {
         super(output);
-        if (!intervalProperty.getPropertyType().equals(new NumberPropertyType())) {
-            throw new IllegalArgumentException("The property must be a "
-                    + NumberPropertyType.class.getSimpleName() + ".");
+        if (!intervalProperty.getPropertyType().equals(NumberDataType.getInstance())) {
+            throw new IllegalArgumentException("The property must be a " + NumberDataType.class.getSimpleName() + ".");
         }
         if ((Integer) intervalProperty.getValue() <= 0) {
             throw new IllegalArgumentException("The interval must be positive");

@@ -7,9 +7,9 @@ import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
 
 import shared.properties.api.IProperty;
-import shared.properties.base.DefaultValueStore;
-import shared.properties.base.NumberPropertyType;
+import shared.properties.base.DefaultPropertyValue;
 import shared.properties.base.Property;
+import shared.properties.base.datatypes.NumberDataType;
 
 /**
  * An output stream decorator that times out (instead of blocking) on write operations.
@@ -126,9 +126,8 @@ public class TimeoutOutputStream extends
             throw new IllegalArgumentException("Timeout must be positive.");
         }
         timeoutProperty =
-            new Property.PropertyBuilder("Timeout", new NumberPropertyType()).setCloneable(true)
-                    .setName("Stream Timeout").setReadOnly(false).setTransient(true)
-                    .setValueStore(new DefaultValueStore(timeout))
+            new Property.PropertyBuilder("Timeout", NumberDataType.getInstance()).setCloneable(true).setName("Stream Timeout")
+                    .setReadOnly(false).setTransient(true).setPropertyValue(new DefaultPropertyValue(timeout))
                     .setDescription("Timeout of this OutputStream in millisenconds.").build();
         streamTimeoutUnit = timeoutUnit;
     }
@@ -143,13 +142,10 @@ public class TimeoutOutputStream extends
      *            instantly affect the stream
      * @param timeoutUnit the units of the timeout parameter
      */
-    public TimeoutOutputStream(final OutputStream out,
-                               final IProperty timeoutProperty,
-                               TimeUnit timeoutUnit) {
+    public TimeoutOutputStream(final OutputStream out, final IProperty timeoutProperty, TimeUnit timeoutUnit) {
         super(out);
-        if (!timeoutProperty.getPropertyType().equals(new NumberPropertyType())) {
-            throw new IllegalArgumentException("The property must be a "
-                    + NumberPropertyType.class.getSimpleName() + ".");
+        if (!timeoutProperty.getPropertyType().equals(NumberDataType.getInstance())) {
+            throw new IllegalArgumentException("The property must be a " + NumberDataType.class.getSimpleName() + ".");
         }
         if ((Integer) timeoutProperty.getValue() <= 0) {
             throw new IllegalArgumentException("Timeout must be positive.");
@@ -266,8 +262,7 @@ public class TimeoutOutputStream extends
              * Checks if it the last message was sent. This way, there is no need for the
              * write() method to be synchronized.
              */
-            if (!dataToDecorated.tryAcquire((Integer) this.timeoutProperty.getValue(),
-                    this.streamTimeoutUnit)) {
+            if (!dataToDecorated.tryAcquire((Integer) this.timeoutProperty.getValue(), this.streamTimeoutUnit)) {
                 throw new TimeoutException("Could not write to decorated output stream after "
                         + (Integer) this.timeoutProperty.getValue() + streamTimeoutUnit.toString());
             }
@@ -285,8 +280,7 @@ public class TimeoutOutputStream extends
              * Check that the writer thread has consumed the message and is not blocked
              * inside 'in.read()'
              */
-            if (dataToDecorated.tryAcquire((Integer) this.timeoutProperty.getValue(),
-                    this.streamTimeoutUnit)) {
+            if (dataToDecorated.tryAcquire((Integer) this.timeoutProperty.getValue(), this.streamTimeoutUnit)) {
                 dataToDecorated.release();
 
                 if (ioexception != null)
