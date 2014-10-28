@@ -124,8 +124,6 @@ public class TimeoutInputStream extends
         if (!unreadMessage)
             dataFromDecorated.release();
         
-        assert dataFromDecorated.availablePermits() == 0 : "";
-        
         try {
             /*
              * Check that the reader thread is not blocked inside 'in.read()'
