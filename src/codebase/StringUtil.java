@@ -8,9 +8,9 @@ import java.util.StringTokenizer;
  * String utilities for trimming, padding and parsing strings.
  * <p>
  * These utility functions are of recurrent use and not provided by JDK.
- * 
- * @since Created on 7/Out/2004
+ *
  * @author Paulo Carreira, André Gonçalves
+ * @since Created on 7/Out/2004
  */
 public final class StringUtil {
 
@@ -35,14 +35,16 @@ public final class StringUtil {
     public static final String DEFAULT_STRING_ENCODING = "UTF-8";
 
     /**
-     * Short name descriptions of ascii invisible characters.
+     * Short name descriptions of ascii invisible characters. This is useful for
+     * displaying the contents of a string of bytes.
      */
     private static final String[] SHORT_CHAR_NAMES = { "NUL", "SOH", "STX", "ETX", "EOT", "ENQ",
             "ACK", "BEL", "BS", "TAB", "LF", "VT", "FF", "CR", "SO", "SI", "DLE", "XON", "DC2",
             "XOFF", "DC4", "NAK", "SYN", "ETB", "CAN", "EM ", "SUB" };
 
     /**
-     * Long name descriptions of ascii invisible characters.
+     * Long name descriptions of ascii invisible characters. This is useful for displaying
+     * the contents of a string of bytes.
      */
     private static final String[] LONG_CHAR_NAMES = { "Null character", "Start of Header",
             "Start of Text", "End of Text", "End of Transmission", "Enquiry", "Acknowledgment",
@@ -86,7 +88,7 @@ public final class StringUtil {
     /**
      * Compacts a string for displaying.
      * <p>
-     * This function is meant to be used to avoid the user to be overwelmed by very large
+     * This function is meant to be used to avoid the user to be overwhelmed by very large
      * size dumps. To that end it gets the header of the string and the trailer that serve
      * as a summary of the string.
      * <p>
@@ -96,7 +98,7 @@ public final class StringUtil {
      * @param str the original string
      * @param size the maximum size for display. The size must be greater than 5. If the
      *            specified size is smaller than 5, it is ignored.
-     * @return a string of the form <code>xxxxxx ... xxxxxx</code> with atmost
+     * @return a string of the form <code>xxxxxx ... xxxxxx</code> with at most
      *         <code>size</code> characters.
      */
     public static String compactFormat(final String str, final int size) {
@@ -120,6 +122,7 @@ public final class StringUtil {
             return result;
         }
     }
+
 
     /**
      * The returns the index of the first character of the a string that is different from
@@ -147,14 +150,15 @@ public final class StringUtil {
      * Determines if an ascii character is a control character.
      * 
      * @param c a character
-     * @return <code>true</code> if <code>0&leq;c and c<{@link #ASCII_SPACE_BYTE}</code>.
+     * @return <code>true</code> if <code>0 &leq; c and c &leq;
+     *         {@link #ASCII_SPACE_BYTE}</code>.
      */
     public static boolean isControl(final char c) {
         return 0 <= c && c < ASCII_SPACE_BYTE;
     }
 
     /**
-     * Converts an array of objects to a delimited representation.
+     * Converts an array of objects to a delimited string representation.
      * <p>
      * <<<<<<< HEAD The stirng representation of each element is obtained via
      * <code>toString()</code>. If a element of the array is <code>null</code> it is
@@ -162,24 +166,78 @@ public final class StringUtil {
      * <code>toString()</code>. If a element of the array is <code>null</code> it is
      * skipped. >>>>>>> [FIX] Corrects an off-by-one bug on StringUtil.join()
      * 
-     * @param items the array of items to join
+     * @param objs the array of items to join
      * @param delimiter the text to place between each element in the array, cannot be
      *            <code>null</code>. To join without a delimiter, use an empty string.
      * @return the resulting string on <code>null</code> if items is <code>null</code>
      * @throws NullPointerException if the received delimiter is null.
      */
-    public static String join(final Object[] items, final String delimiter) {
-        if (items == null) {
-            return null;
+    public static String join(Collection<?> objs, String delimiter) {
+        assert delimiter != null : "Delimiter should not be null";
+
+        if (objs == null || objs.size() == 0) {
+            return "";
         }
-        if (delimiter == null) {
-            throw new NullPointerException("Delimiter must not be null.");
+
+        StringBuffer buffer = new StringBuffer();
+        for (Object obj : objs) {
+            if (buffer.length() > 0) {
+                buffer.append(delimiter);
+            }
+            buffer.append(obj);
+        }
+        return buffer.toString();
+    }
+
+    /**
+     * Converts an array of integer objects to a delimited string representation.
+     * <p>
+     * 
+     * @param ints the array of items to join
+     * @param delimiter the text to place between each element in the array; cannot be
+     *            <code>null</code>. To join without a delimiter, use an empty string.
+     * @return the resulting string or <code>null</code> if items is <code>null</code>
+     */
+    public static String join(int[] ints, String delimiter) {
+        assert delimiter != null : "Delimiter should not be null";
+
+        if (ints == null || ints.length == 0) {
+            return "";
+        }
+
+        final StringBuffer buffer = new StringBuffer();
+        for (int obj : ints) {
+            if (buffer.length() > 0) {
+                buffer.append(delimiter);
+            }
+            buffer.append(Integer.toString(obj));
+        }
+        return buffer.toString();
+    }
+
+    /**
+     * Converts an array of objects to a delimited string representation.
+     * <p>
+     * The string representation of each element is obtained via <code>toString()</code>.
+     * If a element of the array is <code>null</code> it is skipped.
+     * 
+     * @param objs the array of items to join
+     * @param delimiter the text to place between each element in the array, cannot be
+     *            <code>null</code>. To join without a delimiter, use an empty string.
+     * @return the resulting string on <code>null</code> if items is <code>null</code>
+     * @throws NullPointerException if the received delimiter is null.
+     */
+    public static String join(final Object[] objs, final String delimiter) {
+        assert delimiter != null : "Delimiter should not be null";
+
+        if (objs == null) {
+            return null;
         }
 
         final StringBuffer sb = new StringBuffer();
 
-        for (int i = 0; i < items.length; i++) {
-            final Object o = items[i];
+        for (int i = 0; i < objs.length; i++) {
+            final Object o = objs[i];
             if (o != null) {
                 if (sb.length() > 0) {
                     sb.append(delimiter);
@@ -190,6 +248,33 @@ public final class StringUtil {
         }
 
         return sb.toString();
+    }
+
+
+    /**
+     * Converts an array of shorts to a delimited string representation.
+     * <p>
+     * 
+     * @param shorts the array of items to join
+     * @param delimiter the text to place between each element in the array; cannot be
+     *            <code>null</code>. To join without a delimiter, use an empty string.
+     * @return the resulting string or <code>null</code> if items is <code>null</code>
+     */
+    public static String join(short[] shorts, String delimiter) {
+        assert delimiter != null : "Delimiter should not be null";
+
+        if (shorts == null || shorts.length == 0) {
+            return "";
+        }
+
+        StringBuffer buffer = new StringBuffer();
+        for (int obj : shorts) {
+            if (buffer.length() > 0) {
+                buffer.append(delimiter);
+            }
+            buffer.append(Integer.toString(obj));
+        }
+        return buffer.toString();
     }
 
     /**
@@ -212,8 +297,7 @@ public final class StringUtil {
     }
 
     /**
-     * Prefixes the string input with enough copies of pad that it has length equal to
-     * length.
+     * Prefixes the string input with enough copies of pad that until a specified length.
      * <p>
      * Usually, pad should be a single character.
      * 
@@ -255,22 +339,39 @@ public final class StringUtil {
     /**
      * Create a string with a string repeated a number of times.
      * 
-     * @param str the string to be repeted
-     * @param n the times that the string shound be repeated
+     * @param s the string to be repeated
+     * @param n the times that the string should be repeated
      * @return a new string with the str string repeated a number of times
      */
-    public static String repeat(final String str, final int n) {
+    public static String repeat(final String s, final int n) {
         if (n > 0) {
             final StringBuffer strBuffer = new StringBuffer();
             int strCounter = 0;
             do {
-                strBuffer.append(str);
+                strBuffer.append(s);
                 strCounter += 1;
             } while (strCounter < n);
             return strBuffer.toString();
         } else {
             return "";
         }
+    }
+
+
+    /**
+     * Pads a string to the right with a filler character.
+     *
+     * @param s the string to be padded
+     * @param filler the filler character
+     * @param length the desired size of the string
+     * @return the string padded with the specified character until the specified length
+     */
+    public static String rpad(String s, char filler, int length) {
+        StringBuffer result = new StringBuffer(s);
+        while (result.length() < length) {
+            result.append(filler);
+        }
+        return result.toString();
     }
 
     /**
@@ -294,12 +395,15 @@ public final class StringUtil {
     }
 
     /**
-     * <<<<<<< HEAD ======= Obtains the safe value of a atring when the string is
-     * <code>null</code>.
+     * <<<<<<< HEAD <<<<<<< HEAD ======= Obtains the safe value of a atring when the
+     * string is <code>null</code>. ======= Obtains the safe value of a string when the
+     * string is <code>null</code>. >>>>>>> [ENH] Several documentation enhancements
+     * introduced.
      * 
      * @param s the string to be converted that can be <code>null</code>
      * @param nullReplacement a default string value to replace when s is
      *            <code>null</code>. Cannot be <code>null</code>.
+     * @return s or the value of nullReplacement if s is <code>null</code>
      */
     public static String safeString(final String s, final String nullReplacement) {
         assert nullReplacement != null : "Null replacement value cannot be null";
@@ -362,37 +466,6 @@ public final class StringUtil {
         return buffer.toString();
     }
 
-
-    /**
-     * Strips a string from double quotes.
-     * <p>
-     * Escaped doubles quotes in the middle of the string are converted appropriately.
-     * 
-     * @param str a string that may have leading and trailing double quotes
-     * @return a string without leading and trailing double quotes.
-     */
-    public static String unstringify(final String str) {
-        final StringBuilder buffer = new StringBuilder();
-        final char[] chars = str.toCharArray();
-
-        int i = 0;
-        while (i < chars.length) {
-            if (chars[i] == DOUBLE_QUOTE) {
-                i++;
-                continue;
-            }
-
-            final boolean isEscaped = chars[i] == '\\' && (i + 1 < chars.length);
-            if (isEscaped) {
-                i++;
-            }
-
-            buffer.append(chars[i]);
-            i++;
-        }
-        return buffer.toString();
-    }
-
     /**
      * Skips the first occurrence of token from a string.
      * 
@@ -421,6 +494,25 @@ public final class StringUtil {
     }
 
     /**
+     * Trims a portion of a string based on a begin and end index.
+     * 
+     * @param s the string
+     * @param start the start index of the trim operation
+     * @param end the end of the trim operation
+     * @return the trimmed string
+     */
+    public static String trim(final String s, final int start, final int end) {
+        final String trimedFirst = s.substring(0, start);
+        final String trimedSecond;
+        if (end < s.length()) {
+            trimedSecond = s.substring(end, s.length() - 1);
+        } else {
+            trimedSecond = "";
+        }
+        return trimedFirst + trimedSecond;
+    }
+
+    /**
      * Trims characters right and left from the string.
      * 
      * @param str the string to skip white spaces from
@@ -432,7 +524,7 @@ public final class StringUtil {
     }
 
     /**
-     * Skips all occurences of ch from a string.
+     * Skips all occurrences of ch from a string.
      * 
      * @param str the string to skip white spaces from
      * @param ch is the char to be trimmed
@@ -453,7 +545,7 @@ public final class StringUtil {
      * 
      * @param str the string to skip white spaces from
      * @param ch is the character to be trimmed
-     * @return the pointer to a buffer with the string trimmed from all occurences of ch
+     * @return the pointer to a buffer with the string trimmed from all occurrences of ch
      *         on the right. If ch is not found returns the original string.
      */
     public static String trimCharRight(final java.lang.String str, final char ch) {
@@ -488,9 +580,34 @@ public final class StringUtil {
     }
 
     /**
-     * Avoid this class form being instantiated.
+     * Strips a string from double quotes.
+     * <p>
+     * Escaped doubles quotes in the middle of the string are converted appropriately.
+     * 
+     * @param str a string that may have leading and trailing double quotes
+     * @return a string without leading and trailing double quotes.
      */
-    private StringUtil() {
+    public static String unstringify(final String str) {
+        final StringBuilder buffer = new StringBuilder();
+        final char[] chars = str.toCharArray();
+
+        int i = 0;
+        while (i < chars.length) {
+            if (chars[i] == DOUBLE_QUOTE) {
+                i++;
+                continue;
+            }
+
+            final boolean isEscaped = chars[i] == '\\' && i + 1 < chars.length;
+
+            if (isEscaped) {
+                i++;
+            }
+
+            buffer.append(chars[i]);
+            i++;
+        }
+        return buffer.toString();
     }
 
     /**
@@ -519,75 +636,9 @@ public final class StringUtil {
     }
 
     /**
-     * Trims a portion of a string based on a begin and end index.
-     * 
-     * @param s the string
-     * @param start the start index of the trim operation
-     * @param end the end of the trim operation
-     * @return the trimmed string
+     * Prevents this class form being instantiated.
      */
-    public static String trim(final String s, final int start, final int end) {
-        final String trimedFirst = s.substring(0, start);
-        final String trimedSecond;
-        if (end < s.length()) {
-            trimedSecond = s.substring(end, s.length() - 1);
-        } else {
-            trimedSecond = "";
-        }
-        return trimedFirst + trimedSecond;
-    }
-
-    public static String rpad(String text, char filler, int size) {
-        StringBuffer result = new StringBuffer(text);
-        while (result.length() < size) {
-            result.append(filler);
-        }
-        return result.toString();
-    }
-
-    public static String join(Collection<?> objs, String delimiter) {
-        if (objs == null || objs.size() == 0) {
-            return "";
-        }
-
-        StringBuffer buffer = new StringBuffer();
-        for (Object obj : objs) {
-            if (buffer.length() > 0) {
-                buffer.append(delimiter);
-            }
-            buffer.append(obj);
-        }
-        return buffer.toString();
-    }
-
-    public static String join(int[] objs, String delimiter) {
-        if (objs == null || objs.length == 0) {
-            return "";
-        }
-
-        StringBuffer buffer = new StringBuffer();
-        for (int obj : objs) {
-            if (buffer.length() > 0) {
-                buffer.append(delimiter);
-            }
-            buffer.append(Integer.toString(obj));
-        }
-        return buffer.toString();
-    }
-
-    public static String join(short[] objs, String delimiter) {
-        if (objs == null || objs.length == 0) {
-            return "";
-        }
-
-        StringBuffer buffer = new StringBuffer();
-        for (int obj : objs) {
-            if (buffer.length() > 0) {
-                buffer.append(delimiter);
-            }
-            buffer.append(Integer.toString(obj));
-        }
-        return buffer.toString();
+    private StringUtil() {
     }
 
 }
