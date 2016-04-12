@@ -17,7 +17,7 @@ public final class SysUtil {
     /**
      * Known operating systems.
      */
-    public static enum OS {
+    public enum OS {
         /**
          * Some OS we cannot identify, maybe it will run there.
          */
