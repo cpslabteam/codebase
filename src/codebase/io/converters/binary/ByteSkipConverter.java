@@ -85,7 +85,11 @@ public class ByteSkipConverter extends
      *             input
      */
     public final Object read(final DataInput dataInput) throws IOException {
-        dataInput.skipBytes(length);
+        if (dataInput.skipBytes(length) > 0) {
+            // ignore
+            return null;
+        }
+        
         return null;
     }
 

@@ -5,6 +5,7 @@ import java.io.DataOutput;
 import java.io.EOFException;
 import java.io.IOException;
 
+import codebase.StringUtil;
 import codebase.io.converters.Converter;
 
 /**
@@ -47,14 +48,13 @@ public class StringLiteralConverter
         } while (ch != '\"' && len <= DEFAULT_MAX_READ_LENGTH);
 
         if (len >= DEFAULT_MAX_READ_LENGTH) {
-            throw new IOException(
-                    "Max read length for a string literal exceeded");
+            throw new IOException("Max read length for a string literal exceeded");
         }
 
         assert ch == '\"' : "String litteral initiator found";
 
         /*
-         * Add the string characters until we see " again. 
+         * Add the string characters until we see " again.
          */
         final StringBuilder sb = new StringBuilder();
         sb.append((char) ch);
@@ -95,8 +95,7 @@ public class StringLiteralConverter
         } while (len <= DEFAULT_MAX_READ_LENGTH);
 
         if (len >= DEFAULT_MAX_READ_LENGTH) {
-            throw new IOException(
-                    "Max read length for a string literal exceeded.");
+            throw new IOException("Max read length for a string literal exceeded.");
         }
 
         return codebase.StringUtil.unstringify(sb.toString());
@@ -115,6 +114,6 @@ public class StringLiteralConverter
         assert object != null;
 
         final String s = codebase.StringUtil.stringify(object.toString());
-        dataOutput.write(s.getBytes());
+        dataOutput.write(s.getBytes(StringUtil.DEFAULT_STRING_ENCODING));
     }
 }
