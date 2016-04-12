@@ -111,9 +111,11 @@ public class ObjectConverterOutput
 
     @Override
     public void flush() throws IOException {
+        // There are no data to flush.
     }
 
     @Override
     public void close() throws IOException {
+        // There are no resources to be closed.
     }
 }

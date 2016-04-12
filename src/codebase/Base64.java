@@ -97,19 +97,20 @@ public final class Base64 {
          */
         public InputStream(java.io.InputStream in, int options) {
             super(in);
+
+
             this.mustBreakLines = (options & DONT_BREAK_LINES) != DONT_BREAK_LINES;
             this.encode = (options & ENCODE) == ENCODE;
 
-            final int bufferLength = encode ? ENCODING_OUTPUT_BUFFER_LENGTH
-                    : DECODING_OUTPUT_BUFFER_LENGTH;
+            final int bufferLength =
+                encode ? ENCODING_OUTPUT_BUFFER_LENGTH : DECODING_OUTPUT_BUFFER_LENGTH;
             this.outputBuffer = new byte[bufferLength];
 
             this.currentPosition = -1;
             this.lineLength = 0;
 
             /*
-             * Record for later, mostly to determine which
-             * alphabet to use
+             * Record for later, mostly to determine which alphabet to use
              */
             this.options = options;
             this.decodabet = getDecodabet(options);
@@ -124,9 +125,6 @@ public final class Base64 {
          *             if the Base64 stream is malformed
          */
         public int read() throws IOException {
-
-
-
             /*
              * Do we need to get data?
              */
@@ -164,7 +162,7 @@ public final class Base64 {
                 }
 
                 /*
-                 *  Else decoding
+                 * Else decoding
                  */
                 else {
                     final byte[] b4 = new byte[ENCODING_OUTPUT_BUFFER_LENGTH];
@@ -210,8 +208,7 @@ public final class Base64 {
                     return '\n';
                 } else {
                     /*
-                     * This isn't important when decoding
-                     * but throwing an extra "if" seems
+                     * This isn't important when decoding but throwing an extra "if" seems
                      * just as wasteful.
                      */
                     lineLength++;
@@ -221,9 +218,8 @@ public final class Base64 {
                     if (currentPosition >= outputBuffer.length)
                         currentPosition = -1;
 
-                    /* 
-                     * This is how you "cast" a byte that's
-                     * intended to be unsigned.
+                    /*
+                     * This is how you "cast" a byte that's intended to be unsigned.
                      */
                     return b & UNSIGNED_BYTE_MASK;
                 }
@@ -255,7 +251,7 @@ public final class Base64 {
                 else if (i == 0)
                     return -1;
                 else
-                    /* 
+                    /*
                      * Break out of 'for' loop
                      */
                     break;
@@ -355,8 +351,8 @@ public final class Base64 {
             this.mustBreakLines = (options & DONT_BREAK_LINES) != DONT_BREAK_LINES;
             this.encode = (options & ENCODE) == ENCODE;
 
-            final int bufferLength = encode ? ENCODING_INPUT_BUFFER_LENGTH
-                    : DECODING_INPUT_BUFFER_LENGTH;
+            final int bufferLength =
+                encode ? ENCODING_INPUT_BUFFER_LENGTH : DECODING_INPUT_BUFFER_LENGTH;
             this.inputBuffer = new byte[bufferLength];
 
             this.currentPosition = 0;
@@ -575,7 +571,7 @@ public final class Base64 {
     private static final String PREFERRED_TEXT_ENCODING = "UTF-8";
 
 
-    /* 
+    /*
      * Base 64 Alphabet constants
      */
 
@@ -589,7 +585,6 @@ public final class Base64 {
      * Indicates equals sign in encoding.
      */
     private static final byte EQUALS_SIGN_ENC = -1;
-
 
 
     /**
@@ -632,11 +627,11 @@ public final class Base64 {
             26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, // Letters 'a' through 'm'
             39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, // Letters 'n' through 'z'
             -9, -9, -9, -9 // Decimal 123 - 126
-    };
+        };
 
 
-    /* 
-     * URL safe Base 64 alphabet 
+    /*
+     * URL safe Base 64 alphabet
      */
 
 
@@ -686,11 +681,11 @@ public final class Base64 {
             26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, // Letters 'a' through 'm'
             39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, // Letters 'n' through 'z'
             -9, -9, -9, -9 // Decimal 123 - 126
-    };
+        };
 
 
-    /* 
-     * Ordered Base64 Alphabet 
+    /*
+     * Ordered Base64 Alphabet
      */
 
     /**
@@ -736,7 +731,7 @@ public final class Base64 {
             38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, // Letters 'a' through 'm'
             51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, // Letters 'n' through 'z'
             -9, -9, -9, -9 // Decimal 123 - 126
-    };
+        };
 
     /**
      * Decodes four bytes from array <tt>source</tt> and writes the resulting bytes (up to
@@ -771,8 +766,9 @@ public final class Base64 {
 
         // Example: Dk==
         if (source[srcOffset + 2] == EQUALS_SIGN) {
-            final int outBuff = ((decodabet[source[srcOffset]] & 0xFF) << 18)
-                    | ((decodabet[source[srcOffset + 1]] & 0xFF) << 12);
+            final int outBuff =
+                ((decodabet[source[srcOffset]] & 0xFF) << 18)
+                        | ((decodabet[source[srcOffset + 1]] & 0xFF) << 12);
 
             destination[destOffset] = (byte) (outBuff >>> 16);
             return 1;
@@ -780,9 +776,10 @@ public final class Base64 {
 
         // Example: DkL=
         else if (source[srcOffset + 3] == EQUALS_SIGN) {
-            final int outBuff = ((decodabet[source[srcOffset]] & 0xFF) << 18)
-                    | ((decodabet[source[srcOffset + 1]] & 0xFF) << 12)
-                    | ((decodabet[source[srcOffset + 2]] & 0xFF) << 6);
+            final int outBuff =
+                ((decodabet[source[srcOffset]] & 0xFF) << 18)
+                        | ((decodabet[source[srcOffset + 1]] & 0xFF) << 12)
+                        | ((decodabet[source[srcOffset + 2]] & 0xFF) << 6);
 
             destination[destOffset] = (byte) (outBuff >>> 16);
             destination[destOffset + 1] = (byte) (outBuff >>> 8);
@@ -792,10 +789,11 @@ public final class Base64 {
         // Example: DkLE
         else {
             try {
-                final int outBuff = ((decodabet[source[srcOffset]] & 0xFF) << 18)
-                        | ((decodabet[source[srcOffset + 1]] & 0xFF) << 12)
-                        | ((decodabet[source[srcOffset + 2]] & 0xFF) << 6)
-                        | ((decodabet[source[srcOffset + 3]] & 0xFF));
+                final int outBuff =
+                    ((decodabet[source[srcOffset]] & 0xFF) << 18)
+                            | ((decodabet[source[srcOffset + 1]] & 0xFF) << 12)
+                            | ((decodabet[source[srcOffset + 2]] & 0xFF) << 6)
+                            | ((decodabet[source[srcOffset + 3]] & 0xFF));
 
                 destination[destOffset] = (byte) (outBuff >> 16);
                 destination[destOffset + 1] = (byte) (outBuff >> 8);
@@ -804,7 +802,8 @@ public final class Base64 {
                 return 3;
             } catch (IndexOutOfBoundsException e) {
                 /*
-                 * If a array access problem occurred just ignore and report that the buffer is malformed
+                 * If a array access problem occurred just ignore and report that the
+                 * buffer is malformed
                  */
                 return -1;
             }
@@ -863,25 +862,24 @@ public final class Base64 {
                                      int options) {
         final byte[] alphabet = getAlphabet(options);
 
-        /* 1 2 3
-         * 01234567890123456789012345678901 Bit position
-         * --------000000001111111122222222 Array position from threeBytes
-         * --------| || || || | Six bit groups to index ALPHABET
-         * >>18 >>12 >> 6 >> 0 Right shift necessary
-         * 0x3f 0x3f 0x3f Additional AND
-
         /*
-         * Create buffer with zero-padding if there are only one or two
-         * significant bytes passed in the array.
-         *
-         * We have to shift left 24 in order to flush out the 1's that appear
-         * when Java treats a value as negative that is cast from a byte to an int.
+         * 1 2 3 01234567890123456789012345678901 Bit position
+         * --------000000001111111122222222 Array position from threeBytes --------| || ||
+         * || | Six bit groups to index ALPHABET >>18 >>12 >> 6 >> 0 Right shift necessary
+         * 0x3f 0x3f 0x3f Additional AND
+         * 
+         * /* Create buffer with zero-padding if there are only one or two significant
+         * bytes passed in the array.
+         * 
+         * We have to shift left 24 in order to flush out the 1's that appear when Java
+         * treats a value as negative that is cast from a byte to an int.
          */
 
         // CHECKSTYLE:OFF - this is a low level decoding method 
-        int inBuff = (numSigBytes > 0 ? ((source[srcOffset] << 24) >>> 8) : 0)
-                | (numSigBytes > 1 ? ((source[srcOffset + 1] << 24) >>> 16) : 0)
-                | (numSigBytes > 2 ? ((source[srcOffset + 2] << 24) >>> 24) : 0);
+        int inBuff =
+            (numSigBytes > 0 ? ((source[srcOffset] << 24) >>> 8) : 0)
+                    | (numSigBytes > 1 ? ((source[srcOffset + 1] << 24) >>> 16) : 0)
+                    | (numSigBytes > 2 ? ((source[srcOffset + 2] << 24) >>> 24) : 0);
 
         switch (numSigBytes) {
             case 3:

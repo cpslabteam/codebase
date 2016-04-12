@@ -42,8 +42,7 @@ public final class FileUtil {
      */
     public static String getVolumeName(final String devicePath) {
         if (devicePath == null) {
-            throw new IllegalArgumentException(
-                    "The volume name should be assigned");
+            throw new IllegalArgumentException("The volume name should be assigned");
         }
         final FileSystemView view = FileSystemView.getFileSystemView();
         final File dir = new File(devicePath);
@@ -82,8 +81,7 @@ public final class FileUtil {
      *         file already exists or if the file creation fails, for example, because the
      *         file specified is a directory.
      */
-    public static boolean verifyCanCreateFile(final String path,
-                                              final long length) {
+    public static boolean verifyCanCreateFile(final String path, final long length) {
         final File file = new File(path);
         if (!file.exists()) {
             final RandomAccessFile access;
@@ -92,11 +90,17 @@ public final class FileUtil {
             } catch (FileNotFoundException e) {
                 return false;
             }
+
             try {
                 access.setLength(length);
-                access.close();
             } catch (IOException e) {
                 return false;
+            } finally {
+                try {
+                    access.close();
+                } catch (IOException e) {
+                    return false;
+                }
             }
 
             return file.delete();
@@ -150,25 +154,27 @@ public final class FileUtil {
     /**
      * Convenience function to delete a directory.
      * 
-     * @param path Path to delete
+     * @param path the path to delete
      * @throws IOException If the operation fails.
      */
     public static void deleteDirectory(File path) throws IOException {
         if (!path.exists())
             return;
 
-        for (File file : path.listFiles()) {
-            if (file.isDirectory())
-                deleteDirectory(file);
-            else if (!file.delete()) {
-                throw new IOException(String.format(
-                        "Unable to delete file '%s'", file));
+        final File[] files = path.listFiles();
+
+        if (files != null) {
+            for (File file : files) {
+                if (file.isDirectory())
+                    deleteDirectory(file);
+                else if (!file.delete()) {
+                    throw new IOException(String.format("Unable to delete file '%s'", file));
+                }
             }
         }
 
         if (!path.delete())
-            throw new IOException(String.format(
-                    "Unable to delete directory '%s'", path));
+            throw new IOException(String.format("Unable to delete directory '%s'", path));
     }
 
 
@@ -182,8 +188,7 @@ public final class FileUtil {
      * @return absolute path if <code>parentPath</code> is absolute; returns
      *         <code>null</code> if the
      */
-    public static String getAbsolutePath(final String parentPath,
-                                         final String relativePath) {
+    public static String getAbsolutePath(final String parentPath, final String relativePath) {
         if (parentPath == null || relativePath == null)
             return null;
 
@@ -218,10 +223,9 @@ public final class FileUtil {
      * @return relative path if parent directory is included in absolutePath, otherwise
      *         return absolute path.
      */
-    public static String getRelativePath(final String parentPath,
-                                         final String absolutePath) {
+    public static String getRelativePath(final String parentPath, final String absolutePath) {
         if (parentPath == null || absolutePath == null
-            || (parentPath.length() > absolutePath.length())) {
+                || (parentPath.length() > absolutePath.length())) {
             return null;
         }
 
@@ -232,15 +236,12 @@ public final class FileUtil {
 
             // parentFile must be absolute
             if (parentFile.isAbsolute()) {
-                final String dirPath = FilenameUtil.normalize(parentFile
-                        .getAbsolutePath());
+                final String dirPath = FilenameUtil.normalize(parentFile.getAbsolutePath());
 
-                final String normalizedAbsolutePath = FilenameUtil
-                        .normalize(absolutePath);
+                final String normalizedAbsolutePath = FilenameUtil.normalize(absolutePath);
                 int dirLength = dirPath.length();
 
-                if (normalizedAbsolutePath.substring(0, dirLength)
-                        .equalsIgnoreCase(dirPath)) {
+                if (normalizedAbsolutePath.substring(0, dirLength).equalsIgnoreCase(dirPath)) {
                     // Cut parent path
                     relativePath = normalizedAbsolutePath.substring(dirLength);
                     if (relativePath.startsWith("/")) {
@@ -287,8 +288,7 @@ public final class FileUtil {
      */
     public static void deleteFile(String path) throws IOException {
         if (!new File(path).delete())
-            throw new IOException(String.format("Unable to delete file '%s'",
-                    path));
+            throw new IOException(String.format("Unable to delete file '%s'", path));
     }
 
     /**
@@ -304,17 +304,19 @@ public final class FileUtil {
      *             or cannot be opened for any other reason.
      */
     public static void copyFile(String origPath, String destPath) throws IOException {
-        FileChannel in = null;
-        FileChannel out = null;
+        FileInputStream fis = null;
+        FileOutputStream fos = null;
         try {
-            in = new FileInputStream(origPath).getChannel();
-            out = new FileOutputStream(destPath).getChannel();
+            fis = new FileInputStream(origPath);
+            fos = new FileOutputStream(destPath);
+            final FileChannel in = fis.getChannel();
+            final FileChannel out = fos.getChannel();
             in.transferTo(0, in.size(), out);
         } finally {
-            if (in != null)
-                in.close();
-            if (out != null)
-                out.close();
+            if (fis != null)
+                fis.close();
+            if (fos != null)
+                fos.close();
         }
     }
 
@@ -329,7 +331,7 @@ public final class FileUtil {
         // todo: Double check this code.
 
         /*
-         * Forces static initialization 
+         * Forces static initialization
          */
         final FileUtil placebo = new FileUtil();
         final ClassLoader cl = placebo.getClass().getClassLoader();
@@ -342,7 +344,7 @@ public final class FileUtil {
     }
 
     /**
-     * Gets the size of the path.
+     * Gets the size of all the files in a given path.
      * <p>
      * If the path is a directory the size is the sum of the size of all the files in the
      * directory and sub-directories. If the path is a file, the size is the size of the
@@ -357,13 +359,15 @@ public final class FileUtil {
         if (path.isFile()) {
             size = path.length();
         } else {
-            File[] subFiles = path.listFiles();
+            final File[] files = path.listFiles();
 
-            for (File file : subFiles) {
-                if (file.isFile()) {
-                    size += file.length();
-                } else {
-                    size += getSize(file);
+            if (files != null) {
+                for (File file : files) {
+                    if (file.isFile()) {
+                        size += file.length();
+                    } else {
+                        size += getSize(file);
+                    }
                 }
             }
         }
@@ -414,7 +418,7 @@ public final class FileUtil {
     public static String readTextFile(String path) throws IOException {
         StringBuilder contents = new StringBuilder();
 
-        String lineSep = System.getProperty("line.separator");
+        final String lineSep = StringUtil.NL;
         BufferedReader input = new BufferedReader(new FileReader(path));
         try {
             String line;
@@ -445,19 +449,22 @@ public final class FileUtil {
         File dest = new File(destPath);
 
         // On windows, we must manually delete the destination file if it exists
-        if (SysUtil.getOperatingSystem() == SysUtil.OS.WINDOWS && dest.exists())
-            dest.delete();
+        if (SysUtil.getOperatingSystem() == SysUtil.OS.WINDOWS && dest.exists()) {
+            if (!dest.delete()) {
+                throw new IOException(String.format(
+                        "Target file '%1$s' is in the way and cannot be deleted", orig.toString()));
+            }
+        }
 
         if (!orig.renameTo(dest))
-            throw new IOException(String.format(
-                    "Unable to rename file from '%1$s' to '%2$s'",
+            throw new IOException(String.format("Unable to rename file from '%1$s' to '%2$s'",
                     orig.toString(), dest.toString()));
     }
 
     /**
      * Writes the contents of a String to a file.
      * <p>
-     * Notes: - file will have the system default encoding
+     * Notes: file will have the system default encoding
      * 
      * @param path File to write
      * @param text File contents

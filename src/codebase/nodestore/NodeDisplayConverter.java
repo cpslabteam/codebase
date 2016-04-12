@@ -21,7 +21,7 @@ import codebase.io.converters.display.StringLiteralConverter;
  */
 public class NodeDisplayConverter
         implements Converter {
-
+   
     private final IntegerDisplayConverter intConverter = new IntegerDisplayConverter();
     private final StringLiteralConverter stringConverter = new StringLiteralConverter();
 
@@ -41,7 +41,7 @@ public class NodeDisplayConverter
                 throw new IOException("Malformed line: found '" + ch
                                       + "' while expecting of '" + expected
                                       + "'");
-            }
+            }  
         }
     }
 

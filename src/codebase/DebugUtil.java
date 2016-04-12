@@ -73,14 +73,14 @@ public final class DebugUtil {
             try {
                 o = i.next();
             } catch (Exception e) {
-                throw new IllegalStateException("Exception when performing i.next():"
-                        + e.toString());
+                throw new IllegalStateException(
+                        "Exception when performing i.next():" + e.toString());
             }
             try {
                 str = codebase.DebugUtil.toString(o);
             } catch (Exception e) {
-                throw new IllegalStateException("Exception when performing o.toString():"
-                        + e.toString());
+                throw new IllegalStateException(
+                        "Exception when performing o.toString():" + e.toString());
             }
 
             out.println(Integer.toString(rowNum) + ":" + str);
@@ -204,7 +204,8 @@ public final class DebugUtil {
      * @throws IOException if an exception occurs while writing on the output stream
      * @see #toHexStringDump(byte[])
      */
-    public static void dumpToHexString(final byte[] buffer, final OutputStream out) throws IOException {
+    public static void dumpToHexString(final byte[] buffer, final OutputStream out)
+            throws IOException {
         out.write(toHexStringDump(buffer).getBytes(DEFAULT_STRING_ENCODING));
         out.flush();
     }
@@ -222,7 +223,8 @@ public final class DebugUtil {
      * @throws IOException if an exception occurs while writing on the output stream
      * @see #toHexStringDump(byte[], int)
      */
-    public static void dumpToHexString(final byte[] buffer, final OutputStream out, final int size) throws IOException {
+    public static void dumpToHexString(final byte[] buffer, final OutputStream out, final int size)
+            throws IOException {
         out.write(toHexStringDump(buffer, size).getBytes(DEFAULT_STRING_ENCODING));
         out.flush();
     }

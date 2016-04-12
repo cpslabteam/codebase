@@ -137,5 +137,6 @@ public class ObjectConverterInput
 
     @Override
     public void close() throws IOException {
+        // Closing an object converter does nothing.
     }
 }

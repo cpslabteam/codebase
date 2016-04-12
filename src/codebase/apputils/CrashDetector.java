@@ -4,7 +4,7 @@ import java.io.File;
 import java.io.IOException;
 
 /**
- * Manages whether the application has had a clean start up or not.
+ * Manages whether and application or component has had a clean start up or not.
  * <p>
  * This class works by creating a lock file and then deleting the file when shutting down.
  * If the file exists when starting up this indicates that there was a problem with the

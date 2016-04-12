@@ -34,7 +34,7 @@ public class AttributeNode extends
 
 
     /**
-     * @return a string representation of an attribute nod for debugging purposes.
+     * @return a string representation of an attribute node for debugging purposes.
      */
     @Override
     public String toString() {

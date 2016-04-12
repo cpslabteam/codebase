@@ -52,7 +52,8 @@ public final class AESUtil {
      * @return encrypted data in Base64 encoding.
      * @throws GeneralSecurityException the general security exception
      */
-    public static String cypherText(Key key, IvParameterSpec iv, String plaintext) throws GeneralSecurityException {
+    public static String cypherText(Key key, IvParameterSpec iv, String plaintext)
+            throws GeneralSecurityException {
         /*
          * AES ( == AES/ECB/PKCS5Padding) AES/CBC/NoPadding AES/CBC/PKCS5Padding
          * AES/CBC/ISO10126Padding
@@ -79,7 +80,8 @@ public final class AESUtil {
      * @return the decyphered text
      * @throws GeneralSecurityException the general security exception
      */
-    public static String decypherText(Key key, IvParameterSpec iv, String cyphertext) throws GeneralSecurityException {
+    public static String decypherText(Key key, IvParameterSpec iv, String cyphertext)
+            throws GeneralSecurityException {
         final Cipher cipher = Cipher.getInstance("AES/CBC/NoPadding");
         cipher.init(Cipher.DECRYPT_MODE, key, iv);
 

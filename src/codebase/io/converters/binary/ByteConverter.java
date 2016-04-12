@@ -73,7 +73,7 @@ public class ByteConverter extends
      * @throws IOException if I/O errors occur.
      */
     public Object read(DataInput dataInput) throws IOException {
-        return new Byte(dataInput.readByte());
+        return Byte.valueOf(dataInput.readByte());
     }
 
     /**

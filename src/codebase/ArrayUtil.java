@@ -887,8 +887,9 @@ public final class ArrayUtil {
 
     /**
      * Obtains the string representation of an array of objects.
-     * 
+     *
      * @param objs the objects array to be converted
+     * @param delimiter the delimiter to be used to separate the characters.
      * @return a string of the form <code>[o1, ..., on]</code>
      */
     public static String toString(final Object[] objs, final String delimiter) {

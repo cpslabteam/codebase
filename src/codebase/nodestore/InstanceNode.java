@@ -1,6 +1,8 @@
+
+
 package codebase.nodestore;
 
-/**
+/**    
  * Node that represents an instance.
  */
 public class InstanceNode extends
@@ -11,6 +13,7 @@ public class InstanceNode extends
         super(nodeNumber);
         this.typeName = typeName;
     }
+    
     
     public String getTypeName() {
         return typeName;
