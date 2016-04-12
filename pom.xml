@@ -77,8 +77,10 @@
 					<version>true</version>
 					<author>true</author>
 					<keywords>true</keywords>
-					<additionalparam>-Xdoclint:none -output
-						${project.build.outputDirectory}</additionalparam>
+					<additionalparam>-Xdoclint:none</additionalparam>
+					<additionalparam>
+						-sourceclasspath ${project.build.outputDirectory}
+					</additionalparam>
 				</configuration>
 			</plugin>
 

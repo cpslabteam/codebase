@@ -123,7 +123,7 @@ public final class DebugUtil {
     }
 
     /**
-     * Prints an object[] to the console by calling {@link ArrayUtil#toString(Object[])}.
+     * Prints an object[] to the console.
      * 
      * @param objs the object array to be dumped
      */
@@ -139,7 +139,7 @@ public final class DebugUtil {
     }
 
     /**
-     * Dumps an object[] to a stream by calling {@link ArrayUtil#toString(Object[])}.
+     * Dumps an object[] to a stream..
      * 
      * @param objs the objects to be dumped
      * @param out the output stream to write the object

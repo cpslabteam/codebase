@@ -8,14 +8,11 @@ import java.io.IOException;
  * The interface of a Converter.
  * <p>
  * A converter is an object that reads and writes other objects using specific
- * formats. The converter objects are used to read and write differents formats
+ * formats. The converter objects are used to read and write different formats
  * of files and message streams both in binary and display formats.
  * <p>
  * Writing an object is called <i>serialization</i>; reading an object is
  * called <i>deserialization</i>.
- * <p>
- * This class can be used for serializing objects that cannot implement the
- * {@link Convertable} interface.
  * <p>
  * It prevents the one important drawback of the default SDK serialization
  * mechanism: the overhead of writing additional data (like the class id) to the

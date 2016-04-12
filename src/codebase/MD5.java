@@ -382,8 +382,9 @@ public final class MD5 {
      * 
      * @param input the input stream to be treated
      * @return the 16-byte array containing the message digest
-     * @throws RuntimeException if the encoding is not supported
+     * @throws IOException if an error occurs in the underlying stream
      */
+    // XXX: Test what happens if the encoding is not supported
     public static final byte[] getDigestRaw(final InputStream input) throws IOException {
         byte[] bytes = new byte[STREAM_BLOCK_READ_SIZE];
 

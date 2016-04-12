@@ -26,7 +26,7 @@ public class StringLiteralConverter
      * A corner occurs when an {@link EOFException} occurs before a second comma is found.
      * In this case the string is read until EOF is returned.
      * <p>
-     * The maximum size of a string is {@value #DEFAULT_MAX_READ_LENGTH}.
+     * The maximum size of a string is 16K.
      * 
      * @param dataInput the data input to read the data input from
      * @throws IOException if an exception occurs while reading the string

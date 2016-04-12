@@ -269,7 +269,7 @@ public final class BinaryUtil {
      * Extracts the higher byte of a two-byte integer.
      * 
      * @param value the integer with two bytes
-     * @return (v >> 8) & 0xFF
+     * @return (v >> 8) \& 0xFF
      */
     public static int getHighByte(final int value) {
         return (value >> BIT_SIZE_OF_BYTE) & INT_LOW_BYTE_MASK;
@@ -319,8 +319,8 @@ public final class BinaryUtil {
      * Sets the higher nibble of the least significant byte.
      * 
      * @param value the a byte value as an int
-     * @param nibble the value to be set. Only the leaset significant 4 bits are used,
-     *            hence <code> 0x00 <= nibble <= 0x0F </code>.
+     * @param nibble the value to be set. Only the least significant 4 bits are used,
+     *            hence <code> 0x00 &leq; nibble &leq; 0x0F </code>.
      * @return the high nibble of the least significant byte of the integer
      */
     public static int setHighNibble(final int value, final int nibble) {

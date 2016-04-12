@@ -62,7 +62,7 @@ public class ByteSkipConverter extends
                     "The size must match the number of bytes");
         }
 
-        writeBytes = bytes;
+        writeBytes = bytes.clone();
     }
 
     /**
@@ -83,7 +83,6 @@ public class ByteSkipConverter extends
      * @return <code>null</code>
      * @throws IOException if an exception occurs while skipping the bytes form the data
      *             input
-     * @see BaseConverter#read(DataInput)
      */
     public final Object read(final DataInput dataInput) throws IOException {
         dataInput.skipBytes(length);
@@ -97,7 +96,6 @@ public class ByteSkipConverter extends
      * @param object ignored
      * @throws IOException if an exception occurs while skipping the bytes form the data
      *             input
-     * @see BaseConverter#write(DataOutput, Object)
      */
     public final void write(final DataOutput dataOutput, final Object object) throws IOException {
         dataOutput.write(writeBytes);

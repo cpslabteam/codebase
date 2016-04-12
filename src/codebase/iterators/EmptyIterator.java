@@ -13,8 +13,6 @@ package codebase.iterators;
  * This iterator is useful for initialization purposes.
  * 
  * @param <E> the type of all the objects to be treated.
- * @see NullIterator
- * @since Created on 4/Mai/2005
  */
 public final class EmptyIterator<E>
         implements UpdatableIterator<E> {

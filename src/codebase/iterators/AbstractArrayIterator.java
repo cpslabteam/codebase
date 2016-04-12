@@ -83,7 +83,7 @@ public abstract class AbstractArrayIterator<E>
     /**
      * Void implementation.
      * 
-     * @throws UnsupportedOperationException
+     * @throws UnsupportedOperationException when called
      */
     public final void remove() {
         throw new UnsupportedOperationException("Can not remove from an array iterator.");

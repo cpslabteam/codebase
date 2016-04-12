@@ -25,10 +25,7 @@ public class DelayedOutputStream extends FilterOutputStream {
     /**
      * Constructs an output stream that converges a predefined bandwidth.
      * 
-     * @param interval the time to wait before sending the message in milliseconds. Must
-     *            be a {@link NumberPropertyType}. This stream will be attached to this
-     *            property and each update in the property's value will instantly affect
-     *            the stream
+     * @param interval the time to wait before sending the message in milliseconds.
      * @param output The output stream to be wrapped.
      * @throws IllegalArgumentException if the bandwidth is not positive
      */

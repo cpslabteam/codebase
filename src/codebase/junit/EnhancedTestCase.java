@@ -656,7 +656,7 @@ public class EnhancedTestCase extends
 
     /**
      * Checks that a result is near the expected result. In other words checks that
-     * <code>abs(expected - actual) <= error</code>.
+     * <code>abs(expected - actual) &leq; error</code>.
      * 
      * @param expected the expected values
      * @param actual the actual value
