@@ -22,7 +22,7 @@
  * </ol>
  * <p>
  * The classes included in the main package are general purpose classes used for, among
- * other, parsing command line arguments, file handling, cyphering, string and binary
+ * other, parsing command line arguments, file handling, ciphering, string and binary
  * operations. Utility classes for more <i>specialized functionality</i> are organized
  * into <i>appropriate sub-packages</i>.
  * <p>
@@ -33,19 +33,21 @@
  * <li>Unless otherwise stated, the classes herein are not threaded safe without external
  * synchronization.</li>
  * <li>The classes included in the main package are general purpose classes used for,
- * among other, parsing command line arguments, file handling, cyphering, string and
+ * among other, parsing command line arguments, file handling, ciphering, string and
  * binary operations.</li>
  * <li>Utility classes for more specialized functionality are organized into appropriate
  * sub-packages.</li>
  * <li>All the code undergoes strict static checking and most of it is unit tested for
  * maximum reliability.</li>
+ * <li>Methods are carefully documented</li>
+ * <li>Compatible with Java 1.6 to be easily embbedable</li>
  * <li>Codebase can be used as an OSGi bundle.</li>
  * </ol>
  * <p>
- * Other open source alternatives to <tt>codebase</tt> are <a
- * href="http://commons.apache.org">Apache Commons</a> and <a
- * href="https://code.google.com/p/guava-libraries">Google Guava</a>. Although similar in
- * spirit, we decided to keep maintaining <tt>codebase</tt> because it has a lower
+ * Other open source alternatives to <tt>codebase</tt> are
+ * <a href="http://commons.apache.org">Apache Commons</a> and
+ * <a href="https://code.google.com/p/guava-libraries">Google Guava</a>. Although similar
+ * in spirit, we decided to keep maintaining <tt>codebase</tt> because it has a lower
  * footprint and better suited to our purposes.
  */
 package codebase;

@@ -56,7 +56,7 @@ public class EnhancedTestCase extends
          * 
          * @param elem the object to be treated
          */
-        public RefObject(final Object elem) {
+        RefObject(final Object elem) {
             baseElem = elem;
             expectedRefCount = 1;
         }
@@ -123,9 +123,8 @@ public class EnhancedTestCase extends
          */
         public String toString() {
             final String elementRepr = DebugUtil.toString(baseElem);
-            return "Element <" + elementRepr + "> expected <"
-                    + Integer.valueOf(expectedRefCount).toString() + "> times; seen <"
-                    + Integer.valueOf(actualRefCount) + "> times.";
+            return "Element <" + elementRepr + "> expected <" + Integer.toString(expectedRefCount)
+                    + "> times; seen <" + Integer.toString(actualRefCount) + "> times.";
         }
     }
 
@@ -142,9 +141,9 @@ public class EnhancedTestCase extends
         int rowNum = 0;
 
         /*
-         * We have to disable Checkstyle temporarily so that it does not
-         * complain about catching the type Exception. This code is special
-         * because it deals with test cases.
+         * We have to disable Checkstyle temporarily so that it does not complain about
+         * catching the type Exception. This code is special because it deals with test
+         * cases.
          */
 
         // CHECKSTYLE:OFF
@@ -171,21 +170,21 @@ public class EnhancedTestCase extends
             try {
                 compareRows(rowNum, expectedValue, actualValue);
             } catch (Exception e) {
-                throw new junit.framework.AssertionFailedError("Iterator row comparison failed: "
-                        + e.toString());
+                throw new junit.framework.AssertionFailedError(
+                        "Iterator row comparison failed: " + e.toString());
             }
 
             rowNum += 1;
         }
         /*
-         * The loop has terminated but maybe only one of the iterators is empty.
-         * Check that out.
+         * The loop has terminated but maybe only one of the iterators is empty. Check
+         * that out.
          */
         try {
             performIteratorEmptyChecks(expected, actual);
         } catch (junit.framework.AssertionFailedError e) {
-            throw new junit.framework.AssertionFailedError("At (0-based) row "
-                    + Integer.toString(rowNum) + ": " + e.getMessage());
+            throw new junit.framework.AssertionFailedError(
+                    "At (0-based) row " + Integer.toString(rowNum) + ": " + e.getMessage());
         }
         // CHECKSTYLE:ON
     }
@@ -250,10 +249,10 @@ public class EnhancedTestCase extends
      */
     public static final void assertEquals(final char expected, final char actual) {
         if (expected != actual) {
-            throw new junit.framework.AssertionFailedError("Expecting <" + safeChar(expected)
-                    + "> (" + (int) expected + ", 0x" + BinaryUtil.toHex(expected) + ") but found <"
-                    + safeChar(actual) + "> (" + (int) actual + ", 0x" + BinaryUtil.toHex(actual)
-                    + ").");
+            throw new junit.framework.AssertionFailedError(
+                    "Expecting <" + safeChar(expected) + "> (" + (int) expected + ", 0x"
+                            + BinaryUtil.toHex(expected) + ") but found <" + safeChar(actual)
+                            + "> (" + (int) actual + ", 0x" + BinaryUtil.toHex(actual) + ").");
         }
     }
 
@@ -277,8 +276,10 @@ public class EnhancedTestCase extends
      */
     public static final void assertEquals(final int[] expected, final int[] actual) {
         performBaseNullChecks(expected, actual);
-        performArrayEmptyChecks(ArrayUtil.toIntegerArray(expected), ArrayUtil.toIntegerArray(actual));
-        performArrayComparison(ArrayUtil.toIntegerArray(expected), ArrayUtil.toIntegerArray(actual));
+        performArrayEmptyChecks(ArrayUtil.toIntegerArray(expected),
+                ArrayUtil.toIntegerArray(actual));
+        performArrayComparison(ArrayUtil.toIntegerArray(expected),
+                ArrayUtil.toIntegerArray(actual));
     }
 
     /**
@@ -286,7 +287,7 @@ public class EnhancedTestCase extends
      * 
      * @param expected the expected long array
      * @param actual the result against which the expected is to be checked
-     */    
+     */
     public static final void assertEquals(final long[] expected, final long[] actual) {
         performBaseNullChecks(expected, actual);
         performArrayEmptyChecks(ArrayUtil.toLongArray(expected), ArrayUtil.toLongArray(actual));
@@ -341,9 +342,9 @@ public class EnhancedTestCase extends
      */
     public static void assertThrows(final CodeBlock block, final Throwable throwable) {
         /*
-         * We have to disable checkstyle temporarily so that it does not
-         * complain about catching the type Throwable. This code is special
-         * because it deals with test cases.
+         * We have to disable checkstyle temporarily so that it does not complain about
+         * catching the type Throwable. This code is special because it deals with test
+         * cases.
          */
 
         // CHECKSTYLE:OFF
@@ -429,8 +430,8 @@ public class EnhancedTestCase extends
     private static void performExistsActualCheck(final java.util.List<?> expectedElements,
                                                  final java.util.Iterator<?> actualIterator) {
         /*
-         * Checks that all elements in the actual iterator are elements expected
-         * by the expected iterator
+         * Checks that all elements in the actual iterator are elements expected by the
+         * expected iterator
          */
         final int rowNum = 0;
         while (actualIterator.hasNext()) {
@@ -453,7 +454,8 @@ public class EnhancedTestCase extends
      * @param expectedElements the list with reference count information on objects
      */
     private static void performBagReferenceCheck(final java.util.List<RefObject> expectedElements) {
-        for (final java.util.Iterator<RefObject> it = expectedElements.listIterator(); it.hasNext();) {
+        for (final java.util.Iterator<RefObject> it = expectedElements.listIterator(); it
+                .hasNext();) {
             final RefObject entry = (RefObject) it.next();
             if (!entry.isOk()) {
                 throw new junit.framework.AssertionFailedError(
@@ -486,8 +488,8 @@ public class EnhancedTestCase extends
             try {
                 performArrayComparison((Object[]) expectedValue, (Object[]) actualValue);
             } catch (junit.framework.AssertionFailedError e) {
-                throw new junit.framework.AssertionFailedError("At (0-based) row "
-                        + Integer.toString(rowNum) + ": " + e.getMessage());
+                throw new junit.framework.AssertionFailedError(
+                        "At (0-based) row " + Integer.toString(rowNum) + ": " + e.getMessage());
             }
         } else {
             if (!actualValue.equals(expectedValue)) {
@@ -496,10 +498,10 @@ public class EnhancedTestCase extends
                  * Check that the string representations are not the same
                  */
                 if (!actualValue.toString().equals(expectedValue.toString())) {
-                    throw new junit.framework.AssertionFailedError("Expected <"
-                            + DebugUtil.toString(expectedValue) + ">; Actual <"
-                            + DebugUtil.toString(actualValue) + ">  at (0-based) row "
-                            + Integer.toString(rowNum));
+                    throw new junit.framework.AssertionFailedError(
+                            "Expected <" + DebugUtil.toString(expectedValue) + ">; Actual <"
+                                    + DebugUtil.toString(actualValue) + ">  at (0-based) row "
+                                    + Integer.toString(rowNum));
                 }
             }
         }
@@ -632,7 +634,8 @@ public class EnhancedTestCase extends
      * @param expected iterator that represents the expected result of the test
      * @throws junit.framework.AssertionFailedError
      */
-    private static void performIsContainedCheck(final Iterator<?> expected, final Iterator<?> actual) {
+    private static void performIsContainedCheck(final Iterator<?> expected,
+                                                final Iterator<?> actual) {
         final List<Object> expectedElems = new ArrayList<Object>();
         while (expected.hasNext()) {
             final Object elem = expected.next();
@@ -664,9 +667,9 @@ public class EnhancedTestCase extends
                                          final double error) {
         final boolean isOk = java.lang.Math.abs(expected - actual) <= error;
         if (!isOk) {
-            throw new junit.framework.AssertionFailedError("Expecting <"
-                    + Double.toString(expected) + "> found <" + Double.toString(actual)
-                    + "> which is ouside the error bound <" + Double.toString(error) + ">.");
+            throw new junit.framework.AssertionFailedError("Expecting <" + Double.toString(expected)
+                    + "> found <" + Double.toString(actual) + "> which is ouside the error bound <"
+                    + Double.toString(error) + ">.");
         }
     }
 

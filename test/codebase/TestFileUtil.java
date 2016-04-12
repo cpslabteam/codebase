@@ -14,22 +14,28 @@ import codebase.junit.FileBasedTestCase;
 public class TestFileUtil extends
         FileBasedTestCase {
 
-    private static final String SUCCESSFULL_FILE_NAME = FilenameUtil.concat(getTestDirectory()
-            .getAbsolutePath(), "successfulfile.dat");
+    private static final String SUCCESSFULL_FILE_NAME =
+        FilenameUtil.concat(getTestDirectory().getAbsolutePath(), "successfulfile.dat");
+    
     private static final File ABSOLUTE_FILE = new File(SUCCESSFULL_FILE_NAME);
-    private static final File BASE_FILE = new File(ABSOLUTE_FILE.getParent());
-    private static final String ABSOLUTE_PATH = FilenameUtil.getFullPath(ABSOLUTE_FILE
-            .getAbsolutePath());
+    
+    private static final File TEST_DIR_FILE = new File(ABSOLUTE_FILE.getParent());
+    
+    private static final String ABSOLUTE_PATH =
+        FilenameUtil.getFullPath(ABSOLUTE_FILE.getAbsolutePath());
 
     @Override
     public void setUp() throws IOException {
-        FileUtil.deleteDirectory(BASE_FILE);
-        assertTrue(BASE_FILE.mkdirs());
+        // Clean the directory just in case
+        FileUtil.deleteDirectory(TEST_DIR_FILE);
+        
+        // Create the base directory
+        assertTrue(TEST_DIR_FILE.mkdirs());
     }
 
     @Override
     public void tearDown() throws IOException {
-        FileUtil.deleteDirectory(BASE_FILE);
+        FileUtil.deleteDirectory(TEST_DIR_FILE);
     }
 
     /**
@@ -37,13 +43,15 @@ public class TestFileUtil extends
      */
     public void testVerifyCanCreateFile() {
         // Illegal file name
-    	final String osName = System.getProperty("os.name").toLowerCase();
-    	//This tests won't work if they are run as admin/root
-    	if(osName.contains("win")){
-    		assertTrue(!FileUtil.verifyCanCreateFile("C:", 10));
-    	} else {
-    		assertTrue(!FileUtil.verifyCanCreateFile("/", 10));
-    	}
+        final String osName = System.getProperty("os.name").toLowerCase();
+
+        // This tests won't work if they are run as admin/root
+        if (osName.contains("win")) {
+            assertFalse(FileUtil.verifyCanCreateFile("C:", 10));
+        } else {
+            assertFalse(FileUtil.verifyCanCreateFile("/", 10));
+        }
+
         // Regular file
         assertTrue(FileUtil.verifyCanCreateFile(SUCCESSFULL_FILE_NAME, 10));
     }

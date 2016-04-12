@@ -5,12 +5,14 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import java.io.RandomAccessFile;
+import java.io.Reader;
+import java.io.Writer;
 import java.nio.channels.FileChannel;
 
 import javax.swing.filechooser.FileSystemView;
@@ -418,8 +420,12 @@ public final class FileUtil {
     public static String readTextFile(String path) throws IOException {
         StringBuilder contents = new StringBuilder();
 
+        final Reader reader =
+            new InputStreamReader(new FileInputStream(path), StringUtil.DEFAULT_STRING_ENCODING);
+        final BufferedReader input = new BufferedReader(reader);
+
+
         final String lineSep = StringUtil.NL;
-        BufferedReader input = new BufferedReader(new FileReader(path));
         try {
             String line;
             while ((line = input.readLine()) != null) {
@@ -471,7 +477,9 @@ public final class FileUtil {
      * @throws IOException in case of failure
      */
     public static void writeTextFile(String path, String text) throws IOException {
-        FileWriter writer = new FileWriter(path, false);
+        final Writer writer =
+            new OutputStreamWriter(new FileOutputStream(path), StringUtil.DEFAULT_STRING_ENCODING);
+        
         writer.write(text);
         writer.close();
     }

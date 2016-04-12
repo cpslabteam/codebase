@@ -8,13 +8,15 @@ import java.util.Iterator;
  * 
  * @param <A> the type of the objects of the input iterator.
  * @param <B> the result type of applying the mapping function.
- * @since Created on 29/Ago/2013
  */
 public abstract class MapIterator<A, B>
         implements Iterator<B> {
 
     /**
      * The interface of a function to map each object on an iterator.
+     * 
+     * @param <A> the input type
+     * @param <B> the output type
      */
     public interface MapFunction<A, B> {
 

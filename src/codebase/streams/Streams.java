@@ -30,10 +30,11 @@ public final class Streams {
      * @return a new buffered file output stream based with the specified size
      * @throws IOException if an error occurs while creating the file output stream
      */
-    public static OutputStream createFileOutputStream(final String fileName, final int bufferSize) throws java.io.IOException {
+    public static OutputStream createFileOutputStream(final String fileName, final int bufferSize)
+            throws java.io.IOException {
         final FileOutputStream fileWriteStream = new FileOutputStream(fileName);
-        final BufferedOutputStream fileOutputStream = new BufferedOutputStream(fileWriteStream,
-                bufferSize);
+        final BufferedOutputStream fileOutputStream =
+            new BufferedOutputStream(fileWriteStream, bufferSize);
         return fileOutputStream;
     }
 
@@ -45,10 +46,11 @@ public final class Streams {
      * @return a new buffered file input stream based with the specified size
      * @throws IOException if an error ocours while opening the file output stream
      */
-    public static InputStream createFileInputStream(final String fileName, final int bufferSize) throws IOException {
+    public static InputStream createFileInputStream(final String fileName, final int bufferSize)
+            throws IOException {
         final FileInputStream fileInputStream = new FileInputStream(fileName);
-        final BufferedInputStream bufferedInput = new BufferedInputStream(fileInputStream,
-                bufferSize);
+        final BufferedInputStream bufferedInput =
+            new BufferedInputStream(fileInputStream, bufferSize);
         return bufferedInput;
     }
 

@@ -14,13 +14,13 @@ The main goals of codebase are:
 * Setting a standard for code quality (the code is available in open source to be analyzed) by helping the users of the library to imitate it.
 
 ## Design and development of codebase
-* The classes included in the main package are general purpose classes used for, among other, parsing command line arguments, file handling, cyphering, string and binary operations. Utility classes for more specialized functionality are organized into appropriate sub-packages. 
+* The classes included in the main package are general purpose classes used for, among other, parsing command line arguments, file handling, ciphering, string and binary operations. Utility classes for more specialized functionality are organized into appropriate sub-packages. 
 
 * All the code undergoes strict static checking and most of it is unit tested for maximum reliability.
 
-* Codebase can be used as an OSGi bundle.
+* All methods are carefully documented
 
-* Codebase is a manifest-first Maven project meaning that and that dependencies are declared in the `META-INF/MANIFEST` file instead of in `pom.xml`.
+* Compliant with Java 1.6 in order to easily embbedable
 
 ## How to contribute
 If you have suggestions for enhancements or have identified a bug in Codebase are happy to receive your contributions and give you credit. 

@@ -69,7 +69,7 @@ public class TimeoutOutputStream extends FilterOutputStream {
      */
     private final class DataWriter extends Thread {
 
-        public DataWriter() {
+        DataWriter() {
             super(DATA_WRITER_THREAD_NAME);
         }
 

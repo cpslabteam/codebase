@@ -27,7 +27,7 @@ class ComparableArrayWrapper {
      * 
      * @param array the array to be wrapped
      */
-    public ComparableArrayWrapper(final Object[] array) {
+    ComparableArrayWrapper(final Object[] array) {
         wrapped = array.clone();
     }
 
@@ -64,10 +64,9 @@ class ComparableArrayWrapper {
         } else
             try {
                 /*
-                 * FindBugs complains that we cannot convert to Object[] 
-                 * because Object[] is not an ascendent or descendant of 
-                 * ComparableArrayWrapper. However, to simplify the client 
-                 * code we need to compare with Object[].
+                 * FindBugs complains that we cannot convert to Object[] because Object[]
+                 * is not an ascendent or descendant of ComparableArrayWrapper. However,
+                 * to simplify the client code we need to compare with Object[].
                  */
                 anotherArray = coerce(another);
             } catch (ClassCastException e) {

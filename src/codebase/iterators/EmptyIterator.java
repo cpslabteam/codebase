@@ -63,6 +63,7 @@ public final class EmptyIterator<E>
      * @see codebase.iterators.ResetableIterator#reset()
      */
     public void reset() {
+        // Do nothing. See method comment.
     }
 
     /**
