@@ -11,6 +11,9 @@ import java.util.concurrent.TimeUnit;
  * <p>
  * This stream decorator is especially useful to add timeout behavior to an existing
  * stream.
+ * <p>
+ * The implementation uses semaphores in order to timeout from blocking read behavior and
+ * throw a {@link TimeoutException}.
  */
 public class TimeoutInputStream extends FilterInputStream {
 
@@ -62,6 +65,7 @@ public class TimeoutInputStream extends FilterInputStream {
     private final class DataReader extends Thread {
         @Override
         public void run() {
+            unreadMessage = false;
             try {
                 while (true) {
                     dataFromDecorated.acquire();
@@ -69,9 +73,10 @@ public class TimeoutInputStream extends FilterInputStream {
                         message = in.read();
                         ioexception = null;
                     } catch (IOException e) {
+                        message = -1;
                         ioexception = e;
-                        e.printStackTrace();
                     }
+
                     unreadMessage = true;
                     dataToClient.release();
                 }
@@ -80,9 +85,12 @@ public class TimeoutInputStream extends FilterInputStream {
                  * If the thread is stopped its not a problem: we just ignore it since we
                  * are not locking any resources. We are being stopped for shutdown.
                  */
+                ioexception = null;
+                unreadMessage = false;
             }
         }
     };
+
 
     private final DataReader dataReader;
 
@@ -109,6 +117,7 @@ public class TimeoutInputStream extends FilterInputStream {
             throw new IllegalArgumentException("Timeout must be positive.");
         }
 
+        decoratedStream = in;
         streamTimeout = timeout;
 
         dataReader = new DataReader();
@@ -117,7 +126,7 @@ public class TimeoutInputStream extends FilterInputStream {
 
 
     @Override
-    public void close() throws IOException {
+    public synchronized void close() throws IOException {
         dataReader.interrupt();
         super.close();
     }
@@ -130,8 +139,6 @@ public class TimeoutInputStream extends FilterInputStream {
          */
         if (!unreadMessage)
             dataFromDecorated.release();
-
-        // assert dataFromDecorated.availablePermits() == 0 : "";
 
         try {
             /*
@@ -153,7 +160,7 @@ public class TimeoutInputStream extends FilterInputStream {
     }
 
     @Override
-    public int read(byte b[]) throws IOException {
+    public int read(byte[] b) throws IOException {
         int i = 0;
         while (i < b.length) {
             b[i] = (byte) this.read();

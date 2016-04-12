@@ -97,6 +97,7 @@ public class ConstantInputStream extends
 
     @Override
     public final void close() {
+        // Close does not apply to constant input streams.
     }
 
     @Override

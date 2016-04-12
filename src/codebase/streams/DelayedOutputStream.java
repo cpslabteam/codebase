@@ -4,8 +4,6 @@ import java.io.FilterOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 
-import shared.properties.base.NumberPropertyType;
-
 /**
  * An output stream that waits for a predefined interval before writing <b>each byte</b>
  * into another stream.

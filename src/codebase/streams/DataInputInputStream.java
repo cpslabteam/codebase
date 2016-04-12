@@ -58,6 +58,7 @@ public final class DataInputInputStream
      * @see java.io.InputStream#close()
      */
     public void close() {
+        // Nothing to close.
     }
 
     /**
@@ -67,6 +68,7 @@ public final class DataInputInputStream
      * @see java.io.InputStream#mark(int)
      */
     public synchronized void mark(final int readlimit) {
+        throw new UnsupportedOperationException();
     }
 
     /**
@@ -83,7 +85,7 @@ public final class DataInputInputStream
      * Reads a byte from the DataInput.
      *
      * @return the byte read or <code>-1</code> if an {@link EOFException}
-     *         ocurred while reading the data input.
+     *         occurred while reading the data input.
      * @throws IOException if the underlying data input object throws an
      *             {@link IOException}.
      */
