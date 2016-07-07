@@ -224,8 +224,7 @@ public final class StringUtil {
      * @param objs the array of items to join
      * @param delimiter the text to place between each element in the array, cannot be
      *            <code>null</code>. To join without a delimiter, use an empty string.
-     * @return the resulting string on <code>null</code> if items is <code>null</code>
-     * @throws NullPointerException if the received delimiter is null.
+     * @return the resulting string or <code>null</code> if items is <code>null</code>
      */
     public static String join(final Object[] objs, final String delimiter) {
         assert delimiter != null : "Delimiter should not be null";

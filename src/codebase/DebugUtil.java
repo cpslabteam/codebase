@@ -82,7 +82,7 @@ public final class DebugUtil {
                 throw new IllegalStateException(
                         "Exception when performing o.toString():" + e.toString());
             }
-
+            
             out.println(Integer.toString(rowNum) + ":" + str);
             out.flush();
             rowNum++;

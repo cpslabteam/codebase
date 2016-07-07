@@ -3,7 +3,7 @@ package codebase.iterators;
 import java.util.Iterator;
 
 /**
- * An decorator iterator.
+ * A decorator iterator.
  * <p>
  * This class decorates an object implementing the {@link Iterator} interface such that
  * all method calls on the decorator are passed to its decorated object.

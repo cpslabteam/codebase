@@ -1,6 +1,7 @@
 /*
  * Created on 16/Out/2004
  */
+
 package codebase.junit;
 
 import java.util.ArrayList;
@@ -11,7 +12,6 @@ import codebase.ArrayUtil;
 import codebase.BinaryUtil;
 import codebase.DebugUtil;
 import codebase.iterators.ArrayIterator;
-
 import junit.framework.TestCase;
 
 /**

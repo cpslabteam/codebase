@@ -1,6 +1,7 @@
 /*
  * Created on 19/Out/2005
  */
+
 package codebase.junit;
 
 import codebase.ArrayUtil;

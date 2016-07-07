@@ -1,8 +1,8 @@
 /*
  * Created on 22/Out/2005
  */
-package codebase.junit;
 
+package codebase.junit;
 
 /**
  * Interface of blocks of code called in a deferred (or lazzy) way.

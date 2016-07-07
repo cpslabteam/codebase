@@ -1,13 +1,10 @@
 package codebase.io.converters.binary;
 
-
-
 import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.IOException;
 
 import codebase.io.converters.AbstractFixedSizeConverter;
-
 
 /**
  * Provides a converter that is able to read and write <tt>Character</tt> objects.
@@ -28,8 +25,8 @@ import codebase.io.converters.AbstractFixedSizeConverter;
  *     ByteArrayInputStream input = new ByteArrayInputStream(output.toByteArray());
  * 
  *     // read a char value and a Character from the input stream
- *     final char c = (Character) CharacterTranslator.DEFAULT_INSTANCE.readChar(new DataInputStream(
- *             input));
+ *     final char c =
+ *         (Character) CharacterTranslator.DEFAULT_INSTANCE.readChar(new DataInputStream(input));
  * 
  *     // print the value and the object
  *     System.out.println(c);
@@ -46,8 +43,7 @@ import codebase.io.converters.AbstractFixedSizeConverter;
  * @see DataOutput
  * @see IOException
  */
-public class CharacterConverter extends
-        AbstractFixedSizeConverter {
+public class CharacterConverter extends AbstractFixedSizeConverter {
 
     /**
      * This field contains the number of bytes needed to serialize the <tt>char</tt> value
@@ -76,7 +72,7 @@ public class CharacterConverter extends
      * @throws IOException if I/O errors occur.
      */
     public Object read(DataInput dataInput) throws IOException {
-        return new Character(dataInput.readChar());
+        return Character.valueOf(dataInput.readChar());
     }
 
     /**
@@ -118,6 +114,6 @@ public class CharacterConverter extends
      * @throws IOException includes any I/O exceptions that may occur.
      */
     public void writeChar(DataOutput dataOutput, char c) throws IOException {
-        write(dataOutput, new Character(c));
+        write(dataOutput, Character.valueOf(c));
     }
 }

@@ -188,7 +188,9 @@ public class TestStringUtil extends
     /**
      * Tests various String joining cases and object joining by asserting String arrays
      * get properly joined with the proper delimiters and Object arrays get joined with
-     * the proper toString() values. TO REMOVE --> Mind that null delimiters are supported
+     * the proper toString() values. 
+     * 
+     * TO REMOVE --> Mind that null delimiters are supported
      * but WON'T be in the future, hence the test case.
      */
     public void testJoin() {
@@ -199,14 +201,6 @@ public class TestStringUtil extends
         // Check if a string array gets properly joined using a space delimiter
         assertEquals(StringUtil.join(new String[] { "hello", "123", "hello" }, " "),
                 "hello 123 hello");
-
-        // Check if it blows up with a NPE when a delimiter is null
-        try {
-            StringUtil.join(new String[] { "hello", "123", "hello" }, null);
-            fail("Should have thrown a NullPointerException.");
-        } catch (NullPointerException e) {
-            // pass the test
-        }
 
         // Check if the join skips a beginning null value and does not append 
         // a delimiter in the beginning

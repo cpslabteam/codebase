@@ -1,12 +1,10 @@
 package codebase.io.converters.binary;
 
-
 import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.IOException;
 
 import codebase.io.converters.AbstractFixedSizeConverter;
-
 
 /**
  * This class provides a converter that is able to read and write <tt>Float</tt> objects.

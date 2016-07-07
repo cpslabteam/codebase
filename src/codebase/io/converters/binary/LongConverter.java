@@ -1,12 +1,10 @@
 package codebase.io.converters.binary;
 
-
 import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.IOException;
 
 import codebase.io.converters.AbstractFixedSizeConverter;
-
 
 /**
  * Provides a converter that is able to read and write <tt>Long</tt> objects.
@@ -73,7 +71,7 @@ public class LongConverter extends
      * @throws IOException if I/O errors occur.
      */
     public Object read(DataInput dataInput) throws IOException {
-        return new Long(dataInput.readLong());
+        return Long.valueOf(dataInput.readLong());
     }
 
     /**

@@ -1,6 +1,5 @@
 package codebase.io.converters.binary;
 
-
 import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.IOException;
@@ -72,7 +71,7 @@ public class IntegerConverter extends
      * @throws IOException if I/O errors occur.
      */
     public Object read(DataInput dataInput) throws IOException {
-        return new Integer(dataInput.readInt());
+        return Integer.valueOf(dataInput.readInt());
     }
 
     /**

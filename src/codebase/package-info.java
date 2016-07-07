@@ -1,5 +1,5 @@
 /**
- * A library of general purpose utility classes.
+ * <b>${project.build.finalName}</b> is library of general purpose utility classes.
  * <p>
  * The fundamental idea of <tt>codebase</tt> is to avoid replicating basic utility
  * functionality over and over again. In practice, programmers often need to replicate the

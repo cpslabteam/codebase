@@ -1,8 +1,8 @@
 /*
  * Created on 6/Mai/2005
  */
-package codebase.io.converters.binary;
 
+package codebase.io.converters.binary;
 
 import java.io.DataInput;
 import java.io.DataOutput;
@@ -21,8 +21,7 @@ import codebase.io.converters.AbstractFixedSizeConverter;
  * The write operation will write out a predefined byte array specified in the
  * constructor.
  */
-public class ByteSkipConverter extends
-        AbstractFixedSizeConverter {
+public class ByteSkipConverter extends AbstractFixedSizeConverter {
 
     /**
      * Caches the number of ASCII characters to read for optimization purposes. Thus is
@@ -53,13 +52,11 @@ public class ByteSkipConverter extends
         length = size;
 
         if (bytes == null) {
-            throw new IllegalArgumentException(
-                    "The array of bytes must be assigned");
+            throw new IllegalArgumentException("The array of bytes must be assigned");
         }
 
         if (size != bytes.length) {
-            throw new IllegalArgumentException(
-                    "The size must match the number of bytes");
+            throw new IllegalArgumentException("The size must match the number of bytes");
         }
 
         writeBytes = bytes.clone();
@@ -89,7 +86,7 @@ public class ByteSkipConverter extends
             // ignore
             return null;
         }
-        
+
         return null;
     }
 

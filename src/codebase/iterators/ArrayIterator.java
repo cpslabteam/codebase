@@ -12,8 +12,7 @@ package codebase.iterators;
  * @param <E> the type of all the objects to be treated.
  * @since Created on 4/Mai/2005
  */
-public final class ArrayIterator<E> extends
-        AbstractArrayIterator<E>
+public class ArrayIterator<E> extends AbstractArrayIterator<E>
         implements UpdatableIterator<E> {
     /**
      * The reference to the object array.
@@ -42,9 +41,8 @@ public final class ArrayIterator<E> extends
     private static Object[] checkNotNull(final Object[] sourceArray) {
         if (sourceArray == null) {
             throw new IllegalArgumentException("The source array cannot be null");
-        } else {
-            return sourceArray;
         }
+        return sourceArray;
     }
 
     /**

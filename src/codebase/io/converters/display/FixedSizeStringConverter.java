@@ -1,11 +1,13 @@
 /*
  * Created on 6/Mai/2005
  */
+
 package codebase.io.converters.display;
 
 import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.IOException;
+import java.nio.charset.Charset;
 
 import codebase.io.converters.AbstractFixedSizeConverter;
 
@@ -64,7 +66,7 @@ public class FixedSizeStringConverter extends AbstractFixedSizeConverter {
      * @return a string with the default encoding
      */
     protected String createString(final byte[] readBytes) {
-        return new String(readBytes);
+        return new String(readBytes, Charset.defaultCharset());
     }
 
     /**
