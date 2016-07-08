@@ -36,7 +36,7 @@ public class DelayedOutputStream extends FilterOutputStream {
 
 
     /**
-     * Writes a byte waiting for a predefined amount of time writting.
+     * Writes a byte waiting for a predefined amount of time writing.
      * 
      * @param b the byte to be written.
      * @throws IOException when if writing on the decorated stream fails or if the the
@@ -54,21 +54,18 @@ public class DelayedOutputStream extends FilterOutputStream {
     }
 
     /**
-     * Writes a byte waiting for a predefined amount of time writting.
+     * Writes a byte[] waiting for a predefined amount of time writting.
      * 
-     * @param b the byte to be written.
+     * @param array the byte to be written.
      * @throws IOException when if writing on the decorated stream fails or if the the
      *             stream was not allowed to wait the specified amount of milliseconds
      *             before writing the byte
      */
     @Override
-    public void write(byte[] b) throws IOException {
-        try {
-            Thread.sleep(interval);
-        } catch (InterruptedException e) {
-            throw new TimeoutException(e);
+    public void write(byte[] array) throws IOException {
+        for (byte b : array) {
+            this.write(b);
         }
-        super.write(b);
     }
 
     /**

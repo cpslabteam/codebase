@@ -89,19 +89,10 @@ public final class SysUtil {
      * @return path
      */
     public static String getDesktopPath() {
-
         FileSystemView filesys = FileSystemView.getFileSystemView();
-
-        // File[] roots = filesys.getRoots();
-
         String result = filesys.getHomeDirectory().getAbsolutePath();
 
         if (getOperatingSystem() != OS.WINDOWS) {
-            /*
-             * result = WindowsRegistryReader
-             * .getFolderPath(WindowsRegistryReader.USER_DESKTOP_FOLDER_CMD); } else {
-             */
-            // result = System.getProperty("user.home");
             File desktopDir = new File(result + File.separator + "Desktop");
             if (desktopDir.exists()) {
                 result = desktopDir.getAbsolutePath();
@@ -126,39 +117,18 @@ public final class SysUtil {
             new File(SysUtil.class.getProtectionDomain().getCodeSource().getLocation().getPath());
 
         if (path.getName().endsWith(".jar")) {
-            // when running from the install, strip out the jar file and
-            // "plugins"
-            // directory from the path
+            /*
+             * When running from the install, strip out the jar file and "plugins"
+             * directory from the path
+             */
             path = path.getParentFile().getParentFile();
         } else if (path.getName().equals("bin")) {
-            // when running from the IDE, strip the "bin" directory from the
-            // path
+            /*
+             * When running from the IDE, strip the "bin" directory from the path
+             */
             path = path.getParentFile();
         }
 
         return path.toString();
-    }
-
-    /**
-     * Joins the given path components into a path, using the appropriate separator for
-     * the system. The result does not contain an ending separator (unless the final
-     * component passed as an argument already contains it.)
-     * 
-     * @param components Path components
-     * @return Composed path
-     */
-    public static String makePath(String... components) {
-        char sep = File.separatorChar;
-        StringBuilder result = new StringBuilder();
-
-        for (String component : components) {
-            if (result.length() > 0 && result.charAt(result.length() - 1) != sep
-                    && component.charAt(0) != sep) {
-                result.append(sep);
-            }
-            result.append(component);
-        }
-
-        return result.toString();
     }
 }

@@ -6,9 +6,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.Reader;
 import java.util.Arrays;
+import java.util.concurrent.DelayQueue;
 
-import codebase.FileUtil;
+import codebase.FilenameUtil;
 import codebase.StringUtil;
+import codebase.os.SysUtil;
 import junit.framework.TestCase;
 
 /**
@@ -19,13 +21,12 @@ public abstract class FileBasedTestCase extends TestCase {
     private static final int DEFAULT_BUFFER_SIZE = 1024;
     private static File testDir;
 
-    //XXX: Make this relative
-    
     public static File getTestDirectory() {
         if (testDir == null) {
-            testDir = (new File("src/java/test/io_tmp/")).getAbsoluteFile();
+            testDir = (new File(FilenameUtil.concat(SysUtil.getTempPath(), "test_dir")))
+                    .getAbsoluteFile();
         }
-        
+
         return testDir;
     }
 
@@ -37,12 +38,6 @@ public abstract class FileBasedTestCase extends TestCase {
      */
     protected void assertEqualContent(final File f0, final File f1) {
         try {
-            /*
-             * This doesn't work because the filesize isn't updated until the file is
-             * closed. assertTrue( "The files " + f0 + " and " + f1 + " have differing
-             * file sizes (" + f0.length() + " vs " + f1.length() + ")", ( f0.length() ==
-             * f1.length() ) );
-             */
             final InputStream is0 = new java.io.FileInputStream(f0);
             try {
                 final InputStream is1 = new java.io.FileInputStream(f1);

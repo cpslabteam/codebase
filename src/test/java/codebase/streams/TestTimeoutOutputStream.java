@@ -4,6 +4,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
+import codebase.StringUtil;
 import junit.framework.TestCase;
 
 
@@ -13,10 +14,7 @@ import junit.framework.TestCase;
  * Uses a {@link DelayedOutputStream} simulate delays and test the correct handling
  * timeout conditions.
  */
-public class TestTimeoutOutputStream extends
-        TestCase {
-
-    private static final String UTF8 = "UTF-8";
+public class TestTimeoutOutputStream extends TestCase {
 
     /**
      * Tests that writing form the one element stream returns the element.
@@ -28,7 +26,7 @@ public class TestTimeoutOutputStream extends
 
         // Basic
         s.write('X');
-        assertEquals(os.toString(UTF8), "X");
+        assertEquals(os.toString(StringUtil.UTF8_NAME), "X");
 
         // Sanity checks for close
         assertFalse(s.isClosed());
@@ -48,7 +46,7 @@ public class TestTimeoutOutputStream extends
         s.write('X');
         s.write('Y');
         s.write('Z');
-        assertEquals(os.toString(UTF8), "XYZ");
+        assertEquals(os.toString(StringUtil.UTF8_NAME), "XYZ");
 
         //Sanity checks for close
         assertFalse(s.isClosed());
@@ -68,12 +66,23 @@ public class TestTimeoutOutputStream extends
         s.write(new byte[] { 'X', 'Y', 'Z' });
         s.write(new byte[] { 'W', 'U' });
 
-        assertEquals(os.toString(UTF8), "XYZWU");
+        assertEquals(os.toString(StringUtil.UTF8_NAME), "XYZWU");
 
         //Sanity checks for close
         assertFalse(s.isClosed());
         s.close();
         assertTrue(s.isClosed());
+    }
+
+    public void testDelayedOutputStream() throws IOException {
+        ByteArrayOutputStream os = new ByteArrayOutputStream();
+        DelayedOutputStream dos = new DelayedOutputStream(os, 1000);
+
+        long t = System.currentTimeMillis();
+
+        dos.write(new byte[] { 'X', 'Y', 'Z' });
+
+        assertEquals(System.currentTimeMillis() - t, 3000, 50);
     }
 
     /**
@@ -88,7 +97,7 @@ public class TestTimeoutOutputStream extends
         s.write(new byte[] { 'X', 'Y', 'Z' });
         s.write(new byte[] { 'W', 'U' });
 
-        assertEquals(os.toString(UTF8), "XYZWU");
+        assertEquals(os.toString(StringUtil.UTF8_NAME), "XYZWU");
 
         //Sanity checks for close
         assertFalse(s.isClosed());
@@ -101,8 +110,8 @@ public class TestTimeoutOutputStream extends
      */
     public void testTimeoutElementBuffer() throws IOException {
         ByteArrayOutputStream os = new ByteArrayOutputStream();
-        TimeoutOutputStream s = new TimeoutOutputStream(new DelayedOutputStream(os, 2100), 2000,
-                TimeUnit.MILLISECONDS);
+        TimeoutOutputStream s =
+            new TimeoutOutputStream(new DelayedOutputStream(os, 2100), 2000, TimeUnit.MILLISECONDS);
         s.open();
 
         try {
@@ -114,13 +123,12 @@ public class TestTimeoutOutputStream extends
 
         s.close();
     }
-    
+
 
     /**
      * Tests that writing to a TimeoutOutputStream that is closed fails regardless of the
      * base stream's state.
      * <p>
-     * 
      */
     public final void testWithTimeoutStreamClosed() throws IOException {
         ByteArrayOutputStream base = new ByteArrayOutputStream();

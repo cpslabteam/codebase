@@ -421,7 +421,7 @@ public final class FileUtil {
         StringBuilder contents = new StringBuilder();
 
         final Reader reader =
-            new InputStreamReader(new FileInputStream(path), StringUtil.DEFAULT_STRING_ENCODING);
+            new InputStreamReader(new FileInputStream(path), StringUtil.UTF8_NAME);
         final BufferedReader input = new BufferedReader(reader);
 
 
@@ -478,7 +478,7 @@ public final class FileUtil {
      */
     public static void writeTextFile(String path, String text) throws IOException {
         final Writer writer =
-            new OutputStreamWriter(new FileOutputStream(path), StringUtil.DEFAULT_STRING_ENCODING);
+            new OutputStreamWriter(new FileOutputStream(path), StringUtil.UTF8_NAME);
         
         writer.write(text);
         writer.close();

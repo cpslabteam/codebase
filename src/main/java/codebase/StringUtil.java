@@ -33,12 +33,12 @@ public final class StringUtil {
     /**
      * A constant string with the name of the utf-8 encoding.
      */
-    public static final String DEFAULT_STRING_ENCODING = "UTF-8";
+    public static final String UTF8_NAME = "UTF-8";
 
     /**
      * The default Charset used in string-to-byte and byte-to-string conversions.
      */
-    public static final Charset UTF8 = Charset.forName(DEFAULT_STRING_ENCODING);
+    public static final Charset UTF8 = Charset.forName(UTF8_NAME);
 
     /**
      * Short name descriptions of ascii invisible characters. This is useful for

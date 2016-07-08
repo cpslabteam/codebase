@@ -263,7 +263,7 @@ public class TimeoutOutputStream extends FilterOutputStream {
                  * appears to be locked.
                  */
                 throw new TimeoutException("Could not write to decorated output stream after "
-                        + streamTimeout + streamTimeoutUnit.toString());
+                        + streamTimeout + " " + streamTimeoutUnit.toString());
             }
         } catch (InterruptedException e) {
             throw new IOException("Interruped aquiring write semaphore in TimeoutOutputStream");
