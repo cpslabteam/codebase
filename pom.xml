@@ -7,86 +7,22 @@
 	</properties>
 
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>codebase</groupId>
 	<artifactId>codebase</artifactId>
+	<version>2.1.0-SNAPSHOT</version>
 	<description>Codebase utility classes</description>
-	<name>${bundle.symbolicName}</name>
 
-	<packaging>bundle</packaging>
+	<packaging>jar</packaging>
 
-	<build>
-		<sourceDirectory>src</sourceDirectory>
-		<testSourceDirectory>test</testSourceDirectory>
-		<resources>
-			<resource>
-				<directory>src</directory>
-				<excludes>
-					<exclude>**/*.java</exclude>
-				</excludes>
-			</resource>
-		</resources>
-
-		<plugins>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<version>3.1</version>
-				<configuration>
-					<source>1.6</source>
-					<target>1.6</target>
-				</configuration>
-			</plugin>
-
-			<plugin>
-				<groupId>org.apache.felix</groupId>
-				<artifactId>maven-bundle-plugin</artifactId>
-				<version>2.3.7</version>
-				<extensions>true</extensions>
-				<configuration>
-					<instructions>
-					    <Bundle-SymbolicName>${project.artifactId};singleton:=true</Bundle-SymbolicName>
-						<Bundle-Version>${project.version}</Bundle-Version>
-						<Export-Package>codebase.*</Export-Package>
-					</instructions>
-				</configuration>
-			</plugin>
-
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-javadoc-plugin</artifactId>
-				<version>2.5</version>
-				<configuration>
-					<useStandardDocletOptions>true</useStandardDocletOptions>
-					<charset>ISO-8859-1</charset>
-					<encoding>ISO-8859-1</encoding>
-					<docencoding>ISO-8859-1</docencoding>
-					<breakiterator>true</breakiterator>
-					<version>true</version>
-					<author>true</author>
-					<keywords>true</keywords>
-					<additionalparam>
-						-sourceclasspath ${project.build.outputDirectory}
-					</additionalparam>
-				</configuration>
-			</plugin>
-
-		</plugins>
-		<pluginManagement>
-			<plugins>
-				<plugin>
-					<groupId>org.codehaus.mojo</groupId>
-					<artifactId>sonar-maven-plugin</artifactId>
-					<version>2.1</version>
-				</plugin>
-			</plugins>
-		</pluginManagement>
-	</build>
+	<parent>
+		<groupId>cpslab</groupId>
+		<artifactId>cpslab-parent-pom</artifactId>
+		<version>0.0.9-SNAPSHOT</version>
+	</parent>
 
 	<dependencies>
 		<dependency>
-			<groupId>org.apache.felix</groupId>
-			<artifactId>org.osgi.core</artifactId>
-			<version>1.0.0</version>
+			<groupId>com.google.code.findbugs</groupId>
+			<artifactId>annotations</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>junit</groupId>
@@ -95,35 +31,4 @@
 		</dependency>
 	</dependencies>
 
-	<distributionManagement>
-		<repository>
-			<id>deployment</id>
-			<name>Internal Releases</name>
-			<url>http://sb-buildmaster.tagus.ist.utl.pt:8082/nexus/content/repositories/releases</url>
-		</repository>
-		<snapshotRepository>
-			<id>deployment</id>
-			<name>Internal Releases</name>
-			<url>http://sb-buildmaster.tagus.ist.utl.pt:8082/nexus/content/repositories/snapshots</url>
-		</snapshotRepository>
-	</distributionManagement>
-
-	<reporting>
-		<plugins>
-			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>findbugs-maven-plugin</artifactId>
-				<version>2.5.4-SNAPSHOT</version>
-				<configuration>
-					<xmlOutput>true</xmlOutput>
-				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-jxr-plugin</artifactId>
-				<version>2.3</version>
-			</plugin>
-		</plugins>
-	</reporting>
-	<version>2.0.0</version>
 </project>
