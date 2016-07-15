@@ -93,6 +93,7 @@ public final class FilenameUtil {
      * The separator character that is the opposite of the system separator.
      */
     private static final char OTHER_SEPARATOR;
+    
     static {
         if (SYSTEM_SEPARATOR == WINDOWS_SEPARATOR) {
             OTHER_SEPARATOR = UNIX_SEPARATOR;

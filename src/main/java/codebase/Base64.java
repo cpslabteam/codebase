@@ -98,7 +98,6 @@ public final class Base64 {
         public InputStream(java.io.InputStream in, int options) {
             super(in);
 
-
             this.mustBreakLines = (options & DONT_BREAK_LINES) != DONT_BREAK_LINES;
             this.encode = (options & ENCODE) == ENCODE;
 
@@ -487,7 +486,6 @@ public final class Base64 {
         }
 
     }
-
 
     private static final int UNSIGNED_BYTE_MASK = 0xFF;
 

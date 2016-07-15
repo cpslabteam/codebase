@@ -14,7 +14,7 @@ import codebase.streams.StringInputStream;
 public class TestNodeDisplayConverterIntegerated extends
         TestCase {
 
-    public static String nodeStore = "#1 = I(\"type1\")\n" + "#2 = I(\"type2\")\n"
+    public static final String nodeStore = "#1 = I(\"type1\")\n" + "#2 = I(\"type2\")\n"
             + "#3 = R(\"child\", 1, 2)\n";
 
     public void testNodeInput() throws IOException, ClassNotFoundException {

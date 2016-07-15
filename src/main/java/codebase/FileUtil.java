@@ -424,7 +424,6 @@ public final class FileUtil {
             new InputStreamReader(new FileInputStream(path), StringUtil.UTF8_NAME);
         final BufferedReader input = new BufferedReader(reader);
 
-
         final String lineSep = StringUtil.NL;
         try {
             String line;

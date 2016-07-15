@@ -1,6 +1,7 @@
 /*
  * Created on 3/Jun/2005
  */
+
 package codebase.streams;
 
 import java.io.FilterInputStream;

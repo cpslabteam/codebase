@@ -1,6 +1,7 @@
 /*
  * Created on 13/Jan/2006
  */
+
 package codebase.streams;
 
 import java.io.IOException;

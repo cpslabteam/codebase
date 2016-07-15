@@ -6,9 +6,7 @@ package codebase;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
 import java.nio.charset.Charset;
-
 
 /**
  * Utility class that implements MD5 summarization algorithm.

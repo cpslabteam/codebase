@@ -23,13 +23,7 @@ public class TimeoutInputStream extends FilterInputStream {
     private static final int DEFAULT_TIMEOUT_MILLIS = 2000;
 
     /**
-     * <<<<<<< HEAD ======= The decorated stream.
-     */
-    private final InputStream decoratedStream;
-
-    /**
-     * >>>>>>> [CLS] Cleans up the code from the properties dependencies. The timeout for
-     * open, message send and receive operations.
+     * The timeout for open, message send and receive operations.
      */
     private final int streamTimeout;
 
@@ -99,7 +93,7 @@ public class TimeoutInputStream extends FilterInputStream {
      * @param in the input stream to be decorated from where the reading will take place.
      */
     public TimeoutInputStream(final InputStream in) {
-        this(in, DEFAULT_TIMEOUT_MILLIS, TimeUnit.MILLISECONDS);
+        this(in, DEFAULT_TIMEOUT_MILLIS);
     }
 
     /**
@@ -108,21 +102,17 @@ public class TimeoutInputStream extends FilterInputStream {
      * @param in the input stream to be decorated from where the reading will take place.
      * @param timeout the driver timeout parameter for open, read and write operations in
      *            millis. Must be positive.
-     * @param timeoutUnit the units of the timeout parameter
      */
-    public TimeoutInputStream(final InputStream in, final int timeout, TimeUnit milliseconds) {
+    public TimeoutInputStream(final InputStream in, final int timeout) {
         super(in);
         if (timeout <= 0) {
             throw new IllegalArgumentException("Timeout must be positive.");
         }
-
-        decoratedStream = in;
         streamTimeout = timeout;
 
         dataReader = new DataReader();
         dataReader.start();
     }
-
 
     @Override
     public synchronized void close() throws IOException {

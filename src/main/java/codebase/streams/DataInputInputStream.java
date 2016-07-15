@@ -1,6 +1,7 @@
 /*
  * Created on 14/Fev/2006
  */
+
 package codebase.streams;
 
 import java.io.DataInput;

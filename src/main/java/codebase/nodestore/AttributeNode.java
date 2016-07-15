@@ -26,7 +26,6 @@ public class AttributeNode extends Node {
         return super.equals(obj);
     }
 
-
     public String getName() {
         return name;
     }

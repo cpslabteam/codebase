@@ -2,8 +2,8 @@ package codebase.iterators;
 
 import java.util.Iterator;
 
-import codebase.iterators.AbstractDecoratorIterator;
 import codebase.timed.InstantaneousRateCounter;
+
 /**
  * A decorator iterator the tracks the instantaneous call rate to {@link #next()}.
  * 

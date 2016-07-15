@@ -2,7 +2,6 @@ package codebase.iterators;
 
 import java.util.Iterator;
 
-import codebase.iterators.AbstractDecoratorIterator;
 import codebase.timed.RateLimitedExecutor;
 
 /**

@@ -1,6 +1,5 @@
 package codebase.streams;
 
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.concurrent.TimeUnit;
@@ -13,9 +12,8 @@ import junit.framework.TestCase;
  * Uses a {@link DelayedOutputStream} simulate delays and test the correct handling
  * timeout conditions.
  */
-public class TestTimeoutInputStream extends
-        TestCase {
-    
+public class TestTimeoutInputStream extends TestCase {
+
     private static final int DEFAULT_TIMEOUT_DELTA = 100;
     private static final int DEFAULT_TIMEOUT = 2000;
 
@@ -97,10 +95,8 @@ public class TestTimeoutInputStream extends
      * timeout occurs.
      */
     public void testSlowElementBuffer() throws IOException {
-        InputStream s =
-            new TimeoutInputStream(new DelayedInputStream(new StringInputStream("XYZW"),
-                    DEFAULT_TIMEOUT - DEFAULT_TIMEOUT_DELTA), DEFAULT_TIMEOUT,
-                    TimeUnit.MILLISECONDS);
+        InputStream s = new TimeoutInputStream(new DelayedInputStream(new StringInputStream("XYZW"),
+                DEFAULT_TIMEOUT - DEFAULT_TIMEOUT_DELTA), DEFAULT_TIMEOUT);
 
         // Test read array
         byte[] b = new byte[2];
@@ -130,10 +126,8 @@ public class TestTimeoutInputStream extends
      * in thrown.
      */
     public void testElementTimeout() throws IOException {
-        InputStream s =
-            new TimeoutInputStream(new DelayedInputStream(new StringInputStream("XYZ"),
-                    DEFAULT_TIMEOUT + DEFAULT_TIMEOUT_DELTA), DEFAULT_TIMEOUT,
-                    TimeUnit.MILLISECONDS);
+        InputStream s = new TimeoutInputStream(new DelayedInputStream(new StringInputStream("XYZ"),
+                DEFAULT_TIMEOUT + DEFAULT_TIMEOUT_DELTA), DEFAULT_TIMEOUT);
         try {
             assertEquals(s.read(), 'X');
         } catch (TimeoutException e) {
