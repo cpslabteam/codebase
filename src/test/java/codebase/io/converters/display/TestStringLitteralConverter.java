@@ -3,9 +3,11 @@ package codebase.io.converters.display;
 import java.io.DataInput;
 import java.io.IOException;
 
-import junit.framework.TestCase;
+import org.junit.Test;
+
 import codebase.StringUtil;
 import codebase.streams.ByteArrayDataInput;
+import junit.framework.TestCase;
 
 public class TestStringLitteralConverter extends TestCase {
 
@@ -22,6 +24,7 @@ public class TestStringLitteralConverter extends TestCase {
      * Test the simple string read identifying double commas at the begininnign and at the
      * end.
      */
+    @Test
     public void testReadSimple() throws IOException {
         final StringLiteralConverter c = new StringLiteralConverter();
         final String s = (String) c.read(getDataInputFor("\"test\""));
@@ -32,6 +35,7 @@ public class TestStringLitteralConverter extends TestCase {
     /**
      * Tests that bytes characters before the string initiator are trimmed.
      */
+    @Test
     public void testReadSimpleTrim() throws IOException {
         final StringLiteralConverter c = new StringLiteralConverter();
         final String s = (String) c.read(getDataInputFor("   XXX\"test\"YYYY  "));
@@ -42,6 +46,7 @@ public class TestStringLitteralConverter extends TestCase {
     /**
      * Tests that a single backslash is preserved in the middle of the text.
      */
+    @Test
     public void testReadSimpleBackslashInText() throws IOException {
         final StringLiteralConverter c = new StringLiteralConverter();
         final String s = (String) c.read(getDataInputFor("\"tes\\te\""));
@@ -52,6 +57,7 @@ public class TestStringLitteralConverter extends TestCase {
     /**
      * Tests that a double backslash in a string results in a string win one backslash.
      */
+    @Test
     public void testsReadBackslashDouble() throws IOException {
         final StringLiteralConverter c = new StringLiteralConverter();
         final String s = (String) c.read(getDataInputFor("\"\\\\\""));
@@ -62,6 +68,7 @@ public class TestStringLitteralConverter extends TestCase {
     /**
      * Tests that a row of backslashes is preserved.
      */
+    @Test
     public void testReadBackslashRow() throws IOException {
         final StringLiteralConverter c = new StringLiteralConverter();
         final String s = (String) c.read(getDataInputFor("\"X\\\\\\\\X\""));
@@ -72,6 +79,7 @@ public class TestStringLitteralConverter extends TestCase {
     /**
      * Tests that a single backslash in a string results in a an empty string.
      */
+    @Test
     public void testReadBackslashSingle() throws IOException {
         final StringLiteralConverter c = new StringLiteralConverter();
         final String s = (String) c.read(getDataInputFor("\"\\\""));

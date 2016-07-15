@@ -2,16 +2,18 @@ package codebase.nodestore;
 
 import java.io.IOException;
 
-import junit.framework.TestCase;
+import org.junit.Test;
+
 import codebase.streams.ByteArrayDataInput;
 import codebase.streams.ByteArrayDataOutput;
+import junit.framework.TestCase;
 
-public class TestNodeDisplayConverter extends
-        TestCase {
+public class TestNodeDisplayConverter extends TestCase {
 
     /**
      * Tests that an attribute node is successfully read and written.
      */
+    @Test
     public void testAtributeNodeSimple() throws IOException {
         AttributeNode attrNode = new AttributeNode(1, 123, "a field name", "some value");
         NodeDisplayConverter c = new NodeDisplayConverter();
@@ -32,6 +34,7 @@ public class TestNodeDisplayConverter extends
     /**
      * Tests that an instance node is successfully read and written.
      */
+    @Test
     public void testInstanceNodeSimple() throws IOException {
         InstanceNode instNode = new InstanceNode(123, "an instance type");
         NodeDisplayConverter c = new NodeDisplayConverter();
@@ -50,6 +53,7 @@ public class TestNodeDisplayConverter extends
     /**
      * Tests that a relation node is successfully read and written.
      */
+    @Test
     public void testRelationNodeSimple() throws IOException {
         RelationNode relNode = new RelationNode(123, "a relation type", 456, 789);
         NodeDisplayConverter c = new NodeDisplayConverter();

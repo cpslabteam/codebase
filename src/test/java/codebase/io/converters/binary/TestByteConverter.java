@@ -5,14 +5,16 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
+import org.junit.Test;
+
 import junit.framework.TestCase;
 
-public class TestByteConverter extends
-        TestCase {
+public class TestByteConverter extends TestCase {
 
     /**
      * Tests the Byte converter on few simple standard cases.
      */
+    @Test
     public void testBytesConverterStandard() throws IOException {
         // write a byte value to the output stream
         ByteArrayOutputStream output = new java.io.ByteArrayOutputStream();
@@ -38,6 +40,7 @@ public class TestByteConverter extends
     /**
      * Tests the Byte converter on few extreme cases.
      */
+    @Test
     public void testByteConverterExtremes() throws IOException {
         // write a byte value to the output stream
         ByteArrayOutputStream output = new java.io.ByteArrayOutputStream();

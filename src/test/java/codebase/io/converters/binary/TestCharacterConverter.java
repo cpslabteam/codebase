@@ -5,14 +5,16 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
+import org.junit.Test;
+
 import junit.framework.TestCase;
 
-public class TestCharacterConverter extends
-        TestCase {
+public class TestCharacterConverter extends TestCase {
 
     /**
      * Tests the Character converter on few simple standard cases.
      */
+    @Test
     public void testCharactersConverterStandard() throws IOException {
         // write a Boolean and a boolean value to the output stream
         ByteArrayOutputStream output = new java.io.ByteArrayOutputStream();
@@ -40,6 +42,7 @@ public class TestCharacterConverter extends
     /**
      * Tests the Character converter on few extreme cases.
      */
+    @Test
     public void testCharacterConverterExtremes() throws IOException {
         // write a Boolean and a boolean value to the output stream
         ByteArrayOutputStream output = new java.io.ByteArrayOutputStream();
@@ -52,9 +55,11 @@ public class TestCharacterConverter extends
         java.io.ByteArrayInputStream input = new java.io.ByteArrayInputStream(output.toByteArray());
 
         // read a boolean value from the input stream and compare to what we have written
-        assertEquals(Character.MAX_VALUE, new CharacterConverter().read(new DataInputStream(input)));
+        assertEquals(Character.MAX_VALUE,
+                new CharacterConverter().read(new DataInputStream(input)));
         assertEquals((char) 0, new CharacterConverter().read(new DataInputStream(input)));
-        assertEquals(Character.MIN_VALUE, new CharacterConverter().read(new DataInputStream(input)));
+        assertEquals(Character.MIN_VALUE,
+                new CharacterConverter().read(new DataInputStream(input)));
 
         // clean up
         input.close();

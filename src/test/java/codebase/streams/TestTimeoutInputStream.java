@@ -2,7 +2,8 @@ package codebase.streams;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.concurrent.TimeUnit;
+
+import org.junit.Test;
 
 import junit.framework.TestCase;
 
@@ -36,6 +37,7 @@ public class TestTimeoutInputStream extends TestCase {
     /**
      * Tests that reading multiple elements correctly returns the elements in sequence.
      */
+    @Test
     public void testBasicReadMultipleElement() throws IOException {
         InputStream s = new TimeoutInputStream(new StringInputStream("XYZ"));
         // Basic
@@ -53,6 +55,7 @@ public class TestTimeoutInputStream extends TestCase {
     /**
      * Tests that reading multiple elements correctly returns the buffer elements.
      */
+    @Test
     public void testBasicArrayReadMultipleElement() throws IOException {
         InputStream s = new TimeoutInputStream(new StringInputStream("XYZ"));
 
@@ -73,6 +76,7 @@ public class TestTimeoutInputStream extends TestCase {
     /**
      * Tests that skipping elements form the buffer correctly cycles through the buffer.
      */
+    @Test
     public void testSkipMultipleElement() throws IOException {
         InputStream s = new TimeoutInputStream(new StringInputStream("XYZW"));
         assertEquals(s.read(), 'X');
@@ -94,6 +98,7 @@ public class TestTimeoutInputStream extends TestCase {
      * delta to timeout, reads bytes from the stream in different ways and checks that no
      * timeout occurs.
      */
+    @Test
     public void testSlowElementBuffer() throws IOException {
         InputStream s = new TimeoutInputStream(new DelayedInputStream(new StringInputStream("XYZW"),
                 DEFAULT_TIMEOUT - DEFAULT_TIMEOUT_DELTA), DEFAULT_TIMEOUT);
@@ -125,6 +130,7 @@ public class TestTimeoutInputStream extends TestCase {
      * greater than two seconds, reads a bytes and checks that a {@link TimeoutException}
      * in thrown.
      */
+    @Test
     public void testElementTimeout() throws IOException {
         InputStream s = new TimeoutInputStream(new DelayedInputStream(new StringInputStream("XYZ"),
                 DEFAULT_TIMEOUT + DEFAULT_TIMEOUT_DELTA), DEFAULT_TIMEOUT);

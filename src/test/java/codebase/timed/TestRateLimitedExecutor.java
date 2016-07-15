@@ -100,7 +100,7 @@ public class TestRateLimitedExecutor {
 
         // Wait 2 seconds
         Thread.sleep(2000);
-        Assert.assertEquals(10, c.getRate(),1);
+        Assert.assertEquals(10, c.getRate(), 1);
 
         // Wait another 3 seconds
         Thread.sleep(3000);

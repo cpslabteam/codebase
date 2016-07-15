@@ -5,14 +5,16 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
+import org.junit.Test;
+
 import junit.framework.TestCase;
 
-public class TestDoubleConverter extends
-        TestCase {
+public class TestDoubleConverter extends TestCase {
 
     /**
      * Tests the Double converter on few simple standard cases.
      */
+    @Test
     public void testDoublesConverterStandard() throws IOException {
         // write a Boolean and a boolean value to the output stream
         ByteArrayOutputStream output = new java.io.ByteArrayOutputStream();
@@ -38,6 +40,7 @@ public class TestDoubleConverter extends
     /**
      * Tests the Double converter on few extreme cases.
      */
+    @Test
     public void testDoubleConverterExtremes() throws IOException {
         // write a Boolean and a boolean value to the output stream
         ByteArrayOutputStream output = new java.io.ByteArrayOutputStream();

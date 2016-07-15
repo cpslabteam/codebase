@@ -3,14 +3,16 @@
  */
 package codebase;
 
+import org.junit.Test;
+
 import codebase.junit.EnhancedTestCase;
 
 /**
  * Tests the {@link ArrayUtil} utility class.
  */
-public class TestArrayUtil extends
-        EnhancedTestCase {
+public class TestArrayUtil extends EnhancedTestCase {
 
+    @Test
     public void testAddIntegers() {
         assertEquals(new int[] { 1 }, ArrayUtil.add(new int[] { 1 }, 1));
 
@@ -21,6 +23,7 @@ public class TestArrayUtil extends
         assertEquals(new int[] { 1, 7, 3 }, ArrayUtil.add(new int[] { 1, 7 }, 3));
     }
 
+    @Test
     public void testAddLongs() {
         assertEquals(new long[] { 1L }, ArrayUtil.add(new long[] { 1L }, 1L));
 
@@ -31,6 +34,7 @@ public class TestArrayUtil extends
         assertEquals(new long[] { 1L, 7L, 3L }, ArrayUtil.add(new long[] { 1L, 7L }, 3L));
     }
 
+    @Test
     public void testRemoveIntegers() {
         assertEquals(new int[] {}, ArrayUtil.remove(1, new int[] { 1 }));
 
@@ -41,6 +45,7 @@ public class TestArrayUtil extends
         assertEquals(new int[] { 1, 7 }, ArrayUtil.remove(3, new int[] { 1, 3, 7 }));
     }
 
+    @Test
     public void testRemoveLongs() {
         assertEquals(new long[] {}, ArrayUtil.remove(1L, new long[] { 1L }));
 
@@ -51,6 +56,7 @@ public class TestArrayUtil extends
         assertEquals(new long[] { 1L, 7L }, ArrayUtil.remove(3L, new long[] { 1L, 3L, 7L }));
     }
 
+    @Test
     public void testInBounds() {
         assertTrue(ArrayUtil.inBounds(new int[] {}, 0, 0));
         assertTrue(ArrayUtil.inBounds(new int[] {}, 1, -1));
@@ -65,6 +71,7 @@ public class TestArrayUtil extends
         assertTrue(!ArrayUtil.inBounds(new int[] { -3, 2, 3, 7 }, -2, 7));
     }
 
+    @Test
     public void testEquals() {
         // null with null
         assertTrue(ArrayUtil.equals(null, null));
@@ -98,6 +105,7 @@ public class TestArrayUtil extends
 
     }
 
+    @Test
     public void testComplement() {
         // void with void
         assertEquals(new int[] {}, ArrayUtil.minus(new int[] {}, new int[] {}));
@@ -125,6 +133,7 @@ public class TestArrayUtil extends
                 ArrayUtil.minus(new int[] { 1, 2, 3, 4 }, new int[] { 4, 5 }));
     }
 
+    @Test
     public void testIntersect() {
         // void with void
         assertEquals(new int[] {}, ArrayUtil.intersect(new int[] {}, new int[] {}));
@@ -152,6 +161,7 @@ public class TestArrayUtil extends
                 ArrayUtil.intersect(new int[] { 1, 2, 3, 4, 5 }, new int[] { 2, 4 }));
     }
 
+    @Test
     public void testUnique() {
         assertEquals(new int[] {}, ArrayUtil.unique(new int[] {}));
 
@@ -166,6 +176,7 @@ public class TestArrayUtil extends
         assertEquals(new int[] { 1, 2, 3 }, ArrayUtil.unique(new int[] { 1, 2, 1, 3, 1, 2, 1 }));
     }
 
+    @Test
     public void testEnum() {
         assertEquals(new int[] {}, ArrayUtil.enumeration(0, 0));
 
@@ -176,6 +187,7 @@ public class TestArrayUtil extends
         assertEquals(new int[] { 2, 3, 4 }, ArrayUtil.enumeration(2, 5));
     }
 
+    @Test
     public void testFlatten() {
         assertEquals(new Object[] {}, ArrayUtil.flatten(new Object[] {}));
 
@@ -186,10 +198,8 @@ public class TestArrayUtil extends
         final Object o2 = new Object();
         assertEquals(new Object[] { o1, o2 }, ArrayUtil.flatten(new Object[] { o1, o2 }));
 
-        assertEquals(
-                new Object[] { o1, o2 },
-                ArrayUtil.flatten(new Object[] { new Object[] {}, o1, new Object[] {}, o2,
-                        new Object[] {} }));
+        assertEquals(new Object[] { o1, o2 }, ArrayUtil.flatten(
+                new Object[] { new Object[] {}, o1, new Object[] {}, o2, new Object[] {} }));
 
         final Object o3 = new Object();
         assertEquals(new Object[] { o1, o2, o3 },
@@ -198,12 +208,11 @@ public class TestArrayUtil extends
         final Object ox = new Object();
         final Object o4 = new Object();
         final Object o5 = new Object();
-        assertEquals(
-                new Object[] { ox, o1, ox, o2, o3, o4, o5 },
-                ArrayUtil.flatten(new Object[] { new Object[] { ox }, o1, new Object[] { ox }, o2,
-                        new Object[] { o3, o4, o5 } }));
+        assertEquals(new Object[] { ox, o1, ox, o2, o3, o4, o5 }, ArrayUtil.flatten(new Object[] {
+                new Object[] { ox }, o1, new Object[] { ox }, o2, new Object[] { o3, o4, o5 } }));
     }
 
+    @Test
     public void testFindNotNullIndices() {
         assertEquals(new int[] {}, ArrayUtil.findNotNullIndices(new Object[] {}));
 
@@ -223,9 +232,7 @@ public class TestArrayUtil extends
         assertEquals(new int[] { 0, 1 },
                 ArrayUtil.findNotNullIndices(new Object[] { new Object(), new Object() }));
 
-        assertEquals(
-                new int[] { 1, 2, 4 },
-                ArrayUtil.findNotNullIndices(new Object[] { null, new Object(), new Object(), null,
-                        new Object(), null }));
+        assertEquals(new int[] { 1, 2, 4 }, ArrayUtil.findNotNullIndices(
+                new Object[] { null, new Object(), new Object(), null, new Object(), null }));
     }
 }

@@ -3,17 +3,19 @@
  */
 package codebase;
 
+import org.junit.Test;
+
 import junit.framework.TestCase;
 
 /**
  * Tests the {@link MathUtil} utility class.
  */
-public class TestMathUtil extends
-        TestCase {
+public class TestMathUtil extends TestCase {
 
     /**
      * Tests that the powers of 10 are correctly computed.
      */
+    @Test
     public void testPow10() {
         assertEquals(1L, MathUtil.pow10(0));
         assertEquals(10L, MathUtil.pow10(1));
@@ -36,6 +38,7 @@ public class TestMathUtil extends
         assertEquals(1000000000000000000L, MathUtil.pow10(18));
     }
 
+    @Test
     public void testLog2Int() {
         /*
          * Test exact values
@@ -61,6 +64,7 @@ public class TestMathUtil extends
         assertEquals(0, MathUtil.log2((int) 0));
     }
 
+    @Test
     public void testLog2Long() {
         /*
          * Test exact values
@@ -87,33 +91,39 @@ public class TestMathUtil extends
         assertEquals(0, MathUtil.log2((long) 0));
     }
 
+    @Test
     public void testSignDouble() {
         double delta = 0.0;
         assertEquals(1.0, MathUtil.sign(2.0), delta);
         assertEquals(-1.0, MathUtil.sign(-2.0), delta);
     }
 
+    @Test
     public void testSignFloat() {
         float delta = 0.0F;
         assertEquals(1.0F, MathUtil.sign(2.0F), delta);
         assertEquals(-1.0F, MathUtil.sign(-2.0F), delta);
     }
 
+    @Test
     public void testSignByte() {
         assertEquals((byte) 1, MathUtil.sign((byte) 2));
         assertEquals((byte) (-1), MathUtil.sign((byte) (-2)));
     }
 
+    @Test
     public void testSignShort() {
         assertEquals((short) 1, MathUtil.sign((short) 2));
         assertEquals((short) (-1), MathUtil.sign((short) (-2)));
     }
 
+    @Test
     public void testSignInt() {
         assertEquals((int) 1, MathUtil.sign((int) (2)));
         assertEquals((int) (-1), MathUtil.sign((int) (-2)));
     }
 
+    @Test
     public void testSignLong() {
         assertEquals(1L, MathUtil.sign(2L));
         assertEquals(-1L, MathUtil.sign(-2L));
@@ -122,6 +132,7 @@ public class TestMathUtil extends
     /**
      * Tests the hashing of doubles.
      */
+    @Test
     public void testHash() {
         double[] testArray = { Double.NaN, Double.POSITIVE_INFINITY, Double.NEGATIVE_INFINITY, 1d,
                 0d, 1E-14, (1 + 1E-14), Double.MIN_VALUE, Double.MAX_VALUE };
