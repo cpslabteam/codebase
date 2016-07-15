@@ -5,14 +5,16 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
+import org.junit.Test;
+
 import junit.framework.TestCase;
 
-public class TestIntegerConverter extends
-        TestCase {
+public class TestIntegerConverter extends TestCase {
 
     /**
      * Tests the Integer converter on few simple standard cases.
      */
+    @Test
     public void testIntegersConverterStandard() throws IOException {
         // write a Boolean and a boolean value to the output stream
         ByteArrayOutputStream output = new java.io.ByteArrayOutputStream();
@@ -36,6 +38,7 @@ public class TestIntegerConverter extends
     /**
      * Tests the Integer converter on few extreme cases.
      */
+    @Test
     public void testIntegerConverterExtremes() throws IOException {
         // write a Boolean and a boolean value to the output stream
         ByteArrayOutputStream output = new java.io.ByteArrayOutputStream();

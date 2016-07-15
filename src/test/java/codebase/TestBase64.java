@@ -5,6 +5,8 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 
+import org.junit.Test;
+
 import codebase.junit.EnhancedTestCase;
 import codebase.streams.StringInputStream;
 
@@ -14,22 +16,22 @@ import codebase.streams.StringInputStream;
  * This class is tested by encoding and then decoding different strings and byte arrays to
  * base-64.
  */
-public class TestBase64 extends
-        EnhancedTestCase {
+public class TestBase64 extends EnhancedTestCase {
 
-    private static final String TEXT = "At vero eos et accusamus et iusto odio dignissimos ducimus qui "
-            + "blanditiis praesentium voluptatum deleniti atque corrupti quos "
-            + "dolores et quas molestias excepturi sint occaecati cupiditate non "
-            + "provident, similique sunt in culpa qui officia deserunt mollitia animi,"
-            + " id est laborum et dolorum fuga. Et harum quidem rerum facilis est et "
-            + "expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi "
-            + "optio cumque nihil impedit quo minus id quod maxime placeat facere "
-            + "possimus, omnis voluptas assumenda est, omnis dolor repellendus. "
-            + "Temporibus autem quibusdam et aut officiis debitis aut rerum "
-            + "necessitatibus saepe eveniet ut et voluptates repudiandae sint et molestiae"
-            + " non recusandae. Itaque earum rerum hic tenetur a sapiente delectus, ut aut"
-            + " reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus "
-            + "asperiores repellat";
+    private static final String TEXT =
+        "At vero eos et accusamus et iusto odio dignissimos ducimus qui "
+                + "blanditiis praesentium voluptatum deleniti atque corrupti quos "
+                + "dolores et quas molestias excepturi sint occaecati cupiditate non "
+                + "provident, similique sunt in culpa qui officia deserunt mollitia animi,"
+                + " id est laborum et dolorum fuga. Et harum quidem rerum facilis est et "
+                + "expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi "
+                + "optio cumque nihil impedit quo minus id quod maxime placeat facere "
+                + "possimus, omnis voluptas assumenda est, omnis dolor repellendus. "
+                + "Temporibus autem quibusdam et aut officiis debitis aut rerum "
+                + "necessitatibus saepe eveniet ut et voluptates repudiandae sint et molestiae"
+                + " non recusandae. Itaque earum rerum hic tenetur a sapiente delectus, ut aut"
+                + " reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus "
+                + "asperiores repellat";
 
     private static final String HELLO_WORLD = "Hello World!";
 
@@ -54,6 +56,7 @@ public class TestBase64 extends
     /**
      * Tests encoding and then decoding a very simple text message.
      */
+    @Test
     public void testSimple() throws UnsupportedEncodingException {
         String encoded = Base64.encode(HELLO_WORLD.getBytes("UTF-8"));
         String decoded = new String(Base64.decode(encoded), "UTF-8");
@@ -63,6 +66,7 @@ public class TestBase64 extends
     /**
      * Tests encoding and then decoding a an empty string.
      */
+    @Test
     public void testEmpty() throws UnsupportedEncodingException {
         String encoded = Base64.encode("".getBytes("UTF-8"));
         String decoded = new String(Base64.decode(encoded), "UTF-8");
@@ -72,6 +76,7 @@ public class TestBase64 extends
     /**
      * Tests encoding and then decoding a large text.
      */
+    @Test
     public void testText() throws UnsupportedEncodingException {
         String encoded = Base64.encode(TEXT.getBytes("UTF-8"));
         String decoded = new String(Base64.decode(encoded), "UTF-8");
@@ -81,6 +86,7 @@ public class TestBase64 extends
     /**
      * Tests encoding and then decoding simple binary buffers.
      */
+    @Test
     public void testBinaryBasic() {
         final String encodedZeros = Base64.encode(BINARY_ZEROS);
         final byte[] decodedZeros = Base64.decode(encodedZeros);
@@ -98,6 +104,7 @@ public class TestBase64 extends
     /**
      * Tests encoding and then decoding a binary buffer with all 256 characters.
      */
+    @Test
     public void testBinarySequences() {
         final String encodedSequence = Base64.encode(BINARY_SEQUENCE);
         final byte[] decodedSequence = Base64.decode(encodedSequence);
@@ -107,11 +114,12 @@ public class TestBase64 extends
     /**
      * Tests input stream on the fly encoding/decoding of text.
      */
+    @Test
     public void testInputStreamString() throws IOException {
         final java.io.InputStream in = new StringInputStream(TEXT);
         final Base64.InputStream encodeInputStream = new Base64.InputStream(in, Base64.ENCODE);
-        final Base64.InputStream decodeInputStream = new Base64.InputStream(encodeInputStream,
-                Base64.DECODE);
+        final Base64.InputStream decodeInputStream =
+            new Base64.InputStream(encodeInputStream, Base64.DECODE);
 
         final byte[] inputBytes = TEXT.getBytes("UTF-8");
         final byte[] outputBytes = new byte[inputBytes.length];
@@ -126,12 +134,13 @@ public class TestBase64 extends
     /**
      * Tests input stream on the fly encoding/decoding of a binary sequence.
      */
+    @Test
     public void testInputStreamBinary() throws IOException {
         final java.io.InputStream in = new ByteArrayInputStream(BINARY_SEQUENCE);
         final Base64.InputStream encodeInputStream = new Base64.InputStream(in, Base64.ENCODE);
 
-        final Base64.InputStream decodeInputStream = new Base64.InputStream(encodeInputStream,
-                Base64.DECODE);
+        final Base64.InputStream decodeInputStream =
+            new Base64.InputStream(encodeInputStream, Base64.DECODE);
 
         final byte[] outputBytes = new byte[BINARY_SEQUENCE.length];
 
@@ -145,11 +154,12 @@ public class TestBase64 extends
     /**
      * Tests output stream on the fly encoding/decoding of text.
      */
+    @Test
     public void testOutputStreamString() throws IOException {
         final java.io.ByteArrayOutputStream out = new ByteArrayOutputStream();
         final Base64.OutputStream decodeOutputStream = new Base64.OutputStream(out, Base64.DECODE);
-        final Base64.OutputStream encodeOutputStream = new Base64.OutputStream(decodeOutputStream,
-                Base64.ENCODE);
+        final Base64.OutputStream encodeOutputStream =
+            new Base64.OutputStream(decodeOutputStream, Base64.ENCODE);
 
         final byte[] outputBytes = TEXT.getBytes("UTF-8");
         encodeOutputStream.write(outputBytes);
@@ -164,11 +174,12 @@ public class TestBase64 extends
     /**
      * Tests output stream on the fly encoding/decoding of a binary sequence.
      */
+    @Test
     public void testOutputBinaryString() throws IOException {
         final java.io.ByteArrayOutputStream out = new ByteArrayOutputStream();
         final Base64.OutputStream decodeOutputStream = new Base64.OutputStream(out, Base64.DECODE);
-        final Base64.OutputStream encodeOutputStream = new Base64.OutputStream(decodeOutputStream,
-                Base64.ENCODE);
+        final Base64.OutputStream encodeOutputStream =
+            new Base64.OutputStream(decodeOutputStream, Base64.ENCODE);
 
         encodeOutputStream.write(BINARY_SEQUENCE);
         encodeOutputStream.flush();
@@ -185,11 +196,12 @@ public class TestBase64 extends
      * Tries to write a buffer whose number of bytes is very small (a couple of bytes
      * only) and then checks that flushing actually works produces the desired output.
      */
+    @Test
     public void testFlushBehaviorBasic() throws IOException {
         final java.io.ByteArrayOutputStream out = new ByteArrayOutputStream();
         final Base64.OutputStream decodeOutputStream = new Base64.OutputStream(out, Base64.DECODE);
-        final Base64.OutputStream encodeOutputStream = new Base64.OutputStream(decodeOutputStream,
-                Base64.ENCODE);
+        final Base64.OutputStream encodeOutputStream =
+            new Base64.OutputStream(decodeOutputStream, Base64.ENCODE);
 
         encodeOutputStream.write(FLUSH_TEST_BINARY_BUFFER);
         // Check that no bytes were passed on to the output
@@ -211,11 +223,12 @@ public class TestBase64 extends
      * only) and then checks that closing the buffer actually works produces the desired
      * output.
      */
+    @Test
     public void testCloseFlushBehaviorBasic() throws IOException {
         final java.io.ByteArrayOutputStream out = new ByteArrayOutputStream();
         final Base64.OutputStream decodeOutputStream = new Base64.OutputStream(out, Base64.DECODE);
-        final Base64.OutputStream encodeOutputStream = new Base64.OutputStream(decodeOutputStream,
-                Base64.ENCODE);
+        final Base64.OutputStream encodeOutputStream =
+            new Base64.OutputStream(decodeOutputStream, Base64.ENCODE);
 
         encodeOutputStream.write(FLUSH_TEST_BINARY_BUFFER);
 

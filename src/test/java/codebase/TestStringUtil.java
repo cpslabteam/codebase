@@ -1,16 +1,18 @@
 package codebase;
 
-import junit.framework.Assert;
+import org.junit.Test;
+
 import codebase.iterators.ArrayIterator;
 import codebase.iterators.EmptyIterator;
 import codebase.junit.EnhancedTestCase;
+import junit.framework.Assert;
 
 /**
  * Tests the {@link StringUtil} utility class.
  */
-public class TestStringUtil extends
-        EnhancedTestCase {
+public class TestStringUtil extends EnhancedTestCase {
 
+    @Test
     public void testCharNameShort() {
         assertEquals("TAB", StringUtil.charNameShort('\t'));
         assertEquals("CR", StringUtil.charNameShort('\r'));
@@ -18,6 +20,7 @@ public class TestStringUtil extends
         assertEquals("c", StringUtil.charNameShort('c'));
     }
 
+    @Test
     public void testCharNameLong() {
         assertEquals("Tab", StringUtil.charNameLong('\t'));
         assertEquals("Carriage Return", StringUtil.charNameLong('\r'));
@@ -25,6 +28,7 @@ public class TestStringUtil extends
         assertEquals("c", StringUtil.charNameLong('c'));
     }
 
+    @Test
     public void testFirstIndexNotOf() {
         assertEquals(StringUtil.firstIndexNotOf("", '\0'), -1);
         assertEquals(StringUtil.firstIndexNotOf("ABCD", 'X'), 0);
@@ -34,6 +38,7 @@ public class TestStringUtil extends
         assertEquals(StringUtil.firstIndexNotOf("XXXXX", 'X'), -1);
     }
 
+    @Test
     public void testLastIndexNotOf() {
         assertEquals(StringUtil.lastIndexNotOf("", '\0'), -1);
         assertEquals(StringUtil.lastIndexNotOf("ABCD", 'X'), 3);
@@ -43,6 +48,7 @@ public class TestStringUtil extends
         assertEquals(StringUtil.lastIndexNotOf("XXXXX", 'X'), -1);
     }
 
+    @Test
     public void testTrimLeft() {
         assertEquals("", StringUtil.trimLeft(""));
         assertEquals("something", StringUtil.trimLeft("something"));
@@ -51,6 +57,7 @@ public class TestStringUtil extends
         assertEquals("something     ", StringUtil.trimLeft("something     "));
     }
 
+    @Test
     public void testLTrimChar() {
         assertEquals("", StringUtil.trimCharLeft("", 's'));
         assertEquals("omething", StringUtil.trimCharLeft("something", 's'));
@@ -58,6 +65,7 @@ public class TestStringUtil extends
         assertEquals("omething", StringUtil.trimCharLeft("ssssomething", 's'));
     }
 
+    @Test
     public void testTrimRight() {
         assertEquals("", StringUtil.trimRight(""));
         assertEquals("something", StringUtil.trimRight("something"));
@@ -67,6 +75,7 @@ public class TestStringUtil extends
         assertEquals("     something", StringUtil.trimRight("     something     "));
     }
 
+    @Test
     public void testTrimCharRight() {
         assertEquals("", StringUtil.trimCharRight("", 's'));
         assertEquals("somethin", StringUtil.trimCharRight("something", 'g'));
@@ -74,6 +83,7 @@ public class TestStringUtil extends
         assertEquals("somethin", StringUtil.trimCharRight("somethingggg", 'g'));
     }
 
+    @Test
     public void testRepeatString() {
         assertEquals("", StringUtil.repeat("", 0));
         assertEquals("", StringUtil.repeat("a", 0));
@@ -81,6 +91,7 @@ public class TestStringUtil extends
         assertEquals("aa", StringUtil.repeat("a", 2));
     }
 
+    @Test
     public void testRepeatChar() {
         assertEquals("", StringUtil.repeat('\u0000', 0));
         assertEquals("", StringUtil.repeat('a', 0));
@@ -89,6 +100,7 @@ public class TestStringUtil extends
         assertEquals("aaaaaaa", StringUtil.repeat('a', 7));
     }
 
+    @Test
     public void testStringify() {
         assertEquals("\"\"", StringUtil.stringify(""));
         assertEquals("\"X\"", StringUtil.stringify("X"));
@@ -96,6 +108,7 @@ public class TestStringUtil extends
         assertEquals("\"something\"", StringUtil.stringify("something"));
     }
 
+    @Test
     public void testSafeString() {
         assertEquals("", StringUtil.safeString("", ""));
         assertEquals("", StringUtil.safeString(null, ""));
@@ -103,6 +116,7 @@ public class TestStringUtil extends
         assertEquals("something", StringUtil.safeString("something", "else"));
     }
 
+    @Test
     public void testUnstringify() {
         // Empty string
         assertEquals("", StringUtil.unstringify(""));
@@ -130,6 +144,7 @@ public class TestStringUtil extends
         assertEquals("\\", StringUtil.unstringify("\"\\\\\""));
     }
 
+    @Test
     public void testStripPrefix() {
         assertEquals("", StringUtil.stripPrefix("", ""));
         assertEquals("something", StringUtil.stripPrefix("something", ""));
@@ -138,6 +153,7 @@ public class TestStringUtil extends
         assertEquals("", StringUtil.stripPrefix("", "something"));
     }
 
+    @Test
     public void testTrim() {
         assertEquals("", StringUtil.trim(""));
         assertEquals("something", StringUtil.trim("something"));
@@ -146,6 +162,7 @@ public class TestStringUtil extends
         assertEquals("something", StringUtil.trim("   something   "));
     }
 
+    @Test
     public void testTrimChar() {
         assertEquals("", StringUtil.trimChar("", 's'));
         assertEquals("omething", StringUtil.trimChar("something", 's'));
@@ -154,7 +171,6 @@ public class TestStringUtil extends
         assertEquals("somethin", StringUtil.trimChar("somethingggggg", 'g'));
         assertEquals("somethin", StringUtil.trimChar("gggggggsomethingggggg", 'g'));
     }
-
 
 
     // TODO: Finish compact string tests
@@ -168,6 +184,7 @@ public class TestStringUtil extends
         assertEquals("Dear...nds", StringUtil.compactFormat("Dear Friends", 10));
     }
 
+    @Test
     public void testSplit() {
         assertEquals(new ArrayIterator<String>(StringUtil.split("", "")),
                 new EmptyIterator<String>());
@@ -188,15 +205,15 @@ public class TestStringUtil extends
     /**
      * Tests various String joining cases and object joining by asserting String arrays
      * get properly joined with the proper delimiters and Object arrays get joined with
-     * the proper toString() values. 
-     * 
-     * TO REMOVE --> Mind that null delimiters are supported
+     * the proper toString() values. TO REMOVE --> Mind that null delimiters are supported
      * but WON'T be in the future, hence the test case.
      */
+    @Test
     public void testJoin() {
 
         // Check if a string array gets properly joined with an empty delimiter
-        assertEquals(StringUtil.join(new String[] { "hello", "123", "hello" }, ""), "hello123hello");
+        assertEquals(StringUtil.join(new String[] { "hello", "123", "hello" }, ""),
+                "hello123hello");
 
         // Check if a string array gets properly joined using a space delimiter
         assertEquals(StringUtil.join(new String[] { "hello", "123", "hello" }, " "),

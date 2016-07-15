@@ -6,13 +6,14 @@ package codebase.streams;
 
 import java.io.IOException;
 
+import org.junit.Test;
+
 import junit.framework.TestCase;
 
 /**
  * Tests the {@link ConstantInputStream} stream.
  */
-public class TestConstantInputStream extends
-        TestCase {
+public class TestConstantInputStream extends TestCase {
 
     /**
      * Tests that reading form the one element stream always returns the same element.
@@ -36,6 +37,7 @@ public class TestConstantInputStream extends
     /**
      * Tests that reading multiple elements correctly returns the buffer elements.
      */
+    @Test
     public void testReadMultipleElement() {
         ConstantInputStream s = new ConstantInputStream("XYZ");
 
@@ -59,6 +61,7 @@ public class TestConstantInputStream extends
     /**
      * Tests that skipping elements form the buffer correctly cycles through the buffer.
      */
+    @Test
     public void testSkipMultipleElement() throws IOException {
         ConstantInputStream s = new ConstantInputStream("XYZ");
         try {

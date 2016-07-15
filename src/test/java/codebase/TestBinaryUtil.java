@@ -3,6 +3,8 @@
  */
 package codebase;
 
+import org.junit.Test;
+
 import codebase.iterators.ArrayIterator;
 import codebase.iterators.EmptyIterator;
 import codebase.junit.EnhancedTestCase;
@@ -10,9 +12,9 @@ import codebase.junit.EnhancedTestCase;
 /**
  * Tests the {@link BinaryUtil} utility functions.
  */
-public class TestBinaryUtil extends
-        EnhancedTestCase {
+public class TestBinaryUtil extends EnhancedTestCase {
 
+    @Test
     public void testGetHighNibble() {
         assertEquals(0, BinaryUtil.getHighNibble(0x00000000));
         assertEquals(0x0C, BinaryUtil.getHighNibble(0xC0));
@@ -20,6 +22,7 @@ public class TestBinaryUtil extends
         assertEquals(0x0F, BinaryUtil.getHighNibble(0xF2));
     }
 
+    @Test
     public void testGetHighByte() {
         assertEquals(0, BinaryUtil.getHighByte(0x00000000));
         assertEquals(0x0C, BinaryUtil.getHighByte(0x0C00));
@@ -27,6 +30,7 @@ public class TestBinaryUtil extends
         assertEquals(0xFF, BinaryUtil.getHighByte(0xFF33));
     }
 
+    @Test
     public void testGetLowNibble() {
         assertEquals(0, BinaryUtil.getLowNibble(0x00000000));
         assertEquals(0x0C, BinaryUtil.getLowNibble(0x0C));
@@ -34,6 +38,7 @@ public class TestBinaryUtil extends
         assertEquals(0x0F, BinaryUtil.getLowNibble(0x2F));
     }
 
+    @Test
     public void testGetLowByte() {
         assertEquals(0, BinaryUtil.getLowerByte(0x00000000));
         assertEquals(0x0C, BinaryUtil.getLowerByte(0x0C));
@@ -41,6 +46,7 @@ public class TestBinaryUtil extends
         assertEquals(0xFF, BinaryUtil.getLowerByte(0x33FF));
     }
 
+    @Test
     public void testSetHighNibble() {
         assertEquals(0x00, BinaryUtil.setHighNibble(0x00, 0x00));
         assertEquals(0x10, BinaryUtil.setHighNibble(0x00, 0x01));
@@ -56,6 +62,7 @@ public class TestBinaryUtil extends
         assertEquals(0xAB, BinaryUtil.setHighNibble(0x0B, 0x0A));
     }
 
+    @Test
     public void testSetLowNibble() {
         assertEquals(0x00, BinaryUtil.setLowNibble(0x00, 0x00));
         assertEquals(0x01, BinaryUtil.setLowNibble(0x00, 0x01));
@@ -71,6 +78,7 @@ public class TestBinaryUtil extends
         assertEquals(0xAB, BinaryUtil.setLowNibble(0xA0, 0x0B));
     }
 
+    @Test
     public void testSwapNibbles() {
         assertEquals(0x00, BinaryUtil.swapNibbles(0x00));
         assertEquals(0x11, BinaryUtil.swapNibbles(0x11));
@@ -80,6 +88,7 @@ public class TestBinaryUtil extends
         assertEquals(0xAB, BinaryUtil.swapNibbles(0xBA));
     }
 
+    @Test
     public void testComposeByte() {
         assertEquals((byte) 0x00, BinaryUtil.toByte(0x00, 0x00));
         assertEquals((byte) 0x11, BinaryUtil.toByte(0x01, 0x01));
@@ -89,6 +98,7 @@ public class TestBinaryUtil extends
         assertEquals((byte) 0x24, BinaryUtil.toByte(0x12, 0x34));
     }
 
+    @Test
     public void testToInteger() {
         assertEquals(0, BinaryUtil.toInteger((byte) 0, (byte) 0, (byte) 0, (byte) 0));
         assertEquals(1, BinaryUtil.toInteger((byte) 1, (byte) 0, (byte) 0, (byte) 0));
@@ -98,6 +108,7 @@ public class TestBinaryUtil extends
                 BinaryUtil.toInteger((byte) 0x12, (byte) 0x34, (byte) 0x56, (byte) 0x78));
     }
 
+    @Test
     public void testToByteArray() {
         byte[] decoding = new byte[BinaryUtil.SIZE_OF_INT];
         BinaryUtil.toByteArray(0, decoding, 0);
@@ -114,15 +125,15 @@ public class TestBinaryUtil extends
         assertEquals(0x78, decoding[3]);
     }
 
+    @Test
     public void testToHexString() {
         assertEquals("00", BinaryUtil.toHexString(new byte[] { 0 }));
         assertEquals("01", BinaryUtil.toHexString(new byte[] { 1 }));
-        assertEquals(
-                "1234567890abcdef",
-                BinaryUtil.toHexString(new byte[] { 0x12, 0x34, 0x56, 0x78, (byte) 0x90, (byte) 0xAB,
-                        (byte) 0xCD, (byte) 0xEF }));
+        assertEquals("1234567890abcdef", BinaryUtil.toHexString(new byte[] { 0x12, 0x34, 0x56, 0x78,
+                (byte) 0x90, (byte) 0xAB, (byte) 0xCD, (byte) 0xEF }));
     }
 
+    @Test
     public void testToHexByte() {
         assertEquals("00", BinaryUtil.toHex((byte) 0));
         assertEquals("01", BinaryUtil.toHex((byte) 1));
@@ -132,6 +143,7 @@ public class TestBinaryUtil extends
         assertEquals("99", BinaryUtil.toHex((byte) 0x99));
     }
 
+    @Test
     public void testToHexChar() {
         assertEquals("00", BinaryUtil.toHex('\u0000'));
         assertEquals("01", BinaryUtil.toHex('\u0001'));
@@ -139,6 +151,7 @@ public class TestBinaryUtil extends
         assertEquals("03f0", BinaryUtil.toHex('\u03F0'));
     }
 
+    @Test
     public void testToHexInt() {
         assertEquals("00000000", BinaryUtil.toHex((int) 0));
         assertEquals("00000001", BinaryUtil.toHex((int) 1));
@@ -150,30 +163,33 @@ public class TestBinaryUtil extends
 
     private static final EmptyIterator<Integer> EMPTY_ITERATOR = new EmptyIterator<Integer>();
 
+    @Test
     public void testDecodeIntegersToBytes() {
         // Emtpty
         final int[] input1 = new int[] {};
-        assertEquals(
-                EMPTY_ITERATOR,
-                new ArrayIterator<Byte>(ArrayUtil.toByteArray(BinaryUtil.decodeIntegersToBytes(input1, 0))));
+        assertEquals(EMPTY_ITERATOR, new ArrayIterator<Byte>(
+                ArrayUtil.toByteArray(BinaryUtil.decodeIntegersToBytes(input1, 0))));
 
         // with one integer
         final int[] input2 = new int[] { 7 };
         assertEquals(
-                new ArrayIterator<Byte>(new Byte[] { Byte.valueOf((byte) 7),
-                        Byte.valueOf((byte) 0), Byte.valueOf((byte) 0), Byte.valueOf((byte) 0) }),
-                new ArrayIterator<Byte>(ArrayUtil.toByteArray(BinaryUtil.decodeIntegersToBytes(input2, 4))));
+                new ArrayIterator<Byte>(new Byte[] { Byte.valueOf((byte) 7), Byte.valueOf((byte) 0),
+                        Byte.valueOf((byte) 0), Byte.valueOf((byte) 0) }),
+                new ArrayIterator<Byte>(
+                        ArrayUtil.toByteArray(BinaryUtil.decodeIntegersToBytes(input2, 4))));
 
         // with two integers
         final int[] input3 = new int[] { 7, 0x12345678 };
         assertEquals(
-                new ArrayIterator<Byte>(new Byte[] { Byte.valueOf((byte) 7),
-                        Byte.valueOf((byte) 0), Byte.valueOf((byte) 0), Byte.valueOf((byte) 0),
-                        Byte.valueOf((byte) 0x78), Byte.valueOf((byte) 0x56),
-                        Byte.valueOf((byte) 0x34), Byte.valueOf((byte) 0x12) }),
-                new ArrayIterator<Byte>(ArrayUtil.toByteArray(BinaryUtil.decodeIntegersToBytes(input3, 8))));
+                new ArrayIterator<Byte>(new Byte[] { Byte.valueOf((byte) 7), Byte.valueOf((byte) 0),
+                        Byte.valueOf((byte) 0), Byte.valueOf((byte) 0), Byte.valueOf((byte) 0x78),
+                        Byte.valueOf((byte) 0x56), Byte.valueOf((byte) 0x34),
+                        Byte.valueOf((byte) 0x12) }),
+                new ArrayIterator<Byte>(
+                        ArrayUtil.toByteArray(BinaryUtil.decodeIntegersToBytes(input3, 8))));
     }
 
+    @Test
     public void testGetSetBits() {
         assertEquals(0, BinaryUtil.getSetBits(0));
         assertEquals(2, BinaryUtil.getSetBits(0x11));
@@ -181,29 +197,27 @@ public class TestBinaryUtil extends
         assertEquals(8, BinaryUtil.getSetBits(0xFF));
     }
 
+    @Test
     public void testEncodeBytesToIntegers() {
         // EmptyIterator
         final byte[] input1 = new byte[] {};
-        assertEquals(
-                EMPTY_ITERATOR,
-                new ArrayIterator<Integer>(ArrayUtil.toIntegerArray(BinaryUtil.encodeBytesToIntegers(
-                        input1, 0, 0))));
+        assertEquals(EMPTY_ITERATOR, new ArrayIterator<Integer>(
+                ArrayUtil.toIntegerArray(BinaryUtil.encodeBytesToIntegers(input1, 0, 0))));
 
         // with one integer
         final byte[] input2 = new byte[] { (byte) 7, (byte) 0, (byte) 0, (byte) 0 };
-        assertEquals(
-                new ArrayIterator<Integer>(new Integer[] { Integer.valueOf(7) }),
-                new ArrayIterator<Integer>(ArrayUtil.toIntegerArray(BinaryUtil.encodeBytesToIntegers(
-                        input2, 0, 4))));
+        assertEquals(new ArrayIterator<Integer>(new Integer[] { Integer.valueOf(7) }),
+                new ArrayIterator<Integer>(
+                        ArrayUtil.toIntegerArray(BinaryUtil.encodeBytesToIntegers(input2, 0, 4))));
 
         // with two integers
         final byte[] input3 = new byte[] { (byte) 7, (byte) 0, (byte) 0, (byte) 0, (byte) 0x78,
                 (byte) 0x56, (byte) 0x34, (byte) 0x12 };
 
         assertEquals(
-                new ArrayIterator<Integer>(new Integer[] { Integer.valueOf(7),
-                        Integer.valueOf(0x12345678) }),
-                new ArrayIterator<Integer>(ArrayUtil.toIntegerArray(BinaryUtil.encodeBytesToIntegers(
-                        input3, 0, 8))));
+                new ArrayIterator<Integer>(
+                        new Integer[] { Integer.valueOf(7), Integer.valueOf(0x12345678) }),
+                new ArrayIterator<Integer>(
+                        ArrayUtil.toIntegerArray(BinaryUtil.encodeBytesToIntegers(input3, 0, 8))));
     }
 }

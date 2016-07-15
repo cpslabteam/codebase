@@ -4,6 +4,8 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
+import org.junit.Test;
+
 import codebase.StringUtil;
 import junit.framework.TestCase;
 
@@ -37,6 +39,7 @@ public class TestTimeoutOutputStream extends TestCase {
     /**
      * Tests that writing multiple elements correctly returns the elements in sequence.
      */
+    @Test
     public void testWriteMultipleElement() throws IOException {
         ByteArrayOutputStream os = new ByteArrayOutputStream();
         TimeoutOutputStream s = new TimeoutOutputStream(os);
@@ -57,6 +60,7 @@ public class TestTimeoutOutputStream extends TestCase {
     /**
      * Tests that reading multiple elements correctly returns the elements in sequence.
      */
+    @Test
     public void testBasicWriteMultipleElement() throws IOException {
         ByteArrayOutputStream os = new ByteArrayOutputStream();
         TimeoutOutputStream s = new TimeoutOutputStream(os);
@@ -74,6 +78,7 @@ public class TestTimeoutOutputStream extends TestCase {
         assertTrue(s.isClosed());
     }
 
+    @Test
     public void testDelayedOutputStream() throws IOException {
         ByteArrayOutputStream os = new ByteArrayOutputStream();
         DelayedOutputStream dos = new DelayedOutputStream(os, 1000);
@@ -88,6 +93,7 @@ public class TestTimeoutOutputStream extends TestCase {
     /**
      * Tests that with a delay of 1 sec the three characters are read.
      */
+    @Test
     public void testSlowElementBuffer() throws IOException {
         ByteArrayOutputStream os = new ByteArrayOutputStream();
         TimeoutOutputStream s = new TimeoutOutputStream(new DelayedOutputStream(os, 1000),
@@ -108,6 +114,7 @@ public class TestTimeoutOutputStream extends TestCase {
     /**
      * Tests that with a delay of 2 secs, it times out.
      */
+    @Test
     public void testTimeoutElementBuffer() throws IOException {
         ByteArrayOutputStream os = new ByteArrayOutputStream();
         TimeoutOutputStream s =

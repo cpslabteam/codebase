@@ -3,6 +3,8 @@ package codebase.streams;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
+import org.junit.Test;
+
 import junit.framework.TestCase;
 
 
@@ -14,6 +16,7 @@ public class TestDelayedOutputStream extends TestCase {
     /**
      * Tests that writing one byte results in waiting the wait time specified.
      */
+    @Test
     public void testWriteOnce() throws IOException {
         ByteArrayOutputStream os = new ByteArrayOutputStream();
         DelayedOutputStream dos = new DelayedOutputStream(os, 2000);
@@ -26,6 +29,7 @@ public class TestDelayedOutputStream extends TestCase {
     /**
      * Tests that writing bytes in sequence causes an add up in wait time.
      */
+    @Test
     public void testDelayedOutputStream() throws IOException {
         ByteArrayOutputStream os = new ByteArrayOutputStream();
         DelayedOutputStream dos = new DelayedOutputStream(os, 1000);

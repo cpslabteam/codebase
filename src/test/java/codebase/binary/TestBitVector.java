@@ -3,14 +3,16 @@
  */
 package codebase.binary;
 
+import org.junit.Test;
+
 import junit.framework.TestCase;
 
 /**
  * Tests the {@link BitVector} class.
  */
-public class TestBitVector extends
-        TestCase {
+public class TestBitVector extends TestCase {
 
+    @Test
     public void testSetClearGet() {
         // Use a vector with size 1
         BitVector v1 = new BitVector(1);
@@ -35,6 +37,7 @@ public class TestBitVector extends
         assertEquals(false, v2.get(18));
     }
 
+    @Test
     public void testCount() {
         BitVector v1 = new BitVector(1);
         assertEquals(0, v1.count());

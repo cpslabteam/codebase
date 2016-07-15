@@ -3,14 +3,16 @@
  */
 package codebase;
 
+import org.junit.Test;
+
 import junit.framework.TestCase;
 
 /**
  * Tests the {@link InformationUnit} class.
  */
-public class TestInformationUnit extends
-        TestCase {
+public class TestInformationUnit extends TestCase {
 
+    @Test
     public void testFormatBytes() {
         assertEquals("0B", InformationUnit.formatBytes(0, 0));
         assertEquals("0B", InformationUnit.formatBytes(0, 1));
@@ -25,6 +27,7 @@ public class TestInformationUnit extends
         assertEquals("3.0GB", InformationUnit.formatBytes(3 * InformationUnit.GB, 0));
     }
 
+    @Test
     public void testParseBytes() {
         assertEquals(0, InformationUnit.parseBytes("0B"));
         assertEquals(0, InformationUnit.parseBytes("0.0B"));

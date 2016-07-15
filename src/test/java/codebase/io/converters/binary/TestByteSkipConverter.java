@@ -5,10 +5,11 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
+import org.junit.Test;
+
 import junit.framework.TestCase;
 
-public class TestByteSkipConverter extends
-        TestCase {
+public class TestByteSkipConverter extends TestCase {
 
     /**
      * Tests the {@link ByteSkipConverter} of size 1.
@@ -16,6 +17,7 @@ public class TestByteSkipConverter extends
      * This test writes a marker byte, skips one byte, and then reads a second marker
      * byte.
      */
+    @Test
     public void testBytesConverterSingle() throws IOException {
         // write byte markers and a default value to the output stream
         ByteArrayOutputStream output = new java.io.ByteArrayOutputStream();

@@ -9,8 +9,7 @@ import codebase.junit.EnhancedTestCase;
 /**
  * Tests the {@link ArrayIterator} class.
  */
-public class TestArrayIterator extends
-        EnhancedTestCase {
+public class TestArrayIterator extends EnhancedTestCase {
 
 
     /**
@@ -24,8 +23,8 @@ public class TestArrayIterator extends
      * Tests an enumerator with one element.
      */
     public final void testOne() {
-        final ArrayIterator<Object> oneIterator = new ArrayIterator<Object>(
-                new Object[] { Integer.valueOf(7) });
+        final ArrayIterator<Object> oneIterator =
+            new ArrayIterator<Object>(new Object[] { Integer.valueOf(7) });
 
         assertEquals(oneIterator.peek(), Integer.valueOf(7));
         assertEquals(oneIterator.next(), Integer.valueOf(7));
@@ -44,8 +43,8 @@ public class TestArrayIterator extends
      * Tests an enumerator with one element.
      */
     public final void testNormal() {
-        final ArrayIterator<Object> oneIterator = new ArrayIterator<Object>(new Object[] {
-                Integer.valueOf(7), Integer.valueOf(8), Integer.valueOf(12) });
+        final ArrayIterator<Object> oneIterator = new ArrayIterator<Object>(
+                new Object[] { Integer.valueOf(7), Integer.valueOf(8), Integer.valueOf(12) });
 
         assertEquals(oneIterator.peek(), Integer.valueOf(7));
         assertEquals(oneIterator.next(), Integer.valueOf(7));

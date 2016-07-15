@@ -5,9 +5,6 @@ import java.util.Iterator;
 import org.junit.Assert;
 import org.junit.Test;
 
-import codebase.iterators.ArrayIterator;
-import codebase.iterators.RepeaterIterator;
-
 /**
  * Basic sanity tests for the <tt>Iterators</tt> utilities.
  */
@@ -46,8 +43,8 @@ public class TestIteratorsUtils {
      * Checks the situation where the input finishes before the timeout.
      * <p>
      * When the input finishes before the the timeout, we
-     * IteratorsUtils#consumeParallel(int, int, Iterator...)} must return at once and
-     * not wait foe the timeout.
+     * IteratorsUtils#consumeParallel(int, int, Iterator...)} must return at once and not
+     * wait foe the timeout.
      */
     @Test
     public void testConsumeParallelSingleFinishBeforeTimeout() throws InterruptedException {

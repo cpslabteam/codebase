@@ -12,8 +12,7 @@ import codebase.junit.EnhancedTestCase;
 /**
  * Tests the {@link RepeaterIterator} iterator class.
  */
-public class TestRepeater extends
-        EnhancedTestCase {
+public class TestRepeater extends EnhancedTestCase {
 
     /**
      * Tests a repeater with zero repetitions.
@@ -91,8 +90,8 @@ public class TestRepeater extends
      */
     public final void testMany() {
         final Object o = new Object();
-        final Iterator<Object> input = new ArrayIterator<Object>(
-                new Object[] { o, o, o, o, o, o, o });
+        final Iterator<Object> input =
+            new ArrayIterator<Object>(new Object[] { o, o, o, o, o, o, o });
 
         assertEquals(input, new RepeaterIterator<Object>(o, 7));
     }

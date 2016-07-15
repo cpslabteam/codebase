@@ -5,11 +5,13 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
+import org.junit.Test;
+
 import junit.framework.TestCase;
 
-public class TestBooleanConverter extends
-        TestCase {
+public class TestBooleanConverter extends TestCase {
 
+    @Test
     public void testBooleanConverter() throws IOException {
         // write a Boolean value to the output stream
         ByteArrayOutputStream output = new java.io.ByteArrayOutputStream();

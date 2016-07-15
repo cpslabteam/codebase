@@ -3,15 +3,12 @@ package codebase.iterators;
 import org.junit.Assert;
 import org.junit.Test;
 
-import codebase.iterators.RepeaterIterator;
-import codebase.iterators.IteratorsUtils;
-
 /**
  * Unit tests for the RateLimitedIterator.
  * <p>
- * The general test strategy consists of calling
- * IteratorsUtils#consume(int, java.util.Iterator) to consume a bulk of elements from a
- * RateLimitedIterator and the verify the call rate.
+ * The general test strategy consists of calling IteratorsUtils#consume(int,
+ * java.util.Iterator) to consume a bulk of elements from a RateLimitedIterator and the
+ * verify the call rate.
  */
 public class TestRateLimitedIterator {
 
@@ -67,6 +64,6 @@ public class TestRateLimitedIterator {
         RateCounterIterator<Object> rc = new RateCounterIterator<Object>(t);
 
         IteratorsUtils.consume(600, rc);
-        Assert.assertEquals(120.0, rc.getRate(), 1.0);
+        Assert.assertEquals(120.0, rc.getRate(), 2.5);
     }
 }

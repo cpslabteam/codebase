@@ -3,8 +3,6 @@ package codebase.iterators;
 import org.junit.Assert;
 import org.junit.Test;
 
-import codebase.iterators.RepeaterIterator;
-
 /**
  * Tests the RateCounterIterator.
  */
@@ -24,7 +22,7 @@ public class TestRateCounterIterator {
         RateCounterIterator<Object> rc = new RateCounterIterator<Object>(t, 5);
 
         IteratorsUtils.consume(250, rc);
- 
+
         Assert.assertEquals(25.0, rc.getRate(), 1.0);
     }
 

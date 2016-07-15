@@ -11,8 +11,7 @@ import junit.framework.TestCase;
 /**
  * Tests the {@link ComparableArrayWrapper} class.
  */
-public class TestComparableArrayWrapper extends
-        TestCase {
+public class TestComparableArrayWrapper extends TestCase {
 
     /**
      * Tests that normal Object[] equals do not work. An object array list cannot be
