@@ -3,7 +3,7 @@ package codebase.iterators;
 import java.util.NoSuchElementException;
 
 /**
- * An integer enumerator.
+ * An integer range enumerator iterators.
  * <p>
  * Returns an ascending or descending sequence of integer objects within a given range.
  * <p>

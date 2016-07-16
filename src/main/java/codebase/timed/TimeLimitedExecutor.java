@@ -5,11 +5,13 @@ import java.util.concurrent.TimeUnit;
 
 /**
  * An executor that guarantees that a command is executed after a pre-assigned time.
+ * <p>
+ * TODO: What is the difference between this class and RateLimitedExecutor
  */
 public class TimeLimitedExecutor implements Executor {
 
     private static final int MINIMUM_JVM_WAIT_MILLIS = 10;
-    
+
     private double waitMillis;
     private long totalElapsedTimeNanos;
     private double totalWaitTimeMillis;

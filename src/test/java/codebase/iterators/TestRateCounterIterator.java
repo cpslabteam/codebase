@@ -21,7 +21,7 @@ public class TestRateCounterIterator {
         // Decorate with a rate counter (window of 5 seconds)
         RateCounterIterator<Object> rc = new RateCounterIterator<Object>(t, 5);
 
-        IteratorsUtils.consume(250, rc);
+        Iterators.consume(250, rc);
 
         Assert.assertEquals(25.0, rc.getRate(), 1.0);
     }
@@ -39,7 +39,7 @@ public class TestRateCounterIterator {
         // Decorate with a rate counter (window of 1 second)
         RateCounterIterator<Object> rc = new RateCounterIterator<Object>(t, 1);
 
-        IteratorsUtils.consume(125, rc);
+        Iterators.consume(125, rc);
 
         Assert.assertEquals(25.0, rc.getRate(), 2.0);
     }
@@ -58,7 +58,7 @@ public class TestRateCounterIterator {
         // Decorate with a rate counter (a window of 5 seconds)
         RateCounterIterator<Object> rc = new RateCounterIterator<Object>(t, 1);
 
-        IteratorsUtils.consume(50, rc);
+        Iterators.consume(50, rc);
 
         Assert.assertEquals(25.0, rc.getRate(), 2.0);
     }

@@ -11,7 +11,7 @@ import java.io.InputStream;
 import codebase.BinaryUtil;
 
 /**
- * A fast buffered input stream that is not thread safe.
+ * A buffered input stream that is not thread safe and, therefore, fasters.
  * <p>
  * A <code>BufferedInputStream</code> adds the ability to buffer the input to another
  * stream.
@@ -20,8 +20,7 @@ import codebase.BinaryUtil;
  * 
  * @see java.io.BufferedInputStream
  */
-public class FastBufferedInputStream extends
-        FilterInputStream {
+public class FastBufferedInputStream extends FilterInputStream {
 
     private static final int DEFAULT_BUFFER_SIZE = 2048;
 
@@ -48,8 +47,6 @@ public class FastBufferedInputStream extends
      * supplied as input; if it is equal to <code>count</code>, then the next
      * <code>read</code> or <code>skip</code> operation will require more bytes to be read
      * from the contained input stream.
-     * 
-     * @see java.io.BufferedInputStream#buffered
      */
     protected int pos;
 
@@ -67,9 +64,6 @@ public class FastBufferedInputStream extends
      * adjustments to the values of <code>count</code>,<code>pos</code>, and
      * <code>markpos</code>); they may not be discarded unless and until the difference
      * between <code>pos</code> and <code>markpos</code> exceeds <code>marklimit</code>.
-     * 
-     * @see java.io.BufferedInputStream#mark(int)
-     * @see java.io.BufferedInputStream#pos
      */
     protected int markpos = -1;
 
@@ -178,10 +172,9 @@ public class FastBufferedInputStream extends
         int avail = count - pos;
         if (avail <= 0) {
             /*
-             * If the requested length is at least as large as the buffer, and
-             * if there is no mark/reset activity, do not bother to copy the
-             * bytes into the local buffer. In this way buffered streams will
-             * cascade harmlessly.
+             * If the requested length is at least as large as the buffer, and if there is
+             * no mark/reset activity, do not bother to copy the bytes into the local
+             * buffer. In this way buffered streams will cascade harmlessly.
              */
             if (len >= buffered.length && markpos < 0) {
                 return in.read(b, off, len);

@@ -3,7 +3,7 @@ package codebase.iterators;
 import java.util.Iterator;
 
 /**
- * The interface of an iterator that can be reset.
+ * The interface of an iterator that with reset functionality.
  * <p>
  * This interface specifies the method {@link #reset()} that brings the iterator to the
  * first element.

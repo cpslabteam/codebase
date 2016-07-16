@@ -146,7 +146,7 @@ public final class SingletonIterator<E>
     }
 
     /**
-     * Udpates the current element.
+     * Updates the current element.
      * 
      * @param replacement the element to replace the current one
      * @throws IllegalStateException if the last element was already returned or removed
