@@ -30,7 +30,7 @@ public class TimeoutOutputStream extends FilterOutputStream {
     private final int streamTimeout;
 
     /**
-     * The timeout unit specified for {@link #driverTimeoutUnit}.
+     * The timeout unit of the stream timeout.
      */
     private final TimeUnit streamTimeoutUnit;
 

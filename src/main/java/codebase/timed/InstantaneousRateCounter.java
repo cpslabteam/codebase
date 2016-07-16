@@ -5,7 +5,7 @@ import java.util.concurrent.Delayed;
 import java.util.concurrent.TimeUnit;
 
 /**
- * Utility class that tracks instantaneous rates with a sliding sample window.
+ * Utility class that tracks call rates with a sliding sample window.
  * <p>
  * This class can be used to compute instantaneous access rates or I/O or other
  * operations. For example, for measuring records per second, frames per second, among

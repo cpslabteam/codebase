@@ -8,7 +8,7 @@ import org.junit.Test;
 /**
  * Basic sanity tests for the <tt>Iterators</tt> utilities.
  */
-public class TestIteratorsUtils {
+public class TestIterators {
 
     /**
      * Consumes items in parallel and measures the time-to-finish.
@@ -18,7 +18,7 @@ public class TestIteratorsUtils {
     private static long timedConsumeParallel(int n, int timeout, Iterator<?>... iterators)
             throws InterruptedException {
         final long t = System.currentTimeMillis();
-        IteratorsUtils.consumeParallel(n, timeout, iterators);
+        Iterators.consumeParallel(n, timeout, iterators);
         return System.currentTimeMillis() - t;
     }
 
@@ -34,7 +34,7 @@ public class TestIteratorsUtils {
         RateCounterIterator<Object> rci =
             new RateCounterIterator<Object>(new RateLimitedIterator<Object>(objectProvider, 7));
 
-        IteratorsUtils.consumeParallel(150, 10, rci);
+        Iterators.consumeParallel(150, 10, rci);
 
         Assert.assertEquals(7.0, rci.getRate(), 0.5);
     }
