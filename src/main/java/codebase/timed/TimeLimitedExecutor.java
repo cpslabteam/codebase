@@ -6,16 +6,14 @@ import java.util.concurrent.TimeUnit;
 /**
  * An executor that guarantees that a command is executed after a pre-assigned time.
  * <p>
- * TODO: What is the difference between this class and RateLimitedExecutor
+ * This executor guarantees that a command is only executed after a given wait time.
  */
 public class TimeLimitedExecutor implements Executor {
 
     private static final int MINIMUM_JVM_WAIT_MILLIS = 10;
 
     private double waitMillis;
-    private long totalElapsedTimeNanos;
-    private double totalWaitTimeMillis;
-
+  
     /**
      * Sets the wait time.
      * 
@@ -42,14 +40,7 @@ public class TimeLimitedExecutor implements Executor {
 
         final long t = System.nanoTime();
         try {
-            final long totalElapsedTimeMillis =
-                TimeUnit.MILLISECONDS.convert(totalElapsedTimeNanos, TimeUnit.NANOSECONDS);
-
-            if ((totalElapsedTimeMillis - totalWaitTimeMillis) > 0) {
-                Thread.sleep(0);
-            } else {
-                Thread.sleep((int) Math.ceil(wait));
-            }
+                           Thread.sleep((int) Math.ceil(wait));
         } catch (InterruptedException e) {
             /*
              * This should never happen. If it does, it means that this thread was stopped
@@ -59,8 +50,5 @@ public class TimeLimitedExecutor implements Executor {
         }
 
         command.run();
-
-        totalWaitTimeMillis += wait;
-        totalElapsedTimeNanos += System.nanoTime() - t;
     }
 }
